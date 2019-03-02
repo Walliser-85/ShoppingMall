@@ -14,17 +14,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity
+public class Shops extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    DrawerLayout drawer;
-    NavigationView navigationView;
-    Toolbar toolbar=null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_shops);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -43,7 +39,7 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -86,16 +82,16 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            Intent h=new Intent (MainActivity.this, MainActivity.class);
+            Intent h=new Intent (Shops.this, MainActivity.class);
             startActivity(h);
         } else if (id == R.id.nav_shops) {
-            Intent h=new Intent (MainActivity.this, Shops.class);
+            Intent h=new Intent (Shops.this, Shops.class);
             startActivity(h);
         } else if (id == R.id.nav_articles) {
-            Intent h=new Intent (MainActivity.this, Articles.class);
+            Intent h=new Intent (Shops.this, Articles.class);
             startActivity(h);
         } else if (id == R.id.nav_about) {
-            Intent h=new Intent (MainActivity.this, About.class);
+            Intent h=new Intent (Shops.this, About.class);
             startActivity(h);
         }
 
