@@ -15,13 +15,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 public class Shops extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    ListView lst;
+    String[] shopname ={"Migros", "C&A", "H&M", "Interdiscount"};
+    String[] desc ={"This is Migros", "This is C&A", "This is H&M", "This is Interdiscount"};
+    Integer[] articles = {10, 20, 30, 40};
+    Integer[] imgid={R.drawable.migros, R.drawable.ca, R.drawable.hm, R.drawable.interdiscount};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_shops);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -69,6 +76,10 @@ public class Shops extends AppCompatActivity
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+        setContentView(R.layout.fragment_first);
+        lst= (ListView)findViewById(R.id.lwShops);
+        CustomListView customListView = new CustomListView(this,shopname,desc,imgid,articles);
+        lst.setAdapter(customListView);
     }
 
     @Override
