@@ -76,10 +76,6 @@ public class Shops extends AppCompatActivity
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-        setContentView(R.layout.fragment_first);
-        lst= (ListView)findViewById(R.id.lwShops);
-        CustomListView customListView = new CustomListView(this,shopname,desc,imgid,articles);
-        lst.setAdapter(customListView);
     }
 
     @Override

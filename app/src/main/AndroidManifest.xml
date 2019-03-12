@@ -10,9 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".CurrentShop"
+            android:label="@string/title_activity_current_shop"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".About"
             android:label="@string/title_activity_about"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Articles"
             android:label="@string/title_activity_articles"
@@ -32,4 +36,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

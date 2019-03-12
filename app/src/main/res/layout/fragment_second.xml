@@ -2,79 +2,76 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     tools:context=".Shops"
     tools:showIn="@layout/app_bar_shops">
 
+    <TextView
+        android:id="@+id/createShop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="50dp"
+        android:text="Add Shop"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="130dp">
-
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/add_image"
-            android:scaleType="center"
-            android:src="@drawable/ic_menu_gallery" />
+        android:layout_marginTop="100dp"
+        android:orientation="vertical">
 
         <EditText
-            android:id="@+id/editShopName"
+            android:id="@+id/txt_shop_Id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/shop_name" />
+            android:hint="Shop Id"
+            android:inputType="textPersonName|number" />
 
         <EditText
-            android:id="@+id/editShopDescription"
+            android:id="@+id/txt_shop_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/description" />
+            android:hint="Shop Name"
+            android:inputType="textPersonName" />
 
         <EditText
-            android:id="@+id/editShopAdresse"
+            android:id="@+id/txt_shop_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/adresse" />
+            android:hint="Decription"
+            android:inputType="textPersonName" />
 
         <EditText
-            android:id="@+id/editShopPostalAdress"
+            android:id="@+id/txt_shop_Adress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
             android:ems="10"
-            android:inputType="textPostalAddress"
-            android:text="@string/postal_address" />
-
-        <EditText
-            android:id="@+id/editShopOrt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/ort" />
-
-        <EditText
-            android:id="@+id/editShopCountry"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/country" />
+            android:hint="Adress"
+            android:inputType="textPersonName" />
 
         <Button
             android:id="@+id/btnCreateShop"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="157dp"
+            android:layout_height="52dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
             android:text="@string/create_shop" />
-
     </LinearLayout>
-
 </RelativeLayout>
