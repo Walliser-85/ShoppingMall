@@ -1,8 +1,10 @@
-package com.example.simploncenter;
+package com.example.simploncenter.db;
+
+import android.arch.persistence.room.*;
 
 @Entity(tableName = "Articles")
 public class ArticleEntity {
-    @PrimaryKey(autoincrement=true)
+    @PrimaryKey(autoGenerate = true)
     private int aid;
     @ColumnInfo(name ="Name")
     private String nameArticle;
@@ -13,5 +15,5 @@ public class ArticleEntity {
     @ColumnInfo(name ="Price")
     private float priceArticle;
     @ColumnInfo(name ="Picture")
-    private string picture;
+    private String picture;
 }

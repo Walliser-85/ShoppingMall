@@ -1,10 +1,11 @@
-package com.example.simploncenter;
+package com.example.simploncenter.db;
 
 import java.util.List;
+import android.arch.persistence.room.*;
 
 @Dao
 public interface ArticleEntityDao {
-    @Query("Select * FROM Articles")
+    /*@Query("Select * FROM Articles")
     public List<ArticleEntity> getAll();
 
     @Query("SELECT * FROM Articles WHERE aid IN (:aid)")
@@ -17,5 +18,5 @@ public interface ArticleEntityDao {
     void insertAll(ArticleEntity article);
 
     @Delete
-    void delete(ArticleEntity article);
+    void delete(ArticleEntity article);*/
 }
