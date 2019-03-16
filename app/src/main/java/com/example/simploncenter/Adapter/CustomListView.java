@@ -1,4 +1,4 @@
-package com.example.simploncenter;
+package com.example.simploncenter.Adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.simploncenter.R;
 
 public class CustomListView extends ArrayAdapter<String> {
     private String[] shopname;

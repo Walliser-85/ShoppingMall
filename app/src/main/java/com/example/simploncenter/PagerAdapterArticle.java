@@ -4,7 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.simploncenter.db.Article;
+import com.example.simploncenter.AllArticles;
+import com.example.simploncenter.Article;
+import com.example.simploncenter.CreateArticle;
 
 public class PagerAdapterArticle extends FragmentPagerAdapter {
     int numberOfTabs;

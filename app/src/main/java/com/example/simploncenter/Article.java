@@ -1,4 +1,4 @@
-package com.example.simploncenter.db;
+package com.example.simploncenter;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
