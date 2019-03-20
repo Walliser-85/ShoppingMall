@@ -1,4 +1,4 @@
-package com.example.simploncenter;
+package com.example.simploncenter.Adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

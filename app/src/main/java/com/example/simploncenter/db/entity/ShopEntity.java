@@ -4,9 +4,8 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-import android.graphics.Bitmap;
 
-@Entity(tableName ="shops", primaryKeys = {"idShop"})
+@Entity(tableName = "shops")
 public class ShopEntity {
     @PrimaryKey(autoGenerate = true)
     private int idShop;
@@ -17,19 +16,16 @@ public class ShopEntity {
     @ColumnInfo(name="description")
     private String description;
 
-    @Ignore
-    Bitmap picture;
+    @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
+    private byte[] picture;
 
     @Ignore
-    public ShopEntity(){
+    public ShopEntity(){ }
 
-    }
-
-    public ShopEntity(String shopName, String description, Bitmap picture){
+    public ShopEntity(String shopName, String description, byte[] picture){
         this.shopName = shopName;
         this.description = description;
         this.picture = picture;
-
     }
 
     public int getIdShop() {
@@ -56,11 +52,11 @@ public class ShopEntity {
         this.description = description;
     }
 
-    public Bitmap getPicture() {
+    public byte[] getPicture() {
         return picture;
     }
 
-    public void setPicture(Bitmap picture) {
+    public void setPicture(byte[] picture) {
         this.picture = picture;
     }
 }

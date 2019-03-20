@@ -1,33 +1,27 @@
 package com.example.simploncenter.db.dao;
 
-import android.arch.persistence.room.Delete;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Dao;
 
-import com.example.simploncenter.db.entity.ArticleEntity;
-
-import java.sql.SQLClientInfoException;
-import java.util.List;
-
+@Dao
 public interface ArticleDao {
-    @Query("Select * FROM Articles")
-    public List<ArticleEntity> getAll();
+    /*@Query("SELECT * FROM articles WHERE idArticle = :id")
+    LiveData<ArticleEntity> getById(int id);
+
+    @Query("SELECT * FROM articles")
+    LiveData<ArticleEntity> getAllArticles();
 
     @Insert
     long insert(ArticleEntity article) throws SQLClientInfoException;
 
-    @Query("SELECT * FROM Articles WHERE aid IN (:aid)")
-    List<ArticleEntity> loadAllByIds(int[] articleIds);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAll(List<ArticleEntity> articles);
 
-    @Query("SELECT * FROM Articles WHERE Name LIKE :first LIMIT 1")
-    ArticleEntity findByName(String first);
-
-    @Insert
-    void insertAll(ArticleEntity article);
+    @Update
+    void update(ArticleEntity article);
 
     @Delete
     void delete(ArticleEntity article);
 
-    @Query("DELETE FROM Articles")
-    void deleteAll();
+    @Query("DELETE FROM articles")
+    void deleteAll();*/
 }

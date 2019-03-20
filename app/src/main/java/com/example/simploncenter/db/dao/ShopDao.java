@@ -8,6 +8,7 @@ import com.example.simploncenter.db.entity.ShopEntity;
 import java.sql.SQLClientInfoException;
 import java.util.List;
 
+@Dao
 public interface ShopDao {
 
     @Query("SELECT * FROM shops WHERE idShop = :id")

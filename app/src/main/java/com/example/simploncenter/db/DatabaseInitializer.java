@@ -1,6 +1,5 @@
 package com.example.simploncenter.db;
 
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -18,21 +17,21 @@ public class DatabaseInitializer {
         task.execute();
     }
 
-    private static void addShop(final AppDatabase db, final String shopName, final String description, final Bitmap picture) throws SQLClientInfoException {
+    private static void addShop(final AppDatabase db, final String shopName, final String description, final byte[] picture) throws SQLClientInfoException {
         ShopEntity shop = new ShopEntity(shopName, description, picture);
         db.shopDao().insert(shop);
     }
 
     private static void addArticle(final AppDatabase db, final String name, final String description,
-                                   final int idShop, final float price, final Bitmap picture) throws SQLClientInfoException {
+                                   final int idShop, final float price, final byte[] picture) throws SQLClientInfoException {
         ArticleEntity article = new ArticleEntity(name, description, idShop, price, picture);
-        db.articleDao().insert(article);
+        //db.articleDao().insert(article);
     }
 
     private static void populateWithTestData(AppDatabase db) throws SQLClientInfoException {
         db.shopDao().deleteAll();
 
-        Bitmap picture = null;
+        byte[] picture = null;
 
         addShop(db,
                 "H&M", "test description", picture
