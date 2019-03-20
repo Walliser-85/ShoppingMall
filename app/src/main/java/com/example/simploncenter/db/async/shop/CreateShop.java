@@ -7,8 +7,6 @@ import com.example.simploncenter.BaseApp;
 import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.util.OnAsyncEventListener;
 
-import java.sql.SQLClientInfoException;
-
 public class CreateShop extends AsyncTask<ShopEntity, Void, Void> {
     private Application application;
     private OnAsyncEventListener callback;
