@@ -1,7 +1,6 @@
 package com.example.simploncenter.Adapter;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,26 +9,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.simploncenter.R;
-import com.example.simploncenter.db.entity.ShopEntity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class CustomListView extends ArrayAdapter<String> {
-    private List<ShopEntity> list;
+public class CustomListViewArticle extends ArrayAdapter<String> {
+    private String[] shopname;
+    private String[] desc;
+    private Integer[] imgid;
+    private Integer[] articles;
     private Activity context;
-    Integer[] imgid={R.drawable.migros, R.drawable.ca, R.drawable.hm, R.drawable.interdiscount};
 
-    public CustomListView(Activity context, List<ShopEntity> list) {
-        super(context, R.layout.listview_layout);
-        Log.i("###", "CustomListView Constructor");
+    public CustomListViewArticle(Activity context, String[] shopname, String[] desc, Integer[] imgid, Integer[] articles) {
+        super(context, R.layout.listview_layout, shopname);
+
         this.context=context;
-        this.list = list;
+        this.shopname=shopname;
+        this.desc=desc;
+        this.imgid=imgid;
+        this.articles = articles;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.i("###", "getView");
         View r = convertView;
         ViewHolder viewHolder=null;
         if(r==null){
@@ -42,23 +41,13 @@ public class CustomListView extends ArrayAdapter<String> {
             viewHolder = (ViewHolder) r.getTag();
         }
 
-        viewHolder.ivw.setImageResource(imgid[0]);
-        viewHolder.tvw1.setText("123");
-        viewHolder.tvw2.setText("213");
-        viewHolder.tvw3.setText("10");
+        viewHolder.ivw.setImageResource(imgid[position]);
+        viewHolder.tvw1.setText(shopname[position]);
+        viewHolder.tvw2.setText(desc[position]);
+        viewHolder.tvw3.setText("Articles " + Integer.toString(articles[position]));
 
         return r;
     }
-
-    public void updateData(List<ShopEntity> shopList) {
-        for(int i=0; i<shopList.size(); i++){
-            Log.i("##UPDATE DATA#", shopList.get(i).getShopName());
-        }
-        list.clear();
-        list.addAll(shopList);
-        notifyDataSetChanged();
-    }
-
     class ViewHolder{
         TextView tvw1;
         TextView tvw2;
@@ -69,7 +58,6 @@ public class CustomListView extends ArrayAdapter<String> {
             tvw2 = (TextView) v.findViewById(R.id.tvdescription);
             tvw3 = (TextView) v.findViewById(R.id.tvarticles);
             ivw = (ImageView) v.findViewById(R.id.imageView);
-            Log.i("###", "ViewHolder");
         }
     }
 }

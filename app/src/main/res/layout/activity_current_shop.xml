@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/txvTitel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -30,7 +30,7 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/imgCurrentShop"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="16dp"
@@ -42,7 +42,7 @@
                 app:srcCompat="@drawable/migros" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/txvDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="18dp"
                 android:layout_marginStart="8dp"

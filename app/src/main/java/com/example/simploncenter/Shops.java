@@ -10,14 +10,24 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.simploncenter.Adapter.PagerAdapter;
+import com.example.simploncenter.db.entity.ShopEntity;
+import com.example.simploncenter.util.OnAsyncEventListener;
+import com.example.simploncenter.viewmodel.shop.ShopViewModel;
 
 public class Shops extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private ShopViewModel viewModel;
+    private static final String TAG = "EditShopActivity";
+
     ListView lst;
     String[] shopname ={"Migros", "C&A", "H&M", "Interdiscount"};
     String[] desc ={"This is Migros", "This is C&A", "This is H&M", "This is Interdiscount"};
@@ -132,5 +142,25 @@ public class Shops extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void createNewShop(View view) {
+        TextView shopName = findViewById(R.id.txt_shop_name);
+        TextView description = findViewById(R.id.txvDescription);
+        ShopEntity newShop = new ShopEntity();
+        newShop.setShopName((String) shopName.getText());
+        newShop.setDescription((String)description.getText());
+        newShop.setPicture(null);
+        viewModel.createShop(newShop, new OnAsyncEventListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "createAccount: success");
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.d(TAG, "createAccount: failure", e);
+            }
+        });
     }
 }

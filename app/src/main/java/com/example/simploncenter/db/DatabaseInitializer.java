@@ -30,20 +30,18 @@ public class DatabaseInitializer {
 
     private static void populateWithTestData(AppDatabase db) throws SQLClientInfoException {
         db.shopDao().deleteAll();
-
         byte[] picture = null;
-
         addShop(db,
-                "H&M", "test description", picture
+                "Migros", "This is Migros", picture
         );
         addShop(db,
-                "C&A", "test description", picture
+                "C&A", "This is C&A", picture
         );
         addShop(db,
-                "Migros", "test description", picture
+                "H&M", "This is H&M", picture
         );
         addShop(db,
-                "Interdiscount", "test description", picture
+                "Interdiscount", "This is Interdiscount", picture
         );
 
         try {

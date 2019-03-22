@@ -15,7 +15,7 @@ public interface ShopDao {
     LiveData<ShopEntity> getById(int id);
 
     @Query("SELECT * FROM shops")
-    LiveData<ShopEntity> getAllShops();
+    LiveData<List<ShopEntity>> getAllShops();
 
     @Insert
     long insert(ShopEntity shop) throws SQLClientInfoException;

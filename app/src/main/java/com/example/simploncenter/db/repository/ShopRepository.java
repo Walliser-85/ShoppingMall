@@ -10,6 +10,8 @@ import com.example.simploncenter.db.async.shop.UpdateShop;
 import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.util.OnAsyncEventListener;
 
+import java.util.List;
+
 public class ShopRepository {
     private static ShopRepository instance;
 
@@ -31,7 +33,7 @@ public class ShopRepository {
         return ((BaseApp) application).getDatabase().shopDao().getById(clientId);
     }
 
-    public LiveData<ShopEntity> getAllShops(Application application) {
+    public LiveData<List<ShopEntity>> getAllShops(Application application) {
         return ((BaseApp) application).getDatabase().shopDao().getAllShops();
     }
 

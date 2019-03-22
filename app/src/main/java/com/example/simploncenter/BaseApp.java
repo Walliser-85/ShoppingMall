@@ -1,6 +1,7 @@
 package com.example.simploncenter;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.example.simploncenter.db.AppDatabase;
 import com.example.simploncenter.db.repository.ArticleRepository;
@@ -16,7 +17,7 @@ public class BaseApp extends Application {
         return AppDatabase.getInstance(this);
     }
 
-    public ShopRepository getAccountRepository() {
+    public ShopRepository getShopRepository() {
         return ShopRepository.getInstance();
     }
 
