@@ -25,6 +25,12 @@
     <string name="adresse">Adresse</string>
     <string name="description">Description</string>
     <string name="shop_name">Shop Name</string>
+    <string-array name="shopNames">
+        <item>Migros</item>
+        <item>CundA</item>
+        <item>HundM</item>
+        <item>Interdiscount</item>
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

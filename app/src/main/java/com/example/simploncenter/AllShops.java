@@ -76,7 +76,7 @@ public class AllShops extends Fragment {
             lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    startActivity(new Intent(getActivity(), CurrentShop.class));
+                    //startActivity(new Intent(getActivity(), currentShop.class));
                 }
             });*/
         return rootView;

@@ -22,10 +22,10 @@ public class DatabaseInitializer {
         db.shopDao().insert(shop);
     }
 
-    private static void addArticle(final AppDatabase db, final String name, final String description,
-                                   final int idShop, final float price, final byte[] picture) throws SQLClientInfoException {
-        ArticleEntity article = new ArticleEntity(name, description, idShop, price, picture);
-        //db.articleDao().insert(article);
+    private static void addArticle(final AppDatabase db, final int idToShop, final String articleName, final String description, final String shortDescription,
+                                   final  float price, final byte[] picture) throws SQLClientInfoException {
+        ArticleEntity article = new ArticleEntity(articleName, idToShop, description, shortDescription, price, picture);
+        db.articleDao().insert(article);
     }
 
     private static void populateWithTestData(AppDatabase db) throws SQLClientInfoException {
