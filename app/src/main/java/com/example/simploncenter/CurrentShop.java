@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.simploncenter.Adapter.CustomListView;
+import com.example.simploncenter.Adapter.CustomListViewArticle;
 import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.util.OnAsyncEventListener;
 import com.example.simploncenter.viewmodel.shop.ShopViewModel;
@@ -48,6 +49,9 @@ public class CurrentShop extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_edit) {
             Toast.makeText(CurrentShop.this, "EDIT", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(CurrentShop.this, EditShop.class);
+            intent.putExtra("shopId", shopId);
+            startActivity(intent);
             return true;
         }
         if (id == R.id.action_delete) {
@@ -67,13 +71,13 @@ public class CurrentShop extends AppCompatActivity {
                     public void onFailure(Exception e) {}
                 });
             });
-            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "sdfd", (dialog, which) -> alertDialog.dismiss());
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No", (dialog, which) -> alertDialog.dismiss());
             alertDialog.show();
 
             return true;
         }
         if (id == R.id.action_add) {
-            Toast.makeText(CurrentShop.this, "ADD", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CurrentShop.this, "ADD New Article", Toast.LENGTH_SHORT).show();
 
             return true;
         }
@@ -98,15 +102,16 @@ public class CurrentShop extends AppCompatActivity {
                 updateContent();
             }
         });
-        /*lst= (ListView)findViewById(R.id.lwShopsCurrent);
-        CustomListView customListView = new CustomListView(this,shopname,desc,imgid,articles);
+
+        lst= (ListView)findViewById(R.id.lwShopsCurrent);
+        CustomListViewArticle customListView = new CustomListViewArticle(this,shopname,desc,imgid,articles);
         lst.setAdapter(customListView);
         lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(CurrentShop.this, shopname[position], Toast.LENGTH_SHORT).show();
             }
-        });*/
+        });
     }
 
     private void initiateView() {

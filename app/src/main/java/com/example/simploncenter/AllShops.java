@@ -49,6 +49,7 @@ public class AllShops extends Fragment {
             viewModel.getShops().observe(this, shopEntities -> {
                 if (shopEntities != null) {
                     shopList = shopEntities;
+                    adapter.clear();
                     adapter.addAll(shopList);
                     //adapter.updateData(shopEntities);
                     //listview.setAdapter(adapter);

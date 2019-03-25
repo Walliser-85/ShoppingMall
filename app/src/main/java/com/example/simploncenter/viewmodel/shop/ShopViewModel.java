@@ -7,6 +7,7 @@ import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.simploncenter.BaseApp;
 import com.example.simploncenter.db.entity.ShopEntity;
