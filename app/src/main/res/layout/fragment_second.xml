@@ -29,13 +29,30 @@
         android:layout_marginTop="100dp"
         android:orientation="vertical">
 
+        <ImageView
+            android:layout_marginTop="40dp"
+            android:id="@+id/imageViewShop"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:maxHeight="40dp"
+            android:src="@drawable/ic_picture"/>
+
+        <Button
+            android:id="@+id/btn_pick"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:text="Change Image" />
+
         <EditText
             android:id="@+id/txt_shop_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:ems="10"
-            android:hint="Shop Name"
+            android:hint="@string/shop_name"
             android:inputType="textPersonName" />
 
         <EditText
@@ -44,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:ems="10"
-            android:hint="Decription"
+            android:hint="@string/shop_description"
             android:inputType="textPersonName" />
 
         <Button

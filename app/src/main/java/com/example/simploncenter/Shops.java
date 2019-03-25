@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -150,24 +151,33 @@ public class Shops extends AppCompatActivity
     public void createNewShop(View view) {
         EditText shopName = findViewById(R.id.txt_shop_name);
         EditText shopDescription = findViewById(R.id.txt_shop_description);
+        ImageView image = findViewById(R.id.imageViewShop);
 
-        ShopEntity newShop = new ShopEntity(String.valueOf(shopName.getText()),String.valueOf(shopDescription.getText()),null);
+        Log.d(TAG, "###IMAGE###" + image.getDrawable());
+        if(shopName.getText().equals("@string/shop_name") || shopDescription.getText().equals("@string/shop_description")){
+            Toast.makeText(Shops.this, "Fill out all the Data!!", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            ShopEntity newShop = new ShopEntity(String.valueOf(shopName.getText()), String.valueOf(shopDescription.getText()), null);
 
-        ShopViewModel.Factory factory = new ShopViewModel.Factory(
-                getApplication(), 0);
-        viewModel = ViewModelProviders.of(this, factory).get(ShopViewModel.class);
-        viewModel.createShop(newShop, new OnAsyncEventListener() {
-            @Override
-            public void onSuccess() {
-                Log.d(TAG, "createShop: success");
-                Toast toast = Toast.makeText(Shops.this, "Create a New Shop", Toast.LENGTH_LONG);
-                toast.show();
-            }
+            ShopViewModel.Factory factory = new ShopViewModel.Factory(
+                    getApplication(), 0);
+            viewModel = ViewModelProviders.of(this, factory).get(ShopViewModel.class);
+            viewModel.createShop(newShop, new OnAsyncEventListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d(TAG, "createShop: success");
+                    Toast toast = Toast.makeText(Shops.this, "Create a New Shop", Toast.LENGTH_LONG);
+                    toast.show();
+                    Intent h=new Intent (Shops.this, Shops.class);
+                    startActivity(h);
+                }
 
-            @Override
-            public void onFailure(Exception e) {
-                Log.d(TAG, "createShop: failure", e);
-            }
-        });
+                @Override
+                public void onFailure(Exception e) {
+                    Log.d(TAG, "createShop: failure", e);
+                }
+            });
+        }
     }
 }
