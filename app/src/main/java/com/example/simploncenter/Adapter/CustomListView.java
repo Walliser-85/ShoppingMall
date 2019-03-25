@@ -51,9 +51,6 @@ public class CustomListView extends ArrayAdapter<String> {
     }
 
     public void updateData(List<ShopEntity> shopList) {
-        for(int i=0; i<shopList.size(); i++){
-            Log.i("##UPDATE DATA#", shopList.get(i).getShopName());
-        }
         list.clear();
         list.addAll(shopList);
         notifyDataSetChanged();

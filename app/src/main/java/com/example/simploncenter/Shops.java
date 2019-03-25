@@ -145,22 +145,6 @@ public class Shops extends AppCompatActivity
     }
 
     public void createNewShop(View view) {
-        TextView shopName = findViewById(R.id.txt_shop_name);
-        TextView description = findViewById(R.id.txvDescription);
-        ShopEntity newShop = new ShopEntity();
-        newShop.setShopName((String) shopName.getText());
-        newShop.setDescription((String)description.getText());
-        newShop.setPicture(null);
-        viewModel.createShop(newShop, new OnAsyncEventListener() {
-            @Override
-            public void onSuccess() {
-                Log.d(TAG, "createAccount: success");
-            }
 
-            @Override
-            public void onFailure(Exception e) {
-                Log.d(TAG, "createAccount: failure", e);
-            }
-        });
     }
 }
