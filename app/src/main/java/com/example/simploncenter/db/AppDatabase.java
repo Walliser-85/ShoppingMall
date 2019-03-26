@@ -17,7 +17,7 @@ import com.example.simploncenter.db.entity.ShopEntity;
 
 import java.util.concurrent.Executors;
 
-@Database(entities = {ShopEntity.class, ArticleEntity.class}, version = 2)
+@Database(entities = {ShopEntity.class, ArticleEntity.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String TAG = "AppDatabase";
 

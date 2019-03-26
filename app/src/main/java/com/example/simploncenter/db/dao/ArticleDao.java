@@ -14,10 +14,10 @@ public interface ArticleDao {
     LiveData<ArticleEntity> getById(int id);
 
     @Query("SELECT * FROM articles WHERE idToShop = :idShop")
-    LiveData<ArticleEntity> getByShopId(int idShop);
+    LiveData<List<ArticleEntity>> getByShopId(int idShop);
 
     @Query("SELECT * FROM articles")
-    LiveData<ArticleEntity> getAllArticles();
+    LiveData<List<ArticleEntity>> getAllArticles();
 
     @Insert
     long insert(ArticleEntity article) throws SQLClientInfoException;
