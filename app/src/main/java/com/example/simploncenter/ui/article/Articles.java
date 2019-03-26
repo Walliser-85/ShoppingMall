@@ -52,7 +52,7 @@ public class Articles extends AppCompatActivity
 
         //TAB Layout
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout_article);
-        tabLayout.addTab(tabLayout.newTab().setText("Article"));
+        tabLayout.addTab(tabLayout.newTab().setText("Article per Shop"));
         tabLayout.addTab(tabLayout.newTab().setText("All Articles"));
         tabLayout.addTab(tabLayout.newTab().setText("New Articles"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
