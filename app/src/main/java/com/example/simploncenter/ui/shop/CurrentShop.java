@@ -2,6 +2,7 @@ package com.example.simploncenter.ui.shop;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -67,7 +68,7 @@ public class CurrentShop extends AppCompatActivity {
                     public void onFailure(Exception e) {}
                 });
             });
-            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No", (dialog, which) -> alertDialog.dismiss());
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", (dialog, which) -> alertDialog.dismiss());
             alertDialog.show();
 
             return true;
@@ -120,7 +121,7 @@ public class CurrentShop extends AppCompatActivity {
         if(shop != null){
             titel.setText(shop.getShopName());
             description.setText(shop.getDescription());
-            picture.setImageResource(R.drawable.apple);
+            picture.setImageBitmap(BitmapFactory.decodeByteArray(shop.getPicture(), 0, shop.getPicture().length));
         }
     }
 }

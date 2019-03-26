@@ -43,9 +43,8 @@ public class CustomListView extends ArrayAdapter<String> {
         }
 
         viewHolder.ivw.setImageResource(imgid[0]);
-        viewHolder.tvw1.setText("123");
-        viewHolder.tvw2.setText("213");
-        viewHolder.tvw3.setText("10");
+        viewHolder.tvw1.setText(list.get(position).getShopName());
+        viewHolder.tvw2.setText(list.get(position).getDescription());
 
         return r;
     }
@@ -59,12 +58,10 @@ public class CustomListView extends ArrayAdapter<String> {
     class ViewHolder{
         TextView tvw1;
         TextView tvw2;
-        TextView tvw3;
         ImageView ivw;
         ViewHolder(View v){
             tvw1 = (TextView) v.findViewById(R.id.tvshopname);
             tvw2 = (TextView) v.findViewById(R.id.tvdescription);
-            tvw3 = (TextView) v.findViewById(R.id.tvarticles);
             ivw = (ImageView) v.findViewById(R.id.imageView);
             Log.i("###", "ViewHolder");
         }

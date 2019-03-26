@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.simploncenter.Adapter.CustomListView;
 import com.example.simploncenter.R;
 import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.db.repository.ShopRepository;

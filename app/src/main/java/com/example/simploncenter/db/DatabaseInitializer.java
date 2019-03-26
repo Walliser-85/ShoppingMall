@@ -1,19 +1,28 @@
 package com.example.simploncenter.db;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.simploncenter.R;
 import com.example.simploncenter.db.entity.ArticleEntity;
 import com.example.simploncenter.db.entity.ShopEntity;
 
+import java.io.ByteArrayOutputStream;
 import java.sql.SQLClientInfoException;
 
 public class DatabaseInitializer {
     public static final String TAG = "DatabaseInitializer";
+    public static Context context;
 
-    public static void populateDatabase(final AppDatabase db) {
+    public static void populateDatabase(final AppDatabase db, Context c) {
         Log.i(TAG, "Inserting demo data.");
         PopulateDbAsync task = new PopulateDbAsync(db);
+        context =c;
         task.execute();
     }
 
@@ -31,17 +40,18 @@ public class DatabaseInitializer {
     private static void populateWithTestData(AppDatabase db) throws SQLClientInfoException {
         db.shopDao().deleteAll();
         byte[] picture = null;
+        Bitmap migros = BitmapFactory.decodeResource(context.getResources(), R.drawable.migros);
         addShop(db,
-                "Migros", "This is Migros", picture
+                "Migros", "This is Migros", BitmapToByte(migros)
         );
         addShop(db,
-                "C&A", "This is C&A", picture
+                "C&A", "This is C&A", BitmapToByte(migros)
         );
         addShop(db,
-                "H&M", "This is H&M", picture
+                "H&M", "This is H&M", BitmapToByte(migros)
         );
         addShop(db,
-                "Interdiscount", "This is Interdiscount", picture
+                "Interdiscount", "This is Interdiscount", BitmapToByte(migros)
         );
 
         try {
@@ -76,6 +86,13 @@ public class DatabaseInitializer {
         addAccount(db,
                 "Secret", 1820000d, "a.c@fifa.com"
         );*/
+    }
+
+    private static  byte[] BitmapToByte(Bitmap image){
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        byte[] byteArray = stream.toByteArray();
+        return byteArray;
     }
 
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {

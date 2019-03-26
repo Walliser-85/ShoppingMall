@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.util.OnAsyncEventListener;
 import com.example.simploncenter.viewmodel.shop.ShopViewModel;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
@@ -67,6 +69,14 @@ public class EditShop extends AppCompatActivity {
     public void SaveShop(View view) {
         shop.setShopName(String.valueOf(titel.getText()));
         shop.setDescription(String.valueOf(description.getText()));
+
+        Bitmap img = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        img.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        byte[] byteArray = stream.toByteArray();
+
+        shop.setPicture(byteArray);
+
         viewModel.updateShop(shop, new OnAsyncEventListener() {
             @Override
             public void onSuccess() {
@@ -113,7 +123,7 @@ public class EditShop extends AppCompatActivity {
         if(shop != null){
             titel.setText(shop.getShopName());
             description.setText(shop.getDescription());
-            imageView.setImageResource(R.drawable.ic_picture);
+            imageView.setImageBitmap(BitmapFactory.decodeByteArray(shop.getPicture(), 0, shop.getPicture().length));
         }
     }
 }

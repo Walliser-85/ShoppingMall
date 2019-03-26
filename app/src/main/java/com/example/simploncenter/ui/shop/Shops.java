@@ -2,6 +2,8 @@ package com.example.simploncenter.ui.shop;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -28,6 +30,8 @@ import com.example.simploncenter.R;
 import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.util.OnAsyncEventListener;
 import com.example.simploncenter.viewmodel.shop.ShopViewModel;
+
+import java.io.ByteArrayOutputStream;
 
 public class Shops extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -155,13 +159,18 @@ public class Shops extends AppCompatActivity
         EditText shopName = findViewById(R.id.txt_shop_name);
         EditText shopDescription = findViewById(R.id.txt_shop_description);
         ImageView image = findViewById(R.id.imageViewShop);
+        Bitmap img = ((BitmapDrawable)image.getDrawable()).getBitmap();
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        img.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        byte[] byteArray = stream.toByteArray();
 
         Log.d(TAG, "###IMAGE###" + image.getDrawable());
         if(shopName.getText().equals("@string/shop_name") || shopDescription.getText().equals("@string/shop_description")){
             Toast.makeText(Shops.this, "Fill out all the Data!!", Toast.LENGTH_SHORT).show();
         }
         else {
-            ShopEntity newShop = new ShopEntity(String.valueOf(shopName.getText()), String.valueOf(shopDescription.getText()), null);
+            ShopEntity newShop = new ShopEntity(String.valueOf(shopName.getText()), String.valueOf(shopDescription.getText()), byteArray);
 
             ShopViewModel.Factory factory = new ShopViewModel.Factory(
                     getApplication(), 0);
