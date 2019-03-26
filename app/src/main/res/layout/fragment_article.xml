@@ -7,12 +7,14 @@
     tools:context=".Articles"
     tools:showIn="@layout/app_bar_articles">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <Spinner
+        android:id="@+id/spinnerShops"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="First Tab"
-        android:textAppearance="?android:attr/textAppearanceLarge"/>
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true" />
+
 
 </RelativeLayout>
+
+

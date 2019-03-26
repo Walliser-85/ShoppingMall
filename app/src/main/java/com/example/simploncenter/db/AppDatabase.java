@@ -12,11 +12,12 @@ import android.util.Log;
 
 import com.example.simploncenter.db.dao.ArticleDao;
 import com.example.simploncenter.db.dao.ShopDao;
+import com.example.simploncenter.db.entity.ArticleEntity;
 import com.example.simploncenter.db.entity.ShopEntity;
 
 import java.util.concurrent.Executors;
 
-@Database(entities = {ShopEntity.class}, version = 1)
+@Database(entities = {ShopEntity.class, ArticleEntity.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String TAG = "AppDatabase";
 
@@ -68,7 +69,7 @@ public abstract class AppDatabase extends RoomDatabase {
         Executors.newSingleThreadExecutor().execute(() -> {
             database.runInTransaction(() -> {
                 Log.i(TAG, "Wipe database.");
-                //database.articleDao().deleteAll();
+                database.articleDao().deleteAll();
                 database.shopDao().deleteAll();
 
                 DatabaseInitializer.populateDatabase(database);

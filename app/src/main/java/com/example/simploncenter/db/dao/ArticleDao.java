@@ -1,11 +1,20 @@
 package com.example.simploncenter.db.dao;
 
-import android.arch.persistence.room.Dao;
+import android.arch.lifecycle.LiveData;
+import android.arch.persistence.room.*;
+
+import com.example.simploncenter.db.entity.ArticleEntity;
+
+import java.sql.SQLClientInfoException;
+import java.util.List;
 
 @Dao
 public interface ArticleDao {
-    /*@Query("SELECT * FROM articles WHERE idArticle = :id")
+    @Query("SELECT * FROM articles WHERE idArticle = :id")
     LiveData<ArticleEntity> getById(int id);
+
+    @Query("SELECT * FROM articles WHERE idToShop = :idShop")
+    LiveData<ArticleEntity> getByShopId(int idShop);
 
     @Query("SELECT * FROM articles")
     LiveData<ArticleEntity> getAllArticles();
@@ -23,5 +32,6 @@ public interface ArticleDao {
     void delete(ArticleEntity article);
 
     @Query("DELETE FROM articles")
-    void deleteAll();*/
+    void deleteAll();
+
 }
