@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.simploncenter.AllShops;
-import com.example.simploncenter.CreateShop;
+import com.example.simploncenter.ui.shop.AllShops;
+import com.example.simploncenter.ui.shop.CreateShop;
 
 public class PagerAdapter extends FragmentPagerAdapter {
     int numberOfTabs;

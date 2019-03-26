@@ -1,4 +1,4 @@
-package com.example.simploncenter;
+package com.example.simploncenter.ui.shop;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.view.View.OnClickListener;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
+import com.example.simploncenter.R;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;

@@ -1,13 +1,11 @@
-package com.example.simploncenter;
+package com.example.simploncenter.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,15 +14,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.simploncenter.Adapter.PagerAdapterArticle;
+import com.example.simploncenter.R;
+import com.example.simploncenter.db.repository.ShopRepository;
+import com.example.simploncenter.ui.article.Articles;
+import com.example.simploncenter.ui.shop.Shops;
 
-public class Articles extends AppCompatActivity
+public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    DrawerLayout drawer;
+    NavigationView navigationView;
+    Toolbar toolbar=null;
+
+    private ShopRepository repository;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_articles);
+        setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -37,41 +44,14 @@ public class Articles extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        //TAB Layout
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout_article);
-        tabLayout.addTab(tabLayout.newTab().setText("Article"));
-        tabLayout.addTab(tabLayout.newTab().setText("All Articles"));
-        tabLayout.addTab(tabLayout.newTab().setText("New Articles"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager_article);
-        final PagerAdapterArticle adapter = new PagerAdapterArticle
-                (getSupportFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
     }
 
     @Override
@@ -113,21 +93,31 @@ public class Articles extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            Intent h=new Intent (Articles.this, MainActivity.class);
+            Intent h=new Intent (MainActivity.this, MainActivity.class);
             startActivity(h);
         } else if (id == R.id.nav_shops) {
-            Intent h=new Intent (Articles.this, Shops.class);
+            Intent h=new Intent (MainActivity.this, Shops.class);
             startActivity(h);
         } else if (id == R.id.nav_articles) {
-            Intent h=new Intent (Articles.this, Articles.class);
+            Intent h=new Intent (MainActivity.this, Articles.class);
             startActivity(h);
         } else if (id == R.id.nav_about) {
-            Intent h=new Intent (Articles.this, About.class);
+            Intent h=new Intent (MainActivity.this, About.class);
             startActivity(h);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void goToShops(View view){
+        Intent intent = new Intent(this, Shops.class);
+        startActivity(intent);
+    }
+
+    public void goToArticles(View view){
+        Intent intent = new Intent(this, Articles.class);
+        startActivity(intent);
     }
 }

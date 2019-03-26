@@ -14,22 +14,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditShop"></activity>
-        <activity android:name=".CurrentShop" />
+        <activity android:name=".ui.shop.EditShop"></activity>
+        <activity android:name=".ui.shop.CurrentShop" />
         <activity
-            android:name=".About"
+            android:name=".ui.About"
             android:label="@string/title_activity_about"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Articles"
+            android:name=".ui.article.Articles"
             android:label="@string/title_activity_articles"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Shops"
+            android:name=".ui.shop.Shops"
             android:label="@string/title_activity_shops"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

@@ -1,4 +1,4 @@
-package com.example.simploncenter;
+package com.example.simploncenter.ui.shop;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.simploncenter.R;
 import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.util.OnAsyncEventListener;
 import com.example.simploncenter.viewmodel.shop.ShopViewModel;

@@ -1,4 +1,4 @@
-package com.example.simploncenter;
+package com.example.simploncenter.ui.article;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.simploncenter.Adapter.CustomListViewArticle;
+import com.example.simploncenter.R;
 
 public class AllArticles extends Fragment {
 

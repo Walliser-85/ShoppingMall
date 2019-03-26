@@ -1,28 +1,24 @@
-package com.example.simploncenter;
+package com.example.simploncenter.ui.shop;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.simploncenter.Adapter.CustomListView;
 import com.example.simploncenter.Adapter.CustomListViewArticle;
+import com.example.simploncenter.R;
 import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.util.OnAsyncEventListener;
 import com.example.simploncenter.viewmodel.shop.ShopViewModel;
-
-import java.text.NumberFormat;
 
 public class CurrentShop extends AppCompatActivity {
     private ShopEntity shop;

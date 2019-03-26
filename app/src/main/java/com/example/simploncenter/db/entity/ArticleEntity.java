@@ -12,7 +12,7 @@ public class ArticleEntity {
     @PrimaryKey(autoGenerate = true)
     private int idArticle;
 
-    @ForeignKey(entity=ShopEntity.class,  parentColumns = "idShop", childColumns = "idToShop")
+    @ForeignKey(entity=ShopEntity.class,  parentColumns = "idShop", childColumns = "idArticle")
     private int idToShop;
 
     @ColumnInfo(name="article_name")

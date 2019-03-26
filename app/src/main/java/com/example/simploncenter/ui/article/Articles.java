@@ -1,9 +1,10 @@
-package com.example.simploncenter;
+package com.example.simploncenter.ui.article;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -11,49 +12,34 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.simploncenter.Adapter.PagerAdapter;
-import com.example.simploncenter.db.entity.ShopEntity;
-import com.example.simploncenter.util.OnAsyncEventListener;
-import com.example.simploncenter.viewmodel.shop.ShopViewModel;
+import com.example.simploncenter.ui.About;
+import com.example.simploncenter.Adapter.PagerAdapterArticle;
+import com.example.simploncenter.ui.MainActivity;
+import com.example.simploncenter.R;
+import com.example.simploncenter.ui.shop.Shops;
 
-public class Shops extends AppCompatActivity
+public class Articles extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    private ShopViewModel viewModel;
-    private static final String TAG = "EditShopActivity";
-
-    ListView lst;
-    String[] shopname ={"Migros", "C&A", "H&M", "Interdiscount"};
-    String[] desc ={"This is Migros", "This is C&A", "This is H&M", "This is Interdiscount"};
-    Integer[] articles = {10, 20, 30, 40};
-    Integer[] imgid={R.drawable.migros, R.drawable.ca, R.drawable.hm, R.drawable.interdiscount};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_shops);
+        setContentView(R.layout.activity_articles);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });*/
+        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -65,13 +51,14 @@ public class Shops extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //TAB Layout
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("All Shops"));
-        tabLayout.addTab(tabLayout.newTab().setText("New Shop"));
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout_article);
+        tabLayout.addTab(tabLayout.newTab().setText("Article"));
+        tabLayout.addTab(tabLayout.newTab().setText("All Articles"));
+        tabLayout.addTab(tabLayout.newTab().setText("New Articles"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        final PagerAdapter adapter = new PagerAdapter
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager_article);
+        final PagerAdapterArticle adapter = new PagerAdapterArticle
                 (getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -130,54 +117,21 @@ public class Shops extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            Intent h=new Intent (Shops.this, MainActivity.class);
+            Intent h=new Intent (Articles.this, MainActivity.class);
             startActivity(h);
         } else if (id == R.id.nav_shops) {
-            Intent h=new Intent (Shops.this, Shops.class);
+            Intent h=new Intent (Articles.this, Shops.class);
             startActivity(h);
         } else if (id == R.id.nav_articles) {
-            Intent h=new Intent (Shops.this, Articles.class);
+            Intent h=new Intent (Articles.this, Articles.class);
             startActivity(h);
         } else if (id == R.id.nav_about) {
-            Intent h=new Intent (Shops.this, About.class);
+            Intent h=new Intent (Articles.this, About.class);
             startActivity(h);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    public void createNewShop(View view) {
-        EditText shopName = findViewById(R.id.txt_shop_name);
-        EditText shopDescription = findViewById(R.id.txt_shop_description);
-        ImageView image = findViewById(R.id.imageViewShop);
-
-        Log.d(TAG, "###IMAGE###" + image.getDrawable());
-        if(shopName.getText().equals("@string/shop_name") || shopDescription.getText().equals("@string/shop_description")){
-            Toast.makeText(Shops.this, "Fill out all the Data!!", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            ShopEntity newShop = new ShopEntity(String.valueOf(shopName.getText()), String.valueOf(shopDescription.getText()), null);
-
-            ShopViewModel.Factory factory = new ShopViewModel.Factory(
-                    getApplication(), 0);
-            viewModel = ViewModelProviders.of(this, factory).get(ShopViewModel.class);
-            viewModel.createShop(newShop, new OnAsyncEventListener() {
-                @Override
-                public void onSuccess() {
-                    Log.d(TAG, "createShop: success");
-                    Toast toast = Toast.makeText(Shops.this, "Create a New Shop", Toast.LENGTH_LONG);
-                    toast.show();
-                    Intent h=new Intent (Shops.this, Shops.class);
-                    startActivity(h);
-                }
-
-                @Override
-                public void onFailure(Exception e) {
-                    Log.d(TAG, "createShop: failure", e);
-                }
-            });
-        }
     }
 }
