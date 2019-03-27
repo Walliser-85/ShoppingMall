@@ -33,10 +33,6 @@ public class AllShops extends Fragment {
 
     ListView lst;
     private ShopRepository repository;
-    String[] shopname;
-    String[] desc ={"This is Migros", "This is C&A", "This is H&M", "This is Interdiscount"};
-    Integer[] articles = {10, 20, 30, 40};
-    Integer[] imgid={R.drawable.migros, R.drawable.ca, R.drawable.hm, R.drawable.interdiscount};
 
         @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

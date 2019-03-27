@@ -37,6 +37,10 @@ public class ShopRepository {
         return ((BaseApp) application).getDatabase().shopDao().getAllShops();
     }
 
+    public LiveData<List<String>> getAllShopNames(Application application) {
+        return ((BaseApp) application).getDatabase().shopDao().getAllShopNames();
+    }
+
     public void insert(final ShopEntity shop, OnAsyncEventListener callback,
                        Application application) {
         new CreateShop(application, callback).execute(shop);

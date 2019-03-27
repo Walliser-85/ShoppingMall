@@ -7,21 +7,12 @@
     tools:context=".ui.article.Articles"
     tools:showIn="@layout/app_bar_articles">
 
-    <EditText
-        android:id="@+id/SearchFilter"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_height="50dp"
-        tools:ignore="MissingConstraints" />
-
-    <ListView
-        android:id="@+id/lwArticl"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_article"
         android:layout_width="match_parent"
-        android:layout_marginTop="150dp"
         android:layout_height="match_parent"
-        style="@android:style/Widget.Material.ListView"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp" />
+        tools:listitem="@layout/listview_layout"
+        android:paddingTop="100dp">
+    </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

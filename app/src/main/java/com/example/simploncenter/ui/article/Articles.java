@@ -1,6 +1,9 @@
 package com.example.simploncenter.ui.article;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -12,18 +15,33 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.example.simploncenter.db.AppDatabase;
+import com.example.simploncenter.db.entity.ArticleEntity;
+import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.ui.About;
 import com.example.simploncenter.Adapter.PagerAdapterArticle;
 import com.example.simploncenter.ui.MainActivity;
 import com.example.simploncenter.R;
 import com.example.simploncenter.ui.shop.Shops;
+import com.example.simploncenter.util.OnAsyncEventListener;
+import com.example.simploncenter.viewmodel.article.ArticleViewModel;
+
+import java.io.ByteArrayOutputStream;
 
 public class Articles extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private ArticleViewModel viewModel;
+    private static final String TAG = "EditArticleActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,5 +151,51 @@ public class Articles extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void createNewArticle(View view) {
+        EditText articleName = findViewById(R.id.txt_article_name);
+        EditText articleDescription = findViewById(R.id.txt_article_description);
+        EditText articleShortDescription = findViewById(R.id.txt_article_ShortDescription);
+        EditText articlePrice = findViewById(R.id.txt_article_price);
+        ImageView image = findViewById(R.id.imageViewArticle);
+        Bitmap img = ((BitmapDrawable)image.getDrawable()).getBitmap();
+        Spinner spinner=findViewById(R.id.spinnerShopNames);
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        img.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        byte[] byteArray = stream.toByteArray();
+
+        Log.d(TAG, "###IMAGE###" + image.getDrawable());
+        if(articleName.getText().equals("@string/article_name") || articleDescription.getText().equals("@string/article_description")){
+            Toast.makeText(Articles.this, "Fill out all the Data!!", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            //spinner wert in id umwandeln
+            AppDatabase db = AppDatabase.getInstance(this.getBaseContext());
+            int idShop = db.shopDao().getId(spinner.getSelectedItem().toString());
+
+            ArticleEntity newArticle = new ArticleEntity(String.valueOf(articleName.getText()),idShop, String.valueOf(articleDescription.getText()),
+                    String.valueOf(articleShortDescription.getText()),Float.parseFloat(articlePrice.getText().toString()), byteArray);
+
+            ArticleViewModel.Factory factory = new ArticleViewModel.Factory(
+                    getApplication(), 0);
+            viewModel = ViewModelProviders.of(this, factory).get(ArticleViewModel.class);
+            viewModel.createArticle(newArticle, new OnAsyncEventListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d(TAG, "createShop: success");
+                    Toast toast = Toast.makeText(Articles.this, "Create a New Shop", Toast.LENGTH_LONG);
+                    toast.show();
+                    Intent h=new Intent (Articles.this, Shops.class);
+                    startActivity(h);
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    Log.d(TAG, "createShop: failure", e);
+                }
+            });
+        }
     }
 }
