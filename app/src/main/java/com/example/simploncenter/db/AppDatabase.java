@@ -29,9 +29,12 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract ShopDao shopDao();
 
+    public static Context c = null;
+
     private final MutableLiveData<Boolean> mIsDatabaseCreated = new MutableLiveData<>();
 
     public static AppDatabase getInstance(final Context context) {
+        c = context;
         if (instance == null) {
             synchronized (AppDatabase.class) {
                 if (instance == null) {
@@ -57,7 +60,7 @@ public abstract class AppDatabase extends RoomDatabase {
                         super.onCreate(db);
                         Executors.newSingleThreadExecutor().execute(() -> {
                             AppDatabase database = AppDatabase.getInstance(appContext);
-                            initializeDemoData(database, appContext);
+                            initializeDemoData(database);
                             // notify that the database was created and it's ready to be used
                             database.setDatabaseCreated();
                         });
@@ -65,7 +68,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 }).build();
     }
 
-    public static void initializeDemoData(final AppDatabase database, Context c) {
+    public static void initializeDemoData(final AppDatabase database) {
         Executors.newSingleThreadExecutor().execute(() -> {
             database.runInTransaction(() -> {
                 Log.i(TAG, "Wipe database.");

@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.simploncenter.ui.article.AllArticles;
 import com.example.simploncenter.ui.article.Article;
-import com.example.simploncenter.ui.CreateArticle;
+import com.example.simploncenter.ui.article.CreateArticle;
 
 public class PagerAdapterArticle extends FragmentPagerAdapter {
     int numberOfTabs;

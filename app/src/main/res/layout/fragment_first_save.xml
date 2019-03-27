@@ -11,8 +11,17 @@
         android:id="@+id/recycler_view_shop"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/listview_layout"
-        android:paddingTop="100dp">
+        tools:listitem="@layout/listview_layout">
     </android.support.v7.widget.RecyclerView>
+
+    <ListView
+        android:id="@+id/lwShops"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_height="wrap_content"
+        style="@android:style/Widget.Material.ListView"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp" />
 
 </RelativeLayout>

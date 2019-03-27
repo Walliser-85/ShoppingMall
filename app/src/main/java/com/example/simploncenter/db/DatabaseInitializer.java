@@ -40,7 +40,7 @@ public class DatabaseInitializer {
     private static void populateWithTestData(AppDatabase db) throws SQLClientInfoException {
         db.shopDao().deleteAll();
         byte[] picture = null;
-        Bitmap migros = BitmapFactory.decodeResource(context.getResources(), R.drawable.migros);
+        Bitmap migros = BitmapFactory.decodeResource(context.getResources(), R.drawable.interdiscount);
         addShop(db,
                 "Migros", "This is Migros", BitmapToByte(migros)
         );

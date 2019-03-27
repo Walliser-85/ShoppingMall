@@ -56,10 +56,9 @@ public class ListViewAllArticle extends ArrayAdapter<String> {
         TextView tvw3;
         ImageView ivw;
         ViewHolder(View v){
-            tvw1 = (TextView) v.findViewById(R.id.tvshopnameA);
-            tvw2 = (TextView) v.findViewById(R.id.tvdescriptionA);
-            tvw3 = (TextView) v.findViewById(R.id.tvarticlesA);
-            ivw = (ImageView) v.findViewById(R.id.imageViewA);
+            tvw1 = (TextView) v.findViewById(R.id.tvshopname);
+            tvw2 = (TextView) v.findViewById(R.id.tvdescription);
+            ivw = (ImageView) v.findViewById(R.id.imageView);
         }
     }
 }

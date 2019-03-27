@@ -44,19 +44,16 @@ public class CustomListViewArticle extends ArrayAdapter<String> {
         viewHolder.ivw.setImageResource(imgid[position]);
         viewHolder.tvw1.setText(shopname[position]);
         viewHolder.tvw2.setText(desc[position]);
-        viewHolder.tvw3.setText("Articles " + Integer.toString(articles[position]));
 
         return r;
     }
     class ViewHolder{
         TextView tvw1;
         TextView tvw2;
-        TextView tvw3;
         ImageView ivw;
         ViewHolder(View v){
             tvw1 = (TextView) v.findViewById(R.id.tvshopname);
             tvw2 = (TextView) v.findViewById(R.id.tvdescription);
-            tvw3 = (TextView) v.findViewById(R.id.tvarticles);
             ivw = (ImageView) v.findViewById(R.id.imageView);
         }
     }

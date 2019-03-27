@@ -3,9 +3,14 @@ package com.example.simploncenter.ui.shop;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,10 +23,13 @@ import android.widget.Toast;
 import com.example.simploncenter.Adapter.CustomListViewArticle;
 import com.example.simploncenter.R;
 import com.example.simploncenter.db.entity.ShopEntity;
+import com.example.simploncenter.ui.About;
+import com.example.simploncenter.ui.MainActivity;
+import com.example.simploncenter.ui.article.Articles;
 import com.example.simploncenter.util.OnAsyncEventListener;
 import com.example.simploncenter.viewmodel.shop.ShopViewModel;
 
-public class CurrentShop extends AppCompatActivity {
+public class CurrentShop extends AppCompatActivity{
     private ShopEntity shop;
     private ShopViewModel viewModel;
     private TextView titel, description;

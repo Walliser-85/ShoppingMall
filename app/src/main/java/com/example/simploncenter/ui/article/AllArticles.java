@@ -1,4 +1,4 @@
-package com.example.simploncenter;
+package com.example.simploncenter.ui.article;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.example.simploncenter.Adapter.CustomListViewArticle;
+import com.example.simploncenter.R;
 import com.example.simploncenter.viewmodel.article.ListViewAllArticle;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class AllArticles extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_all_articles, container, false);
         // Inflate the layout for this fragment
-        lst= (ListView)rootView.findViewById(R.id.ArticlesAll);
+        lst= (ListView)rootView.findViewById(R.id.lwArticl);
         customListView = new ListViewAllArticle(getActivity(),articlename,desc,imgid,prices);
         lst.setAdapter(customListView);
         lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {

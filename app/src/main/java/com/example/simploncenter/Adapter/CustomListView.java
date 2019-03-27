@@ -22,7 +22,7 @@ public class CustomListView extends ArrayAdapter<String> {
 
     public CustomListView(Activity context, List<ShopEntity> list) {
         super(context, R.layout.listview_layout);
-        Log.i("###", "CustomListView Constructor");
+        Log.i("########", "CustomListView Constructor" + list.size());
         this.context=context;
         this.list = list;
     }
@@ -50,6 +50,7 @@ public class CustomListView extends ArrayAdapter<String> {
     }
 
     public void updateData(List<ShopEntity> shopList) {
+        Log.i("########", "UpdateData");
         list.clear();
         list.addAll(shopList);
         notifyDataSetChanged();

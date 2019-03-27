@@ -1,4 +1,4 @@
-package com.example.simploncenter.ui;
+package com.example.simploncenter.ui.article;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
