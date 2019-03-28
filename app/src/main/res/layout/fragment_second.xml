@@ -74,4 +74,5 @@
             android:text="@string/create_shop"
             android:onClick="createNewShop"/>
     </LinearLayout>
+
 </RelativeLayout>
