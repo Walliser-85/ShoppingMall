@@ -4,8 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    tools:context=".ui.shop.Shops"
-    tools:showIn="@layout/app_bar_shops">
+    tools:context=".ui.shop.Shops">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_shop"

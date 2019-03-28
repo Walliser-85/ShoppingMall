@@ -39,9 +39,8 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopHolder> {
         ShopEntity currentShop = shopList.get(i);
         shopHolder.textViewShopName.setText(currentShop.getShopName());
         shopHolder.textViewShopDescription.setText(currentShop.getDescription());
-        shopHolder.ivw.setImageResource(imgid[0]);
         //shopHolder.ivw.setImageBitmap(BitmapFactory.decodeByteArray(shopList.get(i).getPicture(), 0, shopList.get(i).getPicture().length));
-        shopHolder.ivw.setImageResource(imgid[0]);
+        shopHolder.ivw.setImageBitmap(BitmapFactory.decodeByteArray(shopList.get(i).getPicture(), 0, shopList.get(i).getPicture().length));
         shopHolder.bind(shopList.get(i), listener);
     }
 

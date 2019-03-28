@@ -21,8 +21,8 @@ public class DatabaseInitializer {
 
     public static void populateDatabase(final AppDatabase db, Context c) {
         Log.i(TAG, "Inserting demo data.");
-        PopulateDbAsync task = new PopulateDbAsync(db);
         context =c;
+        PopulateDbAsync task = new PopulateDbAsync(db);
         task.execute();
     }
 
@@ -40,18 +40,21 @@ public class DatabaseInitializer {
     private static void populateWithTestData(AppDatabase db) throws SQLClientInfoException {
         db.shopDao().deleteAll();
         byte[] picture = null;
-        Bitmap migros = BitmapFactory.decodeResource(context.getResources(), R.drawable.interdiscount);
+        Bitmap migros = BitmapFactory.decodeResource(context.getResources(), R.drawable.migros);
+        Bitmap ca = BitmapFactory.decodeResource(context.getResources(), R.drawable.ca);
+        Bitmap hm = BitmapFactory.decodeResource(context.getResources(), R.drawable.hm);
+        Bitmap interdiscount = BitmapFactory.decodeResource(context.getResources(), R.drawable.interdiscount);
         addShop(db,
                 "Migros", "This is Migros", BitmapToByte(migros)
         );
         addShop(db,
-                "C&A", "This is C&A", BitmapToByte(migros)
+                "C&A", "This is C&A", BitmapToByte(ca)
         );
         addShop(db,
-                "H&M", "This is H&M", BitmapToByte(migros)
+                "H&M", "This is H&M", BitmapToByte(hm)
         );
         addShop(db,
-                "Interdiscount", "This is Interdiscount", BitmapToByte(migros)
+                "Interdiscount", "This is Interdiscount", BitmapToByte(interdiscount)
         );
 
         try {

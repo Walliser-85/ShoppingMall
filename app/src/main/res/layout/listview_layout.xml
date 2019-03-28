@@ -35,7 +35,7 @@
             android:layout_below="@+id/tvshopname"
             android:layout_toEndOf="@+id/imageView"
             android:layout_toRightOf="@+id/imageView"
-            android:paddingLeft="5dp"
+            android:paddingLeft="0dp"
             android:textColor="#333" />
 
         <TextView
@@ -45,7 +45,7 @@
             android:layout_below="@+id/tvshopname"
             android:layout_toEndOf="@+id/imageView"
             android:layout_toRightOf="@+id/imageView"
-            android:paddingLeft="5dp"
+            android:paddingLeft="0dp"
             android:textColor="#333" />
     </RelativeLayout>
 

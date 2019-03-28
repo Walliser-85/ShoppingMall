@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.simploncenter.R;
 import com.example.simploncenter.db.entity.ShopEntity;
+import com.example.simploncenter.ui.BaseActivity;
 import com.example.simploncenter.util.OnAsyncEventListener;
 import com.example.simploncenter.viewmodel.shop.ShopViewModel;
 
@@ -24,7 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-public class EditShop extends AppCompatActivity {
+public class EditShop extends BaseActivity {
     private ShopEntity shop;
     private ShopViewModel viewModel;
     private TextView titel, description;
@@ -36,11 +37,12 @@ public class EditShop extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_shop);
-
-        shopId = getIntent().getIntExtra("shopId",0);
+        navigationView.setCheckedItem(R.id.nav_shops);
+        getLayoutInflater().inflate(R.layout.activity_edit_shop, frameLayout);
 
         initiateView();
+
+        shopId = getIntent().getIntExtra("shopId",0);
 
         ShopViewModel.Factory factory = new ShopViewModel.Factory(getApplication(),shopId);
         viewModel = ViewModelProviders.of(this, factory).get(ShopViewModel.class);
@@ -48,6 +50,7 @@ public class EditShop extends AppCompatActivity {
             if (shopEntity != null) {
                 shop = shopEntity;
                 updateContent();
+                setTitle("Edit " + shop.getShopName());
             }
         });
 

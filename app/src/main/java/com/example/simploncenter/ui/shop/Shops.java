@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.simploncenter.ui.About;
 import com.example.simploncenter.Adapter.PagerAdapter;
+import com.example.simploncenter.ui.BaseActivity;
 import com.example.simploncenter.ui.article.Articles;
 import com.example.simploncenter.ui.MainActivity;
 import com.example.simploncenter.R;
@@ -33,43 +34,32 @@ import com.example.simploncenter.viewmodel.shop.ShopViewModel;
 
 import java.io.ByteArrayOutputStream;
 
-public class Shops extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class Shops extends BaseActivity {
 
     private ShopViewModel viewModel;
     private static final String TAG = "EditShopActivity";
 
-    ListView lst;
-    String[] shopname ={"Migros", "C&A", "H&M", "Interdiscount"};
-    String[] desc ={"This is Migros", "This is C&A", "This is H&M", "This is Interdiscount"};
-    Integer[] articles = {10, 20, 30, 40};
-    Integer[] imgid={R.drawable.migros, R.drawable.ca, R.drawable.hm, R.drawable.interdiscount};
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_shops);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setContentView(R.layout.activity_tab);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
+        frameLayout = findViewById(R.id.flContent);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout = findViewById(R.id.base_drawer_layout_tab);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.base_nav_view_tab);
         navigationView.setNavigationItemSelectedListener(this);
+
+        setTitle(R.string.shops);
+        getLayoutInflater().inflate(R.layout.content_shops, frameLayout);
+        navigationView.setCheckedItem(R.id.nav_shops);
 
         //TAB Layout
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -96,63 +86,6 @@ public class Shops extends AppCompatActivity
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_home) {
-            Intent h=new Intent (Shops.this, MainActivity.class);
-            startActivity(h);
-        } else if (id == R.id.nav_shops) {
-            Intent h=new Intent (Shops.this, Shops.class);
-            startActivity(h);
-        } else if (id == R.id.nav_articles) {
-            Intent h=new Intent (Shops.this, Articles.class);
-            startActivity(h);
-        } else if (id == R.id.nav_about) {
-            Intent h=new Intent (Shops.this, About.class);
-            startActivity(h);
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     public void createNewShop(View view) {
