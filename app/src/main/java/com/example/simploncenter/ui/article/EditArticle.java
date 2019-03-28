@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.simploncenter.R;
 import com.example.simploncenter.db.entity.ArticleEntity;
+import com.example.simploncenter.ui.BaseActivity;
 import com.example.simploncenter.util.OnAsyncEventListener;
 import com.example.simploncenter.viewmodel.article.ArticleViewModel;
 
@@ -24,10 +25,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-public class EditArticle extends AppCompatActivity {
+public class EditArticle extends BaseActivity {
     private ArticleEntity article;
     private ArticleViewModel viewModel;
-    private TextView titel, description;
+    private TextView articleName, description, shortDescription, price;
     private int articleId;
     private final int SELECT_PHOTO = 1;
     private ImageView imageView;
@@ -36,7 +37,8 @@ public class EditArticle extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_shop);
+        navigationView.setCheckedItem(R.id.nav_shops);
+        getLayoutInflater().inflate(R.layout.activity_edit_article, frameLayout);
 
         articleId = getIntent().getIntExtra("articleId", 0);
 
@@ -48,13 +50,14 @@ public class EditArticle extends AppCompatActivity {
             if (articleEntity != null) {
                 article = articleEntity;
                 updateContent();
+                setTitle("Edit " + article.getArticleName());
             }
         });
 
 
         context = getApplicationContext();
 
-        Button pickImage = (Button) findViewById(R.id.btn_pick_edit);
+        Button pickImage = (Button) findViewById(R.id.btn_pickA);
         pickImage.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -66,9 +69,11 @@ public class EditArticle extends AppCompatActivity {
         });
     }
 
-    public void SaveShop(View view) {
-        article.setArticleName(String.valueOf(titel.getText()));
+    public void saveArticle(View view) {
+        article.setArticleName(String.valueOf(articleName.getText()));
         article.setDescription(String.valueOf(description.getText()));
+        article.setShortDescription(String.valueOf(shortDescription.getText()));
+        //article.setPrice(price.getText());
 
         Bitmap img = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -114,16 +119,20 @@ public class EditArticle extends AppCompatActivity {
     }
 
     private void initiateView() {
-        titel = findViewById(R.id.txt_shop_name_edit);
-        description = findViewById(R.id.txt_shop_description_edit);
-        imageView = findViewById(R.id.imageViewShopEdit);
+        articleName = findViewById(R.id.txt_article_name);
+        description = findViewById(R.id.txt_article_description);
+        shortDescription = findViewById(R.id.txt_article_ShortDescription);
+        price = findViewById(R.id.txt_shop_name_edit);
+        imageView = findViewById(R.id.imageViewArticle);
     }
 
     private void updateContent() {
         if (article != null) {
-            titel.setText(article.getArticleName());
+            articleName.setText(article.getArticleName());
             description.setText(article.getDescription());
-            imageView.setImageBitmap(BitmapFactory.decodeByteArray(article.getPicture(), 0, article.getPicture().length));
+            shortDescription.setText(article.getShortDescription());
+            //price.setText(String.valueOf(article.getPrice()));
+            //imageView.setImageBitmap(BitmapFactory.decodeByteArray(article.getPicture(), 0, article.getPicture().length));
         }
     }
 }

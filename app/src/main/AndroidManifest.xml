@@ -36,6 +36,14 @@
             android:label="@string/title_activity_shops"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ui.article.CurrentArticle"
+            android:label="@string/title_activity_shops"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.article.EditArticle"
+            android:label="@string/title_activity_shops"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ui.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">

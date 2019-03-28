@@ -46,7 +46,7 @@ public class AllArticles extends Fragment {
         final ArticleAdapter adapter = new ArticleAdapter(articleList, new ArticleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(ArticleEntity item) {
-                Intent intent = new Intent(getActivity(), CurrentShop.class);
+                Intent intent = new Intent(getActivity(), CurrentArticle.class);
                 intent.putExtra("articleId", item.getIdArticle());
                 startActivity(intent);
             }

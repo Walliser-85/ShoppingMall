@@ -64,31 +64,21 @@ public class DatabaseInitializer {
             e.printStackTrace();
         }
 
-        /*addAccount(db,
-                "Savings", 20000d, "m.p@fifa.com"
+        addArticle(db,
+                1,"Migros", "This is Migros", "Short", 10,BitmapToByte(migros)
         );
-        addAccount(db,
-                "Savings", 20000d, "s.b@fifa.com"
+        addArticle(db,
+                1,"Migros1", "This is Migros", "Short", 10,BitmapToByte(migros)
         );
-        addAccount(db,
-                "Savings", 20000d, "e.s@fifa.com"
+        addArticle(db,
+                1,"Migros2", "This is Migros", "Short", 10,BitmapToByte(migros)
         );
-        addAccount(db,
-                "Savings", 20000d, "a.c@fifa.com"
+        addArticle(db,
+                1,"Migros3", "This is Migros", "Short", 10,BitmapToByte(migros)
         );
-
-        addAccount(db,
-                "Secret", 1820000d, "m.p@fifa.com"
+        addArticle(db,
+                1,"Migros4", "This is Migros", "Short", 10,BitmapToByte(migros)
         );
-        addAccount(db,
-                "Secret", 1820000d, "s.b@fifa.com"
-        );
-        addAccount(db,
-                "Secret", 1820000d, "e.s@fifa.com"
-        );
-        addAccount(db,
-                "Secret", 1820000d, "a.c@fifa.com"
-        );*/
     }
 
     private static  byte[] BitmapToByte(Bitmap image){

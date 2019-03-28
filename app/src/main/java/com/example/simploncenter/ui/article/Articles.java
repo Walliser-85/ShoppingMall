@@ -29,6 +29,7 @@ import com.example.simploncenter.db.entity.ArticleEntity;
 import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.ui.About;
 import com.example.simploncenter.Adapter.PagerAdapterArticle;
+import com.example.simploncenter.ui.BaseActivity;
 import com.example.simploncenter.ui.MainActivity;
 import com.example.simploncenter.R;
 import com.example.simploncenter.ui.shop.Shops;
@@ -37,8 +38,7 @@ import com.example.simploncenter.viewmodel.article.ArticleViewModel;
 
 import java.io.ByteArrayOutputStream;
 
-public class Articles extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class Articles extends BaseActivity {
 
     private ArticleViewModel viewModel;
     private static final String TAG = "EditArticleActivity";
@@ -46,36 +46,33 @@ public class Articles extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_articles);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setContentView(R.layout.activity_tab);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        frameLayout = findViewById(R.id.flContent);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout = findViewById(R.id.base_drawer_layout_tab);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.base_nav_view_tab);
         navigationView.setNavigationItemSelectedListener(this);
 
+        setTitle(R.string.articles);
+        getLayoutInflater().inflate(R.layout.content_articles, frameLayout);
+        navigationView.setCheckedItem(R.id.nav_articles);
+
         //TAB Layout
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout_article);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Article per Shop"));
         tabLayout.addTab(tabLayout.newTab().setText("All Articles"));
         tabLayout.addTab(tabLayout.newTab().setText("New Articles"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager_article);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         final PagerAdapterArticle adapter = new PagerAdapterArticle
                 (getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
@@ -104,53 +101,6 @@ public class Articles extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_home) {
-            Intent h=new Intent (Articles.this, MainActivity.class);
-            startActivity(h);
-        } else if (id == R.id.nav_shops) {
-            Intent h=new Intent (Articles.this, Shops.class);
-            startActivity(h);
-        } else if (id == R.id.nav_articles) {
-            Intent h=new Intent (Articles.this, Articles.class);
-            startActivity(h);
-        } else if (id == R.id.nav_about) {
-            Intent h=new Intent (Articles.this, About.class);
-            startActivity(h);
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     public void createNewArticle(View view) {
