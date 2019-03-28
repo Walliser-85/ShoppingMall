@@ -1,64 +1,71 @@
 package com.example.simploncenter.viewmodel.article;
 
-import android.app.Activity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MediatorLiveData;
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProvider;
+import android.support.annotation.NonNull;
 
-import com.example.simploncenter.R;
 
-import java.util.ArrayList;
+import com.example.simploncenter.db.entity.ArticleEntity;
+import com.example.simploncenter.db.repository.ArticleRepository;
 
-public class ListViewAllArticle extends ArrayAdapter<String> {
-    private ArrayList<String> articlename;
-    private ArrayList<String> desc;
-    private ArrayList<Integer> imgid;
-    private ArrayList<Integer> prices;
-    private Activity context;
+import java.util.List;
 
-    public ListViewAllArticle(Activity context, ArrayList<String> articlename, ArrayList<String> desc, ArrayList<Integer> imgid, ArrayList<Integer> prices) {
-            super(context, R.layout.fragment_all_articles);
+public class ListViewAllArticle extends AndroidViewModel {
+    private ArticleRepository repository;
 
-            this.context=context;
-            this.articlename=articlename;
-            this.desc=desc;
-            this.imgid=imgid;
-            this.prices = prices;
-            }
+    private Application application;
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-            View r = convertView;
-            ViewHolder viewHolder=null;
-            if(r==null){
-            LayoutInflater layoutInflater = context.getLayoutInflater();
-            r = layoutInflater.inflate(R.layout.listview_layout,null,true);
-            viewHolder = new ViewHolder(r);
-            r.setTag(viewHolder);
-            }
-            else{
-            viewHolder = (ViewHolder) r.getTag();
-            }
+    // MediatorLiveData can observe other LiveData objects and react on their emissions.
+    private final MediatorLiveData<List<ArticleEntity>> observableArticle;
 
-            viewHolder.ivw.setImageResource(imgid.get(position));
-            viewHolder.tvw1.setText(articlename.get(position));
-            viewHolder.tvw2.setText(desc.get(position));
-            viewHolder.tvw3.setText(prices.get(position));
+    public ListViewAllArticle(@NonNull Application application,
+                             ArticleRepository repository) {
+        super(application);
 
-            return r;
-            }
-    class ViewHolder{
-        TextView tvw1;
-        TextView tvw2;
-        TextView tvw3;
-        ImageView ivw;
-        ViewHolder(View v){
-            tvw1 = (TextView) v.findViewById(R.id.tvshopname);
-            tvw2 = (TextView) v.findViewById(R.id.tvdescription);
-            ivw = (ImageView) v.findViewById(R.id.imageView);
+        this.repository = repository;
+        this.application = application;
+
+        observableArticle = new MediatorLiveData<>();
+        // set by default null, until we get data from the database.
+        observableArticle.setValue(null);
+
+        LiveData<List<ArticleEntity>> article = repository.getAllArticle(application);
+
+        // observe the changes of the entities from the database and forward them
+        observableArticle.addSource(article, observableArticle::setValue);
+    }
+
+    /**
+     * A creator is used to inject the account id into the ViewModel
+     */
+    public static class Factory extends ViewModelProvider.NewInstanceFactory {
+
+        @NonNull
+        private final Application application;
+
+        private final ArticleRepository repository;
+
+        public Factory(@NonNull Application application) {
+            this.application = application;
+            repository = ArticleRepository.getInstance();
+        }
+
+        @Override
+        public <T extends ViewModel> T create(Class<T> modelClass) {
+            //noinspection unchecked
+            return (T) new ListViewAllArticle(application, repository);
         }
     }
+
+    /**
+     * Expose the LiveData ClientEntities query so the UI can observe it.
+     */
+    public LiveData<List<ArticleEntity>> getArticles() {
+        return observableArticle;
+    }
+
 }

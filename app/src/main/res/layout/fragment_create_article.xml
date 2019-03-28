@@ -2,86 +2,106 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     tools:context=".ui.article.Articles"
     tools:showIn="@layout/app_bar_articles">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/createArticle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Second Tab"
-        android:textAppearance="?android:attr/textAppearanceLarge"/>
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="50dp"
+        android:text="Add Article"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_marginTop="100dp"
+        android:orientation="vertical"
+        android:paddingBottom="100dp">
 
-        <ImageButton
-            android:id="@+id/imageButton"
+        <ImageView
+            android:layout_marginTop="40dp"
+            android:id="@+id/imageViewArticle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/add_image"
-            android:scaleType="center"
-            android:src="@drawable/ic_menu_gallery" />
-
-        <EditText
-            android:id="@+id/editShopName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/shop_name" />
-
-        <EditText
-            android:id="@+id/editShopDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/description" />
-
-        <EditText
-            android:id="@+id/editShopAdresse"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/adresse" />
-
-        <EditText
-            android:id="@+id/editShopPostalAdress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPostalAddress"
-            android:text="@string/postal_address" />
-
-        <EditText
-            android:id="@+id/editShopOrt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/ort" />
-
-        <EditText
-            android:id="@+id/editShopCountry"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/country" />
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:maxHeight="40dp"
+            android:src="@drawable/ic_picture"/>
 
         <Button
-            android:id="@+id/btnCreateShop"
+            android:id="@+id/btn_pickA"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:text="Change Image" />
+
+        <EditText
+            android:id="@+id/txt_article_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/create_shop" />
+            android:layout_marginTop="40dp"
+            android:ems="10"
+            android:hint="Article Name"
+            android:inputType="textPersonName" />
 
+        <EditText
+            android:id="@+id/txt_article_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:ems="10"
+            android:hint="Article Description"
+            android:inputType="textMultiLine" />
+
+        <EditText
+            android:id="@+id/txt_article_ShortDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:ems="10"
+            android:hint="Article short Description"
+            android:inputType="textMultiLine" />
+
+        <EditText
+            android:id="@+id/txt_article_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:ems="10"
+            android:hint="Price"
+            android:inputType="numberDecimal" />
+
+        <Spinner
+            android:id="@+id/spinnerShopNames"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp" />
+
+        <Button
+            android:id="@+id/btnCreateArticle"
+            android:layout_width="157dp"
+            android:layout_height="52dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:text="@string/create_shop"
+            android:onClick="createNewArticle"/>
     </LinearLayout>
-
+    </ScrollView>
 </RelativeLayout>

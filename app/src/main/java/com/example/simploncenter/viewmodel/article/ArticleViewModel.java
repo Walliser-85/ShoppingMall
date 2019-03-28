@@ -57,15 +57,15 @@ public class ArticleViewModel extends AndroidViewModel {
             return observableArticle;
         }
 
-        public void createShop(ArticleEntity article, OnAsyncEventListener callback) {
+        public void createArticle(ArticleEntity article, OnAsyncEventListener callback) {
             repository.insert(article, callback, application);
         }
 
-        public void updateShop(ArticleEntity article, OnAsyncEventListener callback) {
+        public void updateArticle(ArticleEntity article, OnAsyncEventListener callback) {
             repository.update(article, callback, application);
         }
 
-        public void deleteClient(ArticleEntity article, OnAsyncEventListener callback) {
+        public void deleteArticle(ArticleEntity article, OnAsyncEventListener callback) {
             repository.delete(article, callback, application);
         }
 
