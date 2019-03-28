@@ -1,5 +1,6 @@
 package com.example.simploncenter.Adapter;
 
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -38,9 +39,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleH
             ArticleEntity currentArticle = articleList.get(i);
             articleHolder.textViewArticleName.setText(currentArticle.getArticleName());
             articleHolder.textViewArticleDescription.setText(currentArticle.getDescription());
-            articleHolder.ivw.setImageResource(imgid[0]);
-            //articleHolder.ivw.setImageBitmap(BitmapFactory.decodeByteArray(shopList.get(i).getPicture(), 0, shopList.get(i).getPicture().length));
-            articleHolder.ivw.setImageResource(imgid[0]);
+            articleHolder.ivw.setImageBitmap(BitmapFactory.decodeByteArray(articleList.get(i).getPicture(), 0, articleList.get(i).getPicture().length));
             articleHolder.bind(articleList.get(i), listener);
     }
 

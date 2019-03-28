@@ -43,7 +43,7 @@ public class ArticleViewModel extends AndroidViewModel {
             public Factory(@NonNull Application application, int shopId) {
                 this.application = application;
                 this.shopId = shopId;
-                repository = ((BaseApp) application).getClientRepository();
+                repository = ((BaseApp) application).getArticleRepository();
             }
 
             @Override

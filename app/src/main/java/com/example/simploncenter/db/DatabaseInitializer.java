@@ -64,20 +64,27 @@ public class DatabaseInitializer {
             e.printStackTrace();
         }
 
+        Bitmap apple = BitmapFactory.decodeResource(context.getResources(), R.drawable.apple);
+        Bitmap banana = BitmapFactory.decodeResource(context.getResources(), R.drawable.banana);
+        Bitmap grapes = BitmapFactory.decodeResource(context.getResources(), R.drawable.grapes);
+        Bitmap mango = BitmapFactory.decodeResource(context.getResources(), R.drawable.mango);
+        Bitmap watermelon = BitmapFactory.decodeResource(context.getResources(), R.drawable.watermelon);
+
+
         addArticle(db,
-                1,"Migros", "This is Migros", "Short", 10,BitmapToByte(migros)
+                1,"Apple", "This is Apple", "Short", 10,BitmapToByte(apple)
         );
         addArticle(db,
-                1,"Migros1", "This is Migros", "Short", 10,BitmapToByte(migros)
+                1,"Banana", "This is Banana", "Short", 10,BitmapToByte(banana)
         );
         addArticle(db,
-                1,"Migros2", "This is Migros", "Short", 10,BitmapToByte(migros)
+                1,"Grapes", "This is Grapes", "Short", 10,BitmapToByte(grapes)
         );
         addArticle(db,
-                1,"Migros3", "This is Migros", "Short", 10,BitmapToByte(migros)
+                1,"Mango", "This is Mango", "Short", 10,BitmapToByte(mango)
         );
         addArticle(db,
-                1,"Migros4", "This is Migros", "Short", 10,BitmapToByte(migros)
+                1,"Watermelon", "This is Watermelon", "Short", 10,BitmapToByte(watermelon)
         );
     }
 

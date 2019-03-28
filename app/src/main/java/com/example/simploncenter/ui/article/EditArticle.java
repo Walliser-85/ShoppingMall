@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.simploncenter.R;
 import com.example.simploncenter.db.entity.ArticleEntity;
 import com.example.simploncenter.ui.BaseActivity;
+import com.example.simploncenter.ui.shop.CurrentShop;
 import com.example.simploncenter.util.OnAsyncEventListener;
 import com.example.simploncenter.viewmodel.article.ArticleViewModel;
 
@@ -30,6 +31,7 @@ public class EditArticle extends BaseActivity {
     private ArticleViewModel viewModel;
     private TextView articleName, description, shortDescription, price;
     private int articleId;
+    private int shopId;
     private final int SELECT_PHOTO = 1;
     private ImageView imageView;
     private Context context;
@@ -37,10 +39,11 @@ public class EditArticle extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        navigationView.setCheckedItem(R.id.nav_shops);
+        navigationView.setCheckedItem(R.id.nav_articles);
         getLayoutInflater().inflate(R.layout.activity_edit_article, frameLayout);
 
         articleId = getIntent().getIntExtra("articleId", 0);
+        shopId = getIntent().getIntExtra("shopId",0);
 
         initiateView();
 
@@ -86,9 +89,18 @@ public class EditArticle extends BaseActivity {
             @Override
             public void onSuccess() {
                 Toast.makeText(EditArticle.this, "Save changes", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(EditArticle.this, CurrentArticle.class);
-                intent.putExtra("articleId", articleId);
-                startActivity(intent);
+                Intent intent;
+                if(shopId == 0){
+                    intent = new Intent(EditArticle.this, CurrentArticle.class);
+                    intent.putExtra("articleId", articleId);
+                    startActivity(intent);
+                }
+                else{
+                    intent = new Intent(EditArticle.this, CurrentShop.class);
+                    intent.putExtra("shopId", shopId);
+                    startActivity(intent);
+                }
+
             }
 
             @Override

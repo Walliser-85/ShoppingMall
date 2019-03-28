@@ -1,10 +1,13 @@
 package com.example.simploncenter.ui.shop;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,16 +17,30 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.simploncenter.Adapter.ArticleAdapter;
 import com.example.simploncenter.Adapter.CustomListViewArticle;
+import com.example.simploncenter.Adapter.ShopAdapter;
+import com.example.simploncenter.BaseApp;
 import com.example.simploncenter.R;
+import com.example.simploncenter.db.entity.ArticleEntity;
 import com.example.simploncenter.db.entity.ShopEntity;
+import com.example.simploncenter.db.repository.ArticleRepository;
 import com.example.simploncenter.ui.BaseActivity;
+import com.example.simploncenter.ui.article.Article;
+import com.example.simploncenter.ui.article.CurrentArticle;
 import com.example.simploncenter.util.OnAsyncEventListener;
+import com.example.simploncenter.viewmodel.article.ListViewAllArticle;
+import com.example.simploncenter.viewmodel.shop.ShopListViewModel;
 import com.example.simploncenter.viewmodel.shop.ShopViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CurrentShop extends BaseActivity {
     private ShopEntity shop;
     private ShopViewModel viewModel;
+    private List<ArticleEntity> articleList;
+    private ListViewAllArticle viewModelArticle;
     private TextView titel, description;
     private ImageView picture;
 
@@ -31,12 +48,7 @@ public class CurrentShop extends BaseActivity {
     private static final int DELETE_SHOP = 2;
     private static final int ADD_ARTICLE = 3;
     private int shopId;
-
-    ListView lst;
-    String[] shopname ={"Apple", "Banana", "Grapes", "Mango", "Watermelon"};
-    String[] desc ={"This is Migros", "This is C&A", "This is H&M", "This is Interdiscount", "This is Interdiscount"};
-    Integer[] articles = {10, 20, 30, 40, 50};
-    Integer[] imgid={R.drawable.apple, R.drawable.banana, R.drawable.grapes, R.drawable.mango, R.drawable.watermelon};
+    private ArticleRepository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +70,29 @@ public class CurrentShop extends BaseActivity {
             }
         });
 
-        lst= (ListView)findViewById(R.id.lwShopsCurrent);
-        CustomListViewArticle customListView = new CustomListViewArticle(this,shopname,desc,imgid,articles);
-        lst.setAdapter(customListView);
-        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        RecyclerView recyclerView = findViewById(R.id.recycler_view_article);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+
+        articleList = new ArrayList<ArticleEntity>();
+
+        final ArticleAdapter adapter = new ArticleAdapter(articleList, new ArticleAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(CurrentShop.this, shopname[position], Toast.LENGTH_SHORT).show();
+            public void onItemClick(ArticleEntity item) {
+                Intent intent = new Intent(CurrentShop.this, CurrentArticle.class);
+                intent.putExtra("articleId", item.getIdArticle());
+                intent.putExtra("shopId", shopId);
+                startActivity(intent);
+            }
+        });
+
+        recyclerView.setAdapter(adapter);
+
+        ListViewAllArticle.Factory factoryA = new ListViewAllArticle.Factory(getApplication(),shopId);
+        viewModelArticle = ViewModelProviders.of(this, factoryA).get(ListViewAllArticle.class);
+        viewModelArticle.getArticlesBySHop().observe(this, articleEntities -> {
+            if (articleEntities != null) {
+                adapter.setArticle(articleEntities);
             }
         });
     }

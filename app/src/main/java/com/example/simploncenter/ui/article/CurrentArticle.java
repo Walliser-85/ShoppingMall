@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.simploncenter.Adapter.CustomListViewArticle;
 import com.example.simploncenter.R;
 import com.example.simploncenter.db.entity.ArticleEntity;
+import com.example.simploncenter.db.repository.ArticleRepository;
 import com.example.simploncenter.ui.BaseActivity;
 import com.example.simploncenter.util.OnAsyncEventListener;
 import com.example.simploncenter.viewmodel.article.ArticleViewModel;
@@ -28,8 +29,10 @@ public class CurrentArticle extends BaseActivity {
     private TextView titel, description, shopname, price;
     private ImageView picture;
     private int articleId;
+    private int shopId;
     private static final int EDIT_ARTICLE = 1;
     private static final int DELETE_ARTICLE = 2;
+    private ArticleRepository repository;
 
     ListView lst;
     String[] articlename ={"Apple", "Banana", "Grapes", "Mango", "Watermelon"};
@@ -44,6 +47,7 @@ public class CurrentArticle extends BaseActivity {
         getLayoutInflater().inflate(R.layout.activity_current_article, frameLayout);
 
         articleId = getIntent().getIntExtra("articleId",0);
+        shopId = getIntent().getIntExtra("shopId",0);
 
         initiateView();
 
@@ -76,6 +80,7 @@ public class CurrentArticle extends BaseActivity {
             Toast.makeText(CurrentArticle.this, "EDIT", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(CurrentArticle.this, EditArticle.class);
             intent.putExtra("articleId", articleId);
+            intent.putExtra("shopId", shopId);
             startActivity(intent);
             return true;
         }

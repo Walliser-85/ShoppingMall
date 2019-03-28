@@ -54,7 +54,7 @@ public class AllArticles extends Fragment {
 
         recyclerView.setAdapter(adapter);
 
-        ListViewAllArticle.Factory factory = new ListViewAllArticle.Factory(getActivity().getApplication());
+        ListViewAllArticle.Factory factory = new ListViewAllArticle.Factory(getActivity().getApplication(),0);
         viewModel = ViewModelProviders.of(this, factory).get(ListViewAllArticle.class);
         viewModel.getArticles().observe(this, articleEntities -> {
             if (articleEntities != null) {

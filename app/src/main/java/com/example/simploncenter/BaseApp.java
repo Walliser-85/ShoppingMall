@@ -21,7 +21,7 @@ public class BaseApp extends Application {
         return ShopRepository.getInstance();
     }
 
-    public ArticleRepository getClientRepository() {
+    public ArticleRepository getArticleRepository() {
         return ArticleRepository.getInstance();
     }
 }
