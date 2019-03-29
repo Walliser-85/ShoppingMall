@@ -1,8 +1,10 @@
 package com.example.simploncenter.ui.article;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -19,21 +21,30 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.simploncenter.Adapter.ListAdapter;
 import com.example.simploncenter.R;
 import com.example.simploncenter.db.AppDatabase;
+import com.example.simploncenter.db.entity.ShopEntity;
+import com.example.simploncenter.ui.BaseActivity;
+import com.example.simploncenter.viewmodel.shop.ShopListViewModel;
+import com.example.simploncenter.viewmodel.shop.ShopViewModel;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
 
-public class CreateArticle extends Fragment implements AdapterView.OnItemSelectedListener {
+public class CreateArticle extends Fragment  {
     private final int SELECT_PHOTO = 1;
     private ImageView imageView;
     private Context context;
     public Spinner spinner;
+    private ShopListViewModel viewModel;
+    private ListAdapter<String> adpaterShopList;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,28 +69,54 @@ public class CreateArticle extends Fragment implements AdapterView.OnItemSelecte
 
 
         //Spinner
-        spinner = (Spinner) rootView.findViewById(R.id.spinnerShopNames);
-        spinner.setOnItemSelectedListener(this);
+        //setupFromAccSpinner();
+        this.spinner = (Spinner) rootView.findViewById(R.id.spinnerShopNames);
+        this.adpaterShopList=new ListAdapter<>(CreateArticle.this.getContext(),R.layout.row_shops,new ArrayList<>());
+        this.spinner.setAdapter(adpaterShopList);
+        //end setupFromAccSpinner();
+        setupViewModels();
 
-        loadSpinnerData();
+
+
 
         return rootView;
     }
 
+    private void setupViewModels() {
+
+        ShopListViewModel.Factory factory = new ShopListViewModel.Factory(getActivity().getApplication());
+        viewModel = ViewModelProviders.of(this, factory).get(ShopListViewModel.class);
+
+        viewModel.getShopNames().observe(this, shopEntity -> {
+            if (shopEntity != null) {
+                updateAdapterShopList(shopEntity);
+            }
+        });
+
+    }
+
+    private void updateAdapterShopList(List<String> shopNames) {
+        adpaterShopList.updateData(new ArrayList<>(shopNames));
+    }
+
+
+/*
     private void loadSpinnerData() {
-        AppDatabase db = AppDatabase.getInstance(getActivity().getApplicationContext());
+
+        AppDatabase db=AppDatabase.getInstance(CreateArticle.this.getContext());
         LiveData<List<String>> shopnames = db.shopDao().getAllShopNames();
 
         // Creating adapter for spinner
-        ArrayAdapter dataAdapter = new ArrayAdapter<String>(CreateArticle.this.getContext(),android.R.layout.simple_spinner_item);
+        ArrayAdapter dataAdapter = new ArrayAdapter(CreateArticle.this.getContext(),android.R.layout.simple_spinner_item);
         dataAdapter.addAll(shopnames);
 
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // attaching data adapter to spinner
-        spinner.setAdapter(dataAdapter);
-    }
+        this.spinner.setAdapter(dataAdapter);
+
+    }*/
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
@@ -100,7 +137,7 @@ public class CreateArticle extends Fragment implements AdapterView.OnItemSelecte
                 }
         }
     }
-
+/*
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
@@ -115,4 +152,5 @@ public class CreateArticle extends Fragment implements AdapterView.OnItemSelecte
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+    */
 }

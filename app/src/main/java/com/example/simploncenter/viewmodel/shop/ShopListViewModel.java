@@ -20,6 +20,7 @@ public class ShopListViewModel extends AndroidViewModel {
 
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
     private final MediatorLiveData<List<ShopEntity>> observableShops;
+    private final MediatorLiveData<List<String>> observableShopNames;
 
     public ShopListViewModel(@NonNull Application application,
                              ShopRepository repository) {
@@ -29,13 +30,17 @@ public class ShopListViewModel extends AndroidViewModel {
         this.application = application;
 
         observableShops = new MediatorLiveData<>();
+        observableShopNames= new MediatorLiveData<>();
         // set by default null, until we get data from the database.
         observableShops.setValue(null);
+        observableShopNames.setValue(null);
 
         LiveData<List<ShopEntity>> shops = repository.getAllShops(application);
+        LiveData<List<String>> names = repository.getAllShopNames(application);
 
         // observe the changes of the entities from the database and forward them
         observableShops.addSource(shops, observableShops::setValue);
+        observableShopNames.addSource(names,observableShopNames::setValue);
     }
 
     /**
@@ -65,5 +70,9 @@ public class ShopListViewModel extends AndroidViewModel {
      */
     public LiveData<List<ShopEntity>> getShops() {
         return observableShops;
+    }
+
+    public LiveData<List<String>> getShopNames() {
+        return observableShopNames;
     }
 }
