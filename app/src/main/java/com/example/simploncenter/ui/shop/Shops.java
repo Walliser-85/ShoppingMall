@@ -92,6 +92,10 @@ public class Shops extends BaseActivity {
         EditText shopName = findViewById(R.id.txt_shop_name);
         EditText shopDescription = findViewById(R.id.txt_shop_description);
         ImageView image = findViewById(R.id.imageViewShop);
+        if (image.getTag().equals("1")){
+            Toast.makeText(Shops.this, "Select a picture!!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Bitmap img = ((BitmapDrawable)image.getDrawable()).getBitmap();
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();

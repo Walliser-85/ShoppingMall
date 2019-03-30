@@ -66,6 +66,7 @@ public class CreateArticle extends Fragment  {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+
             }
         });
 
@@ -113,6 +114,7 @@ public class CreateArticle extends Fragment  {
                         final InputStream imageStream = context.getContentResolver().openInputStream(imageUri);
                         final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                         imageView.setImageBitmap(selectedImage);
+                        imageView.setTag(2);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -127,6 +129,10 @@ public class CreateArticle extends Fragment  {
         EditText articleShortDescription = view.findViewById(R.id.txt_article_ShortDescription);
         EditText articlePrice = view.findViewById(R.id.txt_article_price);
         ImageView image = view.findViewById(R.id.imageViewArticle);
+        if (image.getTag().equals("1")){
+            Toast.makeText(CreateArticle.this.getContext(), "Select a picture!!", Toast.LENGTH_SHORT).show();
+            return true;
+        }
         Bitmap img = ((BitmapDrawable)image.getDrawable()).getBitmap();
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();

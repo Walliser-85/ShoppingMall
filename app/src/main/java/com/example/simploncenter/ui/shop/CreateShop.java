@@ -62,6 +62,7 @@ public class CreateShop extends Fragment {
                         final InputStream imageStream = context.getContentResolver().openInputStream(imageUri);
                         final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                         imageView.setImageBitmap(selectedImage);
+                        imageView.setTag(2);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }

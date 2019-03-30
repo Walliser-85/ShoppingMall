@@ -40,6 +40,7 @@
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
             android:maxHeight="40dp"
+            android:tag="1"
             android:src="@drawable/ic_picture"/>
 
         <Button
