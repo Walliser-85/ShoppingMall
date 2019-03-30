@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
-            android:text="Change Image" />
+            android:text="Select Image" />
 
         <EditText
             android:id="@+id/txt_shop_name"

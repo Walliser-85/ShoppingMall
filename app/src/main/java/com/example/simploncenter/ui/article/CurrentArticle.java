@@ -46,8 +46,6 @@ public class CurrentArticle extends BaseActivity {
         getLayoutInflater().inflate(R.layout.activity_current_article, frameLayout);
 
         articleId = getIntent().getIntExtra("articleId",0);
-        //getNameshop = getIntent().getExtras().getString("shopId","defaultKey");
-
 
         initiateView();
 

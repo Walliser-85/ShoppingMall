@@ -137,13 +137,6 @@ public class CreateArticle extends Fragment  {
             Toast.makeText(CreateArticle.this.getContext(), "Fill out all the Data!!", Toast.LENGTH_SHORT).show();
         }
         else {
-            //spinner wert in id umwandeln
-            /*int shopId;
-            String selectShop= (String) spinner.getSelectedItem();
-            ShopListViewModel.Factory factory = new ShopListViewModel.Factory(getActivity().getApplication(),selectShop);
-            viewModel2 = ViewModelProviders.of(this, factory).get(ShopListViewModel.class);
-            shopId=viewModel2.getShopId();
-            */
             String selectShop= (String) spinner.getSelectedItem();
             ArticleEntity newArticle = new ArticleEntity(String.valueOf(articleName.getText()),selectShop, String.valueOf(articleDescription.getText()),
                     String.valueOf(articleShortDescription.getText()),Float.parseFloat(articlePrice.getText().toString()), byteArray);
