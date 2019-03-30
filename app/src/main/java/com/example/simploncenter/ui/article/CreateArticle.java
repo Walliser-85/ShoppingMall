@@ -1,34 +1,36 @@
 package com.example.simploncenter.ui.article;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.simploncenter.Adapter.ListAdapter;
 import com.example.simploncenter.R;
-import com.example.simploncenter.db.AppDatabase;
+import com.example.simploncenter.db.dao.ShopDao;
+import com.example.simploncenter.db.entity.ArticleEntity;
 import com.example.simploncenter.db.entity.ShopEntity;
-import com.example.simploncenter.ui.BaseActivity;
+import com.example.simploncenter.db.repository.ShopRepository;
+import com.example.simploncenter.util.OnAsyncEventListener;
+import com.example.simploncenter.viewmodel.article.ArticleViewModel;
+import com.example.simploncenter.viewmodel.article.ListViewAllArticle;
 import com.example.simploncenter.viewmodel.shop.ShopListViewModel;
-import com.example.simploncenter.viewmodel.shop.ShopViewModel;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -38,11 +40,13 @@ import static android.app.Activity.RESULT_OK;
 
 
 public class CreateArticle extends Fragment  {
+    private static final String TAG = "CreateArticle";
     private final int SELECT_PHOTO = 1;
     private ImageView imageView;
     private Context context;
     public Spinner spinner;
     private ShopListViewModel viewModel;
+    private ArticleViewModel articleViewModel;
     private ListAdapter<String> adpaterShopList;
 
 
@@ -69,15 +73,18 @@ public class CreateArticle extends Fragment  {
 
 
         //Spinner
-        //setupFromAccSpinner();
         this.spinner = (Spinner) rootView.findViewById(R.id.spinnerShopNames);
         this.adpaterShopList=new ListAdapter<>(CreateArticle.this.getContext(),R.layout.row_shops,new ArrayList<>());
         this.spinner.setAdapter(adpaterShopList);
-        //end setupFromAccSpinner();
         setupViewModels();
 
-
-
+        final Toast toast = Toast.makeText(getActivity().getApplicationContext(),"Article created",Toast.LENGTH_SHORT);
+        Button createArticleB = rootView.findViewById(R.id.btnCreateArticle);
+        createArticleB.setOnClickListener(view -> {
+            if (CreateArticle.this.createNewArticle(rootView)) {
+                toast.show();
+            }
+        });
 
         return rootView;
     }
@@ -99,25 +106,6 @@ public class CreateArticle extends Fragment  {
         adpaterShopList.updateData(new ArrayList<>(shopNames));
     }
 
-
-/*
-    private void loadSpinnerData() {
-
-        AppDatabase db=AppDatabase.getInstance(CreateArticle.this.getContext());
-        LiveData<List<String>> shopnames = db.shopDao().getAllShopNames();
-
-        // Creating adapter for spinner
-        ArrayAdapter dataAdapter = new ArrayAdapter(CreateArticle.this.getContext(),android.R.layout.simple_spinner_item);
-        dataAdapter.addAll(shopnames);
-
-        // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // attaching data adapter to spinner
-        this.spinner.setAdapter(dataAdapter);
-
-    }*/
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
@@ -137,20 +125,52 @@ public class CreateArticle extends Fragment  {
                 }
         }
     }
-/*
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // On selecting a spinner item
-        String label = parent.getItemAtPosition(position).toString();
 
-        // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "You selected: " + label,
-                Toast.LENGTH_LONG).show();
+    public boolean createNewArticle(View view) {
+        EditText articleName = view.findViewById(R.id.txt_article_name);
+        EditText articleDescription = view.findViewById(R.id.txt_article_description);
+        EditText articleShortDescription = view.findViewById(R.id.txt_article_ShortDescription);
+        EditText articlePrice = view.findViewById(R.id.txt_article_price);
+        ImageView image = view.findViewById(R.id.imageViewArticle);
+        Bitmap img = ((BitmapDrawable)image.getDrawable()).getBitmap();
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        img.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        byte[] byteArray = stream.toByteArray();
+
+        Log.d(TAG, "###IMAGE###" + image.getDrawable());
+        if(articleName.getText().equals("@string/article_name") || articleDescription.getText().equals("@string/article_description")){
+            Toast.makeText(CreateArticle.this.getContext(), "Fill out all the Data!!", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            //spinner wert in id umwandeln
+            int shopId;
+            String selectShop= (String) spinner.getSelectedItem();
+            ShopListViewModel.Factory factory = new ShopListViewModel.Factory(getActivity().getApplication(),selectShop);
+            viewModel = ViewModelProviders.of(this, factory).get(ShopListViewModel.class);
+            shopId=viewModel.getShopId();
+
+            ArticleEntity newArticle = new ArticleEntity(String.valueOf(articleName.getText()),shopId, String.valueOf(articleDescription.getText()),
+                    String.valueOf(articleShortDescription.getText()),Float.parseFloat(articlePrice.getText().toString()), byteArray);
+
+            ArticleViewModel.Factory factoryA = new ArticleViewModel.Factory(getActivity().getApplication(), 0);
+            articleViewModel = ViewModelProviders.of(this, factoryA).get(ArticleViewModel.class);
+            articleViewModel.createArticle(newArticle, new OnAsyncEventListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d(TAG, "createArticle: success");
+                    Toast toast = Toast.makeText(CreateArticle.this.getContext(), "Created a new article", Toast.LENGTH_LONG);
+                    toast.show();
+                    Intent h=new Intent (CreateArticle.this.getContext(), Articles.class);
+                    startActivity(h);
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    Log.d(TAG, "create article: failure", e);
+                }
+            });
+        }
+        return true;
     }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
-    */
 }

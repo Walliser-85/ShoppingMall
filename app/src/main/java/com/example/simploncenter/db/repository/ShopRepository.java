@@ -41,6 +41,10 @@ public class ShopRepository {
         return ((BaseApp) application).getDatabase().shopDao().getAllShopNames();
     }
 
+    public int  getShopId(final String name, Application application) {
+        return ((BaseApp) application).getDatabase().shopDao().getId(name);
+    }
+
     public void insert(final ShopEntity shop, OnAsyncEventListener callback,
                        Application application) {
         new CreateShop(application, callback).execute(shop);

@@ -35,6 +35,7 @@ import com.example.simploncenter.R;
 import com.example.simploncenter.ui.shop.Shops;
 import com.example.simploncenter.util.OnAsyncEventListener;
 import com.example.simploncenter.viewmodel.article.ArticleViewModel;
+import com.example.simploncenter.viewmodel.shop.ShopListViewModel;
 
 import java.io.ByteArrayOutputStream;
 
@@ -42,6 +43,7 @@ public class Articles extends BaseActivity {
 
     private ArticleViewModel viewModel;
     private static final String TAG = "EditArticleActivity";
+    private ShopListViewModel ShopviewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +104,7 @@ public class Articles extends BaseActivity {
             super.onBackPressed();
         }
     }
-
+/*
     public void createNewArticle(View view) {
         EditText articleName = findViewById(R.id.txt_article_name);
         EditText articleDescription = findViewById(R.id.txt_article_description);
@@ -122,8 +124,8 @@ public class Articles extends BaseActivity {
         }
         else {
             //spinner wert in id umwandeln
-            AppDatabase db = AppDatabase.getInstance(this.getBaseContext());
-            int idShop = db.shopDao().getId(spinner.getSelectedItem().toString());
+            ShopEntity selectShop=(ShopEntity) spinner.getSelectedItem();
+            int idShop=selectShop.getIdShop();
 
             ArticleEntity newArticle = new ArticleEntity(String.valueOf(articleName.getText()),idShop, String.valueOf(articleDescription.getText()),
                     String.valueOf(articleShortDescription.getText()),Float.parseFloat(articlePrice.getText().toString()), byteArray);
@@ -134,18 +136,18 @@ public class Articles extends BaseActivity {
             viewModel.createArticle(newArticle, new OnAsyncEventListener() {
                 @Override
                 public void onSuccess() {
-                    Log.d(TAG, "createShop: success");
-                    Toast toast = Toast.makeText(Articles.this, "Create a New Shop", Toast.LENGTH_LONG);
+                    Log.d(TAG, "createArticle: success");
+                    Toast toast = Toast.makeText(Articles.this, "Created a new article", Toast.LENGTH_LONG);
                     toast.show();
-                    Intent h=new Intent (Articles.this, Shops.class);
+                    Intent h=new Intent (Articles.this, Articles.class);
                     startActivity(h);
                 }
 
                 @Override
                 public void onFailure(Exception e) {
-                    Log.d(TAG, "createShop: failure", e);
+                    Log.d(TAG, "create article: failure", e);
                 }
             });
         }
-    }
+    }*/
 }
