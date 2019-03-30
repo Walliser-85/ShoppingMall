@@ -46,7 +46,7 @@ public class CurrentArticle extends BaseActivity {
         getLayoutInflater().inflate(R.layout.activity_current_article, frameLayout);
 
         articleId = getIntent().getIntExtra("articleId",0);
-        getNameshop = getIntent().getExtras().getString("shopId","defaultKey");
+        //getNameshop = getIntent().getExtras().getString("shopId","defaultKey");
 
 
         initiateView();
@@ -56,6 +56,7 @@ public class CurrentArticle extends BaseActivity {
         viewModel.getArticle().observe(this, articleEntity -> {
             if (articleEntity != null) {
                 article = articleEntity;
+                getNameshop=article.getToShop();
                 updateContent();
                 setTitle(article.getArticleName());
             }
