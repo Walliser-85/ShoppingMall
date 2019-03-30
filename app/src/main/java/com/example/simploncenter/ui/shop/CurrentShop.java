@@ -21,6 +21,7 @@ import com.example.simploncenter.db.repository.ArticleRepository;
 import com.example.simploncenter.ui.BaseActivity;
 import com.example.simploncenter.ui.article.CurrentArticle;
 import com.example.simploncenter.util.OnAsyncEventListener;
+import com.example.simploncenter.viewmodel.article.ArticleViewModel;
 import com.example.simploncenter.viewmodel.article.ListViewAllArticle;
 import com.example.simploncenter.viewmodel.shop.ShopViewModel;
 
@@ -30,6 +31,7 @@ import java.util.List;
 public class CurrentShop extends BaseActivity {
     private ShopEntity shop;
     private ShopViewModel viewModel;
+    private ArticleViewModel viewModelArticleDelet;
     private List<ArticleEntity> articleList;
     private ListViewAllArticle viewModelArticle;
     private TextView titel, description;
@@ -62,6 +64,10 @@ public class CurrentShop extends BaseActivity {
                 setTitle(shop.getShopName());
             }
         });
+
+        //Article ViewModel for Delete
+        ArticleViewModel.Factory factoryArtDel = new ArticleViewModel.Factory(getApplication(),shopId);
+        viewModelArticleDelet = ViewModelProviders.of(this, factoryArtDel).get(ArticleViewModel.class);
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view_article);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -115,6 +121,7 @@ public class CurrentShop extends BaseActivity {
             return true;
         }
         if (item.getItemId() == DELETE_SHOP) {
+
             final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("Delete Shop");
             alertDialog.setCancelable(false);
@@ -130,7 +137,26 @@ public class CurrentShop extends BaseActivity {
                     @Override
                     public void onFailure(Exception e) {}
                 });
+                //Delete the Articles too
+                viewModelArticle.getArticlesByShop().observe(this, articleEntities -> {
+                    if (articleEntities != null) {
+                        for (ArticleEntity arEnt:articleEntities
+                        ) {
+                            viewModelArticleDelet.deleteArticle(arEnt, new OnAsyncEventListener() {
+                                @Override
+                                public void onSuccess() {
+                                }
+
+                                @Override
+                                public void onFailure(Exception e) {}
+                            });
+                        }
+                    }
+                });
+
             });
+
+
             alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", (dialog, which) -> alertDialog.dismiss());
             alertDialog.show();
 

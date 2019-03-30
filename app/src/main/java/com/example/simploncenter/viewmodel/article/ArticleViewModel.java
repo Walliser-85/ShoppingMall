@@ -37,19 +37,19 @@ public class ArticleViewModel extends AndroidViewModel {
 
             @NonNull
             private final Application application;
-            private final int shopId;
+            private final int articleID;
             private final ArticleRepository repository;
 
-            public Factory(@NonNull Application application, int shopId) {
+            public Factory(@NonNull Application application, int articleID) {
                 this.application = application;
-                this.shopId = shopId;
+                this.articleID = articleID;
                 repository = ((BaseApp) application).getArticleRepository();
             }
 
             @Override
             public <T extends ViewModel> T create(Class<T> modelClass) {
                 //noinspection unchecked
-                return (T) new ArticleViewModel(application, shopId, repository);
+                return (T) new ArticleViewModel(application, articleID, repository);
             }
         }
 
