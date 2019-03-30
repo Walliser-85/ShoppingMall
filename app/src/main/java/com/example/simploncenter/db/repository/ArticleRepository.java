@@ -38,7 +38,7 @@ public class ArticleRepository {
         return ((BaseApp) application).getDatabase().articleDao().getAllArticles();
     }
 
-    public LiveData<List<ArticleEntity>> getByShopId(final int shopId, Application application){
+    public LiveData<List<ArticleEntity>> getByShopName(final String shopId, Application application){
         return ((BaseApp) application).getDatabase().articleDao().getByShopId(shopId);
     }
 

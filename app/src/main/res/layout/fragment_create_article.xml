@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
-            android:text="Change Image" />
+            android:text="Select image" />
 
         <EditText
             android:id="@+id/txt_article_name"
@@ -100,7 +100,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
-            android:text="@string/create_shop"/>
+            android:text="Create article"/>
     </LinearLayout>
     </ScrollView>
 </RelativeLayout>

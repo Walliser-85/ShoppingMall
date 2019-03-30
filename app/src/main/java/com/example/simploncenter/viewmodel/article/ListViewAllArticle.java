@@ -23,7 +23,7 @@ public class ListViewAllArticle extends AndroidViewModel {
     private final MediatorLiveData<List<ArticleEntity>> observableArticle;
     private final MediatorLiveData<List<ArticleEntity>> observableArticleByShop;
 
-    public ListViewAllArticle(@NonNull Application application, final int shopId,
+    public ListViewAllArticle(@NonNull Application application, final String shopId,
                              ArticleRepository repository) {
         super(application);
 
@@ -37,7 +37,7 @@ public class ListViewAllArticle extends AndroidViewModel {
         observableArticleByShop.setValue(null);
 
         LiveData<List<ArticleEntity>> article = repository.getAllArticle(application);
-        LiveData<List<ArticleEntity>> articleByShop = repository.getByShopId(shopId, application);
+        LiveData<List<ArticleEntity>> articleByShop = repository.getByShopName(shopId, application);
 
         // observe the changes of the entities from the database and forward them
         observableArticle.addSource(article, observableArticle::setValue);
@@ -52,11 +52,11 @@ public class ListViewAllArticle extends AndroidViewModel {
         @NonNull
         private final Application application;
 
-        private final int shopId;
+        private final String shopId;
 
         private final ArticleRepository repository;
 
-        public Factory(@NonNull Application application, int shopId) {
+        public Factory(@NonNull Application application, String shopId) {
             this.application = application;
             this.shopId = shopId;
             repository = ArticleRepository.getInstance();
@@ -75,7 +75,7 @@ public class ListViewAllArticle extends AndroidViewModel {
     public LiveData<List<ArticleEntity>> getArticles() {
         return observableArticle;
     }
-    public LiveData<List<ArticleEntity>> getArticlesBySHop() {
+    public LiveData<List<ArticleEntity>> getArticlesByShop() {
         return observableArticleByShop;
     }
 }

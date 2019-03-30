@@ -33,6 +33,10 @@ public class ShopRepository {
         return ((BaseApp) application).getDatabase().shopDao().getById(clientId);
     }
 
+    public ShopEntity getShopCurrent(final int clientId, Application application) {
+        return ((BaseApp) application).getDatabase().shopDao().getByIdCurrent(clientId);
+    }
+
     public LiveData<List<ShopEntity>> getAllShops(Application application) {
         return ((BaseApp) application).getDatabase().shopDao().getAllShops();
     }

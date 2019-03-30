@@ -48,13 +48,14 @@ public class AllArticles extends Fragment {
             public void onItemClick(ArticleEntity item) {
                 Intent intent = new Intent(getActivity(), CurrentArticle.class);
                 intent.putExtra("articleId", item.getIdArticle());
+                intent.putExtra("shopId", item.getToShop());
                 startActivity(intent);
             }
         });
 
         recyclerView.setAdapter(adapter);
 
-        ListViewAllArticle.Factory factory = new ListViewAllArticle.Factory(getActivity().getApplication(),0);
+        ListViewAllArticle.Factory factory = new ListViewAllArticle.Factory(getActivity().getApplication(),"");
         viewModel = ViewModelProviders.of(this, factory).get(ListViewAllArticle.class);
         viewModel.getArticles().observe(this, articleEntities -> {
             if (articleEntities != null) {

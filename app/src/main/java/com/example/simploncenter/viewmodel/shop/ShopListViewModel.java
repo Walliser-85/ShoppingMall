@@ -21,6 +21,7 @@ public class ShopListViewModel extends AndroidViewModel {
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
     private final MediatorLiveData<List<ShopEntity>> observableShops;
     private final MediatorLiveData<List<String>> observableShopNames;
+    private ShopEntity shop;
     int idShop;
 
     public ShopListViewModel(@NonNull Application application,
@@ -32,6 +33,7 @@ public class ShopListViewModel extends AndroidViewModel {
 
         observableShops = new MediatorLiveData<>();
         observableShopNames= new MediatorLiveData<>();
+
 
         // set by default null, until we get data from the database.
         observableShops.setValue(null);
@@ -66,6 +68,28 @@ public class ShopListViewModel extends AndroidViewModel {
         observableShops.addSource(shops, observableShops::setValue);
         observableShopNames.addSource(names,observableShopNames::setValue);
     }
+    public ShopListViewModel(@NonNull Application application,
+                             ShopRepository repository, int id) {
+        super(application);
+
+        this.repository = repository;
+        this.application = application;
+
+        observableShops = new MediatorLiveData<>();
+        observableShopNames= new MediatorLiveData<>();
+        // set by default null, until we get data from the database.
+        observableShops.setValue(null);
+        observableShopNames.setValue(null);
+
+        LiveData<List<ShopEntity>> shops = repository.getAllShops(application);
+        LiveData<List<String>> names = repository.getAllShopNames(application);
+        shop= repository.getShopCurrent(id,application);
+
+        // observe the changes of the entities from the database and forward them
+        observableShops.addSource(shops, observableShops::setValue);
+        observableShopNames.addSource(names,observableShopNames::setValue);
+
+    }
 
     /**
      * A creator is used to inject the account id into the ViewModel
@@ -79,10 +103,17 @@ public class ShopListViewModel extends AndroidViewModel {
 
         private String name ="";
 
+        private int id =-1;
+
         public Factory(@NonNull Application application, String name) {
             this.application = application;
             repository = ShopRepository.getInstance();
             this.name=name;
+        }
+        public Factory(@NonNull Application application, int id) {
+            this.application = application;
+            repository = ShopRepository.getInstance();
+            this.id=id;
         }
         public Factory(@NonNull Application application) {
             this.application = application;
@@ -92,8 +123,10 @@ public class ShopListViewModel extends AndroidViewModel {
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
             //noinspection unchecked
-            if (name.equals("")){
+            if (name.equals("")&&id==-1){
                 return (T) new ShopListViewModel(application, repository);
+            } else if (id!=-1){
+                return (T) new ShopListViewModel(application, repository, id);
             } else {
                 return (T) new ShopListViewModel(application, repository, name);
             }
@@ -114,5 +147,9 @@ public class ShopListViewModel extends AndroidViewModel {
 
     public int getShopId() {
         return idShop;
+    }
+
+    public ShopEntity getShop(){
+        return shop;
     }
 }

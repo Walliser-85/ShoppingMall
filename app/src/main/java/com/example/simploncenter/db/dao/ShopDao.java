@@ -11,6 +11,9 @@ import java.util.List;
 @Dao
 public interface ShopDao {
 
+    @Query("SELECT * FROM shops WHERE idShop = :id LIMIT 1")
+    ShopEntity getByIdCurrent(int id);
+
     @Query("SELECT * FROM shops WHERE idShop = :id")
     LiveData<ShopEntity> getById(int id);
 

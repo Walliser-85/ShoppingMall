@@ -13,8 +13,8 @@ public interface ArticleDao {
     @Query("SELECT * FROM articles WHERE idArticle = :id")
     LiveData<ArticleEntity> getById(int id);
 
-    @Query("SELECT * FROM articles WHERE idToShop = :idShop")
-    LiveData<List<ArticleEntity>> getByShopId(int idShop);
+    @Query("SELECT * FROM articles WHERE toShop = :toShop")
+    LiveData<List<ArticleEntity>> getByShopId(String toShop);
 
     @Query("SELECT * FROM articles")
     LiveData<List<ArticleEntity>> getAllArticles();

@@ -21,13 +21,9 @@ import android.widget.Toast;
 
 import com.example.simploncenter.Adapter.ListAdapter;
 import com.example.simploncenter.R;
-import com.example.simploncenter.db.dao.ShopDao;
 import com.example.simploncenter.db.entity.ArticleEntity;
-import com.example.simploncenter.db.entity.ShopEntity;
-import com.example.simploncenter.db.repository.ShopRepository;
 import com.example.simploncenter.util.OnAsyncEventListener;
 import com.example.simploncenter.viewmodel.article.ArticleViewModel;
-import com.example.simploncenter.viewmodel.article.ListViewAllArticle;
 import com.example.simploncenter.viewmodel.shop.ShopListViewModel;
 
 import java.io.ByteArrayOutputStream;
@@ -46,6 +42,7 @@ public class CreateArticle extends Fragment  {
     private Context context;
     public Spinner spinner;
     private ShopListViewModel viewModel;
+    private ShopListViewModel viewModel2;
     private ArticleViewModel articleViewModel;
     private ListAdapter<String> adpaterShopList;
 
@@ -78,12 +75,9 @@ public class CreateArticle extends Fragment  {
         this.spinner.setAdapter(adpaterShopList);
         setupViewModels();
 
-        final Toast toast = Toast.makeText(getActivity().getApplicationContext(),"Article created",Toast.LENGTH_SHORT);
         Button createArticleB = rootView.findViewById(R.id.btnCreateArticle);
         createArticleB.setOnClickListener(view -> {
-            if (CreateArticle.this.createNewArticle(rootView)) {
-                toast.show();
-            }
+            CreateArticle.this.createNewArticle(rootView);
         });
 
         return rootView;
@@ -144,13 +138,14 @@ public class CreateArticle extends Fragment  {
         }
         else {
             //spinner wert in id umwandeln
-            int shopId;
+            /*int shopId;
             String selectShop= (String) spinner.getSelectedItem();
             ShopListViewModel.Factory factory = new ShopListViewModel.Factory(getActivity().getApplication(),selectShop);
-            viewModel = ViewModelProviders.of(this, factory).get(ShopListViewModel.class);
-            shopId=viewModel.getShopId();
-
-            ArticleEntity newArticle = new ArticleEntity(String.valueOf(articleName.getText()),shopId, String.valueOf(articleDescription.getText()),
+            viewModel2 = ViewModelProviders.of(this, factory).get(ShopListViewModel.class);
+            shopId=viewModel2.getShopId();
+            */
+            String selectShop= (String) spinner.getSelectedItem();
+            ArticleEntity newArticle = new ArticleEntity(String.valueOf(articleName.getText()),selectShop, String.valueOf(articleDescription.getText()),
                     String.valueOf(articleShortDescription.getText()),Float.parseFloat(articlePrice.getText().toString()), byteArray);
 
             ArticleViewModel.Factory factoryA = new ArticleViewModel.Factory(getActivity().getApplication(), 0);

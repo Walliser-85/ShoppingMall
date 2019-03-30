@@ -22,7 +22,7 @@
         <activity
             android:name=".ui.article.Articles"
             android:label="@string/title_activity_articles"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ui.shop.Shops"
             android:label="@string/title_activity_shops"
