@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -133,7 +134,8 @@ public class CreateArticle extends Fragment  {
         byte[] byteArray = stream.toByteArray();
 
         Log.d(TAG, "###IMAGE###" + image.getDrawable());
-        if(articleName.getText().equals("@string/article_name") || articleDescription.getText().equals("@string/article_description")){
+        if(articleName.getText().toString().isEmpty() || articleDescription.getText().toString().isEmpty()||
+                articleShortDescription.getText().toString().isEmpty()||articlePrice.getText().toString().isEmpty()){
             Toast.makeText(CreateArticle.this.getContext(), "Fill out all the Data!!", Toast.LENGTH_SHORT).show();
         }
         else {

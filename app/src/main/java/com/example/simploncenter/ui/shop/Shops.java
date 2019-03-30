@@ -99,7 +99,7 @@ public class Shops extends BaseActivity {
         byte[] byteArray = stream.toByteArray();
 
         Log.d(TAG, "###IMAGE###" + image.getDrawable());
-        if(shopName.getText().equals("@string/shop_name") || shopDescription.getText().equals("@string/shop_description")){
+        if(shopName.getText().toString().isEmpty() || shopDescription.getText().toString().isEmpty()){
             Toast.makeText(Shops.this, "Fill out all the Data!!", Toast.LENGTH_SHORT).show();
         }
         else {
