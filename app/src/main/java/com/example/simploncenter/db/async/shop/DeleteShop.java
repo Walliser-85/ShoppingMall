@@ -4,8 +4,12 @@ import android.app.Application;
 import android.os.AsyncTask;
 
 import com.example.simploncenter.BaseApp;
+import com.example.simploncenter.db.entity.ArticleEntity;
 import com.example.simploncenter.db.entity.ShopEntity;
+import com.example.simploncenter.db.repository.ArticleRepository;
 import com.example.simploncenter.util.OnAsyncEventListener;
+
+import java.util.List;
 
 public class DeleteShop extends AsyncTask<ShopEntity, Void, Void> {
     private Application application;

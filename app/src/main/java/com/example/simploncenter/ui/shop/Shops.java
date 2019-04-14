@@ -97,33 +97,32 @@ public class Shops extends BaseActivity {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         img.compress(Bitmap.CompressFormat.PNG, 0, stream);
         byte[] byteArray = stream.toByteArray();
-            Log.d(TAG, "###IMAGE###" + image.getDrawable());
-            if(shopName.getText().equals("@string/shop_name") || shopDescription.getText().equals("@string/shop_description")){
-                Toast.makeText(Shops.this, "Fill out all the Data!!", Toast.LENGTH_SHORT).show();
-            }
-            else {
-                ShopEntity newShop = new ShopEntity(String.valueOf(shopName.getText()), String.valueOf(shopDescription.getText()), byteArray);
 
-                ShopViewModel.Factory factory = new ShopViewModel.Factory(
-                        getApplication(), 0);
-                viewModel = ViewModelProviders.of(this, factory).get(ShopViewModel.class);
-                viewModel.createShop(newShop, new OnAsyncEventListener() {
-                    @Override
-                    public void onSuccess() {
-                        Log.d(TAG, "createShop: success");
-                        Toast toast = Toast.makeText(Shops.this, "Create a New Shop", Toast.LENGTH_LONG);
-                        toast.show();
-                        Intent h=new Intent (Shops.this, Shops.class);
-                        startActivity(h);
-                    }
+        Log.d(TAG, "###IMAGE###" + image.getDrawable());
+        if(shopName.getText().equals("@string/shop_name") || shopDescription.getText().equals("@string/shop_description")){
+            Toast.makeText(Shops.this, "Fill out all the Data!!", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            ShopEntity newShop = new ShopEntity(String.valueOf(shopName.getText()), String.valueOf(shopDescription.getText()), byteArray);
 
-                    @Override
-                    public void onFailure(Exception e) {
-                        Log.d(TAG, "createShop: failure", e);
-                    }
-                });
-            }
+            ShopViewModel.Factory factory = new ShopViewModel.Factory(
+                    getApplication(), 0);
+            viewModel = ViewModelProviders.of(this, factory).get(ShopViewModel.class);
+            viewModel.createShop(newShop, new OnAsyncEventListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d(TAG, "createShop: success");
+                    Toast toast = Toast.makeText(Shops.this, "Create a New Shop", Toast.LENGTH_LONG);
+                    toast.show();
+                    Intent h=new Intent (Shops.this, Shops.class);
+                    startActivity(h);
+                }
 
-
+                @Override
+                public void onFailure(Exception e) {
+                    Log.d(TAG, "createShop: failure", e);
+                }
+            });
+        }
     }
 }

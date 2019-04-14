@@ -48,13 +48,14 @@ public class AllArticles extends Fragment {
             public void onItemClick(ArticleEntity item) {
                 Intent intent = new Intent(getActivity(), CurrentArticle.class);
                 intent.putExtra("articleId", item.getIdArticle());
+                intent.putExtra("shopId", item.getToShop());
                 startActivity(intent);
             }
         });
 
         recyclerView.setAdapter(adapter);
 
-        ListViewAllArticle.Factory factory = new ListViewAllArticle.Factory(getActivity().getApplication(),0);
+        ListViewAllArticle.Factory factory = new ListViewAllArticle.Factory(getActivity().getApplication(),"");
         viewModel = ViewModelProviders.of(this, factory).get(ListViewAllArticle.class);
         viewModel.getArticles().observe(this, articleEntities -> {
             if (articleEntities != null) {
@@ -65,51 +66,3 @@ public class AllArticles extends Fragment {
     }
 }
 
-
-/*
-    //filter
-        EditText theFilter = (EditText) rootView.findViewById(R.id.SearchFilter);
-        theFilter.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                //neue
-                ArrayList<String> articlenameN =new ArrayList<String>();
-                ArrayList<String> descN =new ArrayList<String>();
-                ArrayList<Integer> pricesN =new ArrayList<Integer>();
-                ArrayList<Integer> imgidN = new ArrayList<Integer>();
-                int index;
-
-                for (String name:articlename
-                     ) {
-                    if (name.contains(s)){
-                        index=articlename.indexOf(name);
-                        articlenameN.add(articlename.get(index));
-                        descN.add(desc.get(index));
-                        pricesN.add(prices.get(index));
-                        imgidN.add(imgid.get(index));
-                    }
-                }
-
-                //neue Liste
-                customListView = new ListViewAllArticle(getActivity(),articlenameN,descN,imgidN,pricesN);
-                lst.setAdapter(customListView);
-                lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        //startActivity(new Intent(getActivity(), CurrentArticle.class));
-                    }
-                });
-
-            }
-        });
-*/

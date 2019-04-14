@@ -1,6 +1,5 @@
 package com.example.simploncenter.ui.shop;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -10,27 +9,20 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.simploncenter.Adapter.ArticleAdapter;
-import com.example.simploncenter.Adapter.CustomListViewArticle;
-import com.example.simploncenter.Adapter.ShopAdapter;
-import com.example.simploncenter.BaseApp;
 import com.example.simploncenter.R;
 import com.example.simploncenter.db.entity.ArticleEntity;
 import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.db.repository.ArticleRepository;
 import com.example.simploncenter.ui.BaseActivity;
-import com.example.simploncenter.ui.article.Article;
 import com.example.simploncenter.ui.article.CurrentArticle;
 import com.example.simploncenter.util.OnAsyncEventListener;
+import com.example.simploncenter.viewmodel.article.ArticleViewModel;
 import com.example.simploncenter.viewmodel.article.ListViewAllArticle;
-import com.example.simploncenter.viewmodel.shop.ShopListViewModel;
 import com.example.simploncenter.viewmodel.shop.ShopViewModel;
 
 import java.util.ArrayList;
@@ -39,6 +31,7 @@ import java.util.List;
 public class CurrentShop extends BaseActivity {
     private ShopEntity shop;
     private ShopViewModel viewModel;
+    private ArticleViewModel viewModelArticleDelet;
     private List<ArticleEntity> articleList;
     private ListViewAllArticle viewModelArticle;
     private TextView titel, description;
@@ -48,6 +41,7 @@ public class CurrentShop extends BaseActivity {
     private static final int DELETE_SHOP = 2;
     private static final int ADD_ARTICLE = 3;
     private int shopId;
+    private String shopName;
     private ArticleRepository repository;
 
     @Override
@@ -57,6 +51,7 @@ public class CurrentShop extends BaseActivity {
         getLayoutInflater().inflate(R.layout.activity_current_shop, frameLayout);
 
         shopId = getIntent().getIntExtra("shopId",0);
+        shopName= getIntent().getExtras().getString("shopName","defaultKey");
 
         initiateView();
 
@@ -70,6 +65,10 @@ public class CurrentShop extends BaseActivity {
             }
         });
 
+        //Article ViewModel for Delete
+        ArticleViewModel.Factory factoryArtDel = new ArticleViewModel.Factory(getApplication(),shopId);
+        viewModelArticleDelet = ViewModelProviders.of(this, factoryArtDel).get(ArticleViewModel.class);
+
         RecyclerView recyclerView = findViewById(R.id.recycler_view_article);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
@@ -81,16 +80,16 @@ public class CurrentShop extends BaseActivity {
             public void onItemClick(ArticleEntity item) {
                 Intent intent = new Intent(CurrentShop.this, CurrentArticle.class);
                 intent.putExtra("articleId", item.getIdArticle());
-                intent.putExtra("shopId", shopId);
+                intent.putExtra("shopId", shopName);
                 startActivity(intent);
             }
         });
 
         recyclerView.setAdapter(adapter);
 
-        ListViewAllArticle.Factory factoryA = new ListViewAllArticle.Factory(getApplication(),shopId);
+        ListViewAllArticle.Factory factoryA = new ListViewAllArticle.Factory(getApplication(),shopName);
         viewModelArticle = ViewModelProviders.of(this, factoryA).get(ListViewAllArticle.class);
-        viewModelArticle.getArticlesBySHop().observe(this, articleEntities -> {
+        viewModelArticle.getArticlesByShop().observe(this, articleEntities -> {
             if (articleEntities != null) {
                 adapter.setArticle(articleEntities);
             }
@@ -122,6 +121,7 @@ public class CurrentShop extends BaseActivity {
             return true;
         }
         if (item.getItemId() == DELETE_SHOP) {
+
             final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("Delete Shop");
             alertDialog.setCancelable(false);
@@ -137,7 +137,26 @@ public class CurrentShop extends BaseActivity {
                     @Override
                     public void onFailure(Exception e) {}
                 });
+                //Delete the Articles too
+                viewModelArticle.getArticlesByShop().observe(this, articleEntities -> {
+                    if (articleEntities != null) {
+                        for (ArticleEntity arEnt:articleEntities
+                        ) {
+                            viewModelArticleDelet.deleteArticle(arEnt, new OnAsyncEventListener() {
+                                @Override
+                                public void onSuccess() {
+                                }
+
+                                @Override
+                                public void onFailure(Exception e) {}
+                            });
+                        }
+                    }
+                });
+
             });
+
+
             alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", (dialog, which) -> alertDialog.dismiss());
             alertDialog.show();
 

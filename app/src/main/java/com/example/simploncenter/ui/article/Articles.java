@@ -35,6 +35,7 @@ import com.example.simploncenter.R;
 import com.example.simploncenter.ui.shop.Shops;
 import com.example.simploncenter.util.OnAsyncEventListener;
 import com.example.simploncenter.viewmodel.article.ArticleViewModel;
+import com.example.simploncenter.viewmodel.shop.ShopListViewModel;
 
 import java.io.ByteArrayOutputStream;
 
@@ -42,6 +43,7 @@ public class Articles extends BaseActivity {
 
     private ArticleViewModel viewModel;
     private static final String TAG = "EditArticleActivity";
+    private ShopListViewModel ShopviewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +69,6 @@ public class Articles extends BaseActivity {
 
         //TAB Layout
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("Article per Shop"));
         tabLayout.addTab(tabLayout.newTab().setText("All Articles"));
         tabLayout.addTab(tabLayout.newTab().setText("New Articles"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -103,49 +104,4 @@ public class Articles extends BaseActivity {
         }
     }
 
-    public void createNewArticle(View view) {
-        EditText articleName = findViewById(R.id.txt_article_name);
-        EditText articleDescription = findViewById(R.id.txt_article_description);
-        EditText articleShortDescription = findViewById(R.id.txt_article_ShortDescription);
-        EditText articlePrice = findViewById(R.id.txt_article_price);
-        ImageView image = findViewById(R.id.imageViewArticle);
-        Bitmap img = ((BitmapDrawable)image.getDrawable()).getBitmap();
-        Spinner spinner=findViewById(R.id.spinnerShopNames);
-
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        img.compress(Bitmap.CompressFormat.PNG, 0, stream);
-        byte[] byteArray = stream.toByteArray();
-
-        Log.d(TAG, "###IMAGE###" + image.getDrawable());
-        if(articleName.getText().equals("@string/article_name") || articleDescription.getText().equals("@string/article_description")){
-            Toast.makeText(Articles.this, "Fill out all the Data!!", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            //spinner wert in id umwandeln
-            AppDatabase db = AppDatabase.getInstance(this.getBaseContext());
-            int idShop = db.shopDao().getId(spinner.getSelectedItem().toString());
-
-            ArticleEntity newArticle = new ArticleEntity(String.valueOf(articleName.getText()),idShop, String.valueOf(articleDescription.getText()),
-                    String.valueOf(articleShortDescription.getText()),Float.parseFloat(articlePrice.getText().toString()), byteArray);
-
-            ArticleViewModel.Factory factory = new ArticleViewModel.Factory(
-                    getApplication(), 0);
-            viewModel = ViewModelProviders.of(this, factory).get(ArticleViewModel.class);
-            viewModel.createArticle(newArticle, new OnAsyncEventListener() {
-                @Override
-                public void onSuccess() {
-                    Log.d(TAG, "createShop: success");
-                    Toast toast = Toast.makeText(Articles.this, "Create a New Shop", Toast.LENGTH_LONG);
-                    toast.show();
-                    Intent h=new Intent (Articles.this, Shops.class);
-                    startActivity(h);
-                }
-
-                @Override
-                public void onFailure(Exception e) {
-                    Log.d(TAG, "createShop: failure", e);
-                }
-            });
-        }
-    }
 }

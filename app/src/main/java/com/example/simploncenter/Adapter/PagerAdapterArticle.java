@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.simploncenter.ui.article.AllArticles;
-import com.example.simploncenter.ui.article.Article;
 import com.example.simploncenter.ui.article.CreateArticle;
 
 public class PagerAdapterArticle extends FragmentPagerAdapter {
@@ -20,14 +19,11 @@ public class PagerAdapterArticle extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                Article tab1 = new Article();
+                AllArticles tab1 = new AllArticles();
                 return tab1;
             case 1:
-                AllArticles tab2 = new AllArticles();
+                CreateArticle tab2 = new CreateArticle();
                 return tab2;
-            case 2:
-                CreateArticle tab3 = new CreateArticle();
-                return tab3;
             default:
                 return null;
         }

@@ -10,9 +10,9 @@
     <application
         android:name=".BaseApp"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/app_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/app_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -22,7 +22,7 @@
         <activity
             android:name=".ui.article.Articles"
             android:label="@string/title_activity_articles"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ui.shop.Shops"
             android:label="@string/title_activity_shops"

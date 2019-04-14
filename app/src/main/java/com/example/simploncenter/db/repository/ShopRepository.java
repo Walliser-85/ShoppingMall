@@ -33,12 +33,20 @@ public class ShopRepository {
         return ((BaseApp) application).getDatabase().shopDao().getById(clientId);
     }
 
+    public ShopEntity getShopCurrent(final int clientId, Application application) {
+        return ((BaseApp) application).getDatabase().shopDao().getByIdCurrent(clientId);
+    }
+
     public LiveData<List<ShopEntity>> getAllShops(Application application) {
         return ((BaseApp) application).getDatabase().shopDao().getAllShops();
     }
 
     public LiveData<List<String>> getAllShopNames(Application application) {
         return ((BaseApp) application).getDatabase().shopDao().getAllShopNames();
+    }
+
+    public int  getShopId(final String name, Application application) {
+        return ((BaseApp) application).getDatabase().shopDao().getId(name);
     }
 
     public void insert(final ShopEntity shop, OnAsyncEventListener callback,

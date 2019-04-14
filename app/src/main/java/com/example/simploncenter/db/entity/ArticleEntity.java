@@ -12,8 +12,8 @@ public class ArticleEntity {
     @PrimaryKey(autoGenerate = true)
     private int idArticle;
 
-    @ForeignKey(entity=ShopEntity.class,  parentColumns = "idShop", childColumns = "idArticle")
-    private int idToShop;
+    @ForeignKey(entity=ShopEntity.class,  parentColumns = "idShop", childColumns = "toShop")
+    private String toShop;
 
     @ColumnInfo(name="article_name")
     private String articleName;
@@ -33,13 +33,13 @@ public class ArticleEntity {
     @Ignore
     public ArticleEntity(){ }
 
-    public ArticleEntity(String articleName,int idToShop, String description, String shortDescription, float price, byte[] picture) {
+    public ArticleEntity(String articleName,String toShop, String description, String shortDescription, float price, byte[] picture) {
         this.articleName = articleName;
         this.description = description;
         this.shortDescription = shortDescription;
         this.picture = picture;
         this.price=price;
-        this.idToShop=idToShop;
+        this.toShop=toShop;
     }
 
     public int getIdArticle() {
@@ -90,11 +90,11 @@ public class ArticleEntity {
         this.price = price;
     }
 
-    public int getIdToShop() {
-        return idToShop;
+    public String getToShop() {
+        return toShop;
     }
 
-    public void setIdToShop(int idToShop) {
-        this.idToShop = idToShop;
+    public void setToShop(String toShop) {
+        this.toShop = toShop;
     }
 }

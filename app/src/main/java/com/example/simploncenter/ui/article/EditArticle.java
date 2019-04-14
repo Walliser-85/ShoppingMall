@@ -30,8 +30,10 @@ public class EditArticle extends BaseActivity {
     private ArticleEntity article;
     private ArticleViewModel viewModel;
     private TextView articleName, description, shortDescription, price;
+    private TextView shopname;
     private int articleId;
     private int shopId;
+    private String shopN;
     private final int SELECT_PHOTO = 1;
     private ImageView imageView;
     private Context context;
@@ -52,6 +54,7 @@ public class EditArticle extends BaseActivity {
         viewModel.getArticle().observe(this, articleEntity -> {
             if (articleEntity != null) {
                 article = articleEntity;
+                shopN= article.getToShop();
                 updateContent();
                 setTitle("Edit " + article.getArticleName());
             }
@@ -76,7 +79,8 @@ public class EditArticle extends BaseActivity {
         article.setArticleName(String.valueOf(articleName.getText()));
         article.setDescription(String.valueOf(description.getText()));
         article.setShortDescription(String.valueOf(shortDescription.getText()));
-        //article.setPrice(price.getText());
+        article.setPrice(Float.parseFloat(price.getText().toString()));
+        article.setToShop(shopN);
 
         Bitmap img = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -134,8 +138,9 @@ public class EditArticle extends BaseActivity {
         articleName = findViewById(R.id.txt_article_name);
         description = findViewById(R.id.txt_article_description);
         shortDescription = findViewById(R.id.txt_article_ShortDescription);
-        price = findViewById(R.id.txt_shop_name_edit);
+        price = findViewById(R.id.txt_article_price);
         imageView = findViewById(R.id.imageViewArticle);
+        shopname= findViewById(R.id.txvShopNameArticleEdit);
     }
 
     private void updateContent() {
@@ -143,8 +148,9 @@ public class EditArticle extends BaseActivity {
             articleName.setText(article.getArticleName());
             description.setText(article.getDescription());
             shortDescription.setText(article.getShortDescription());
-            //price.setText(String.valueOf(article.getPrice()));
-            //imageView.setImageBitmap(BitmapFactory.decodeByteArray(article.getPicture(), 0, article.getPicture().length));
+            price.setText(String.valueOf(article.getPrice()));
+            imageView.setImageBitmap(BitmapFactory.decodeByteArray(article.getPicture(), 0, article.getPicture().length));
+            shopname.setText("Shop: "+article.getToShop());
         }
     }
 }

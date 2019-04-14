@@ -31,7 +31,7 @@ public class DatabaseInitializer {
         db.shopDao().insert(shop);
     }
 
-    private static void addArticle(final AppDatabase db, final int idToShop, final String articleName, final String description, final String shortDescription,
+    private static void addArticle(final AppDatabase db, final String idToShop, final String articleName, final String description, final String shortDescription,
                                    final  float price, final byte[] picture) throws SQLClientInfoException {
         ArticleEntity article = new ArticleEntity(articleName, idToShop, description, shortDescription, price, picture);
         db.articleDao().insert(article);
@@ -72,19 +72,19 @@ public class DatabaseInitializer {
 
 
         addArticle(db,
-                1,"Apple", "This is Apple", "Short", 10,BitmapToByte(apple)
+                "Migros","Apple", "This is Apple", "Short", 10,BitmapToByte(apple)
         );
         addArticle(db,
-                1,"Banana", "This is Banana", "Short", 10,BitmapToByte(banana)
+                "Migros","Banana", "This is Banana", "Short", 10,BitmapToByte(banana)
         );
         addArticle(db,
-                1,"Grapes", "This is Grapes", "Short", 10,BitmapToByte(grapes)
+                "C&A","Grapes", "This is Grapes", "Short", 10,BitmapToByte(grapes)
         );
         addArticle(db,
-                1,"Mango", "This is Mango", "Short", 10,BitmapToByte(mango)
+                "H&M","Mango", "This is Mango", "Short", 10,BitmapToByte(mango)
         );
         addArticle(db,
-                1,"Watermelon", "This is Watermelon", "Short", 10,BitmapToByte(watermelon)
+                "Interdiscount","Watermelon", "This is Watermelon", "Short", 10,BitmapToByte(watermelon)
         );
     }
 

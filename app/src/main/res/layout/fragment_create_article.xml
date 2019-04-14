@@ -41,6 +41,7 @@
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
             android:maxHeight="40dp"
+            android:tag="1"
             android:src="@drawable/ic_picture"/>
 
         <Button
@@ -49,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
-            android:text="Change Image" />
+            android:text="Select image" />
 
         <EditText
             android:id="@+id/txt_article_name"
@@ -57,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:ems="10"
-            android:hint="Article Name"
+            android:hint="Article name"
             android:inputType="textPersonName" />
 
         <EditText
@@ -66,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:ems="10"
-            android:hint="Article Description"
+            android:hint="Article description"
             android:inputType="textMultiLine" />
 
         <EditText
@@ -75,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:ems="10"
-            android:hint="Article short Description"
+            android:hint="Article short description"
             android:inputType="textMultiLine" />
 
         <EditText
@@ -100,8 +101,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
-            android:text="@string/create_shop"
-            android:onClick="createNewArticle"/>
+            android:text="Create article"/>
     </LinearLayout>
     </ScrollView>
 </RelativeLayout>

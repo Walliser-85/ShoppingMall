@@ -18,27 +18,26 @@ import android.widget.Toast;
 import com.example.simploncenter.Adapter.CustomListViewArticle;
 import com.example.simploncenter.R;
 import com.example.simploncenter.db.entity.ArticleEntity;
+import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.db.repository.ArticleRepository;
 import com.example.simploncenter.ui.BaseActivity;
 import com.example.simploncenter.util.OnAsyncEventListener;
 import com.example.simploncenter.viewmodel.article.ArticleViewModel;
+import com.example.simploncenter.viewmodel.shop.ShopListViewModel;
+import com.example.simploncenter.viewmodel.shop.ShopViewModel;
 
 public class CurrentArticle extends BaseActivity {
     private ArticleEntity article;
     private ArticleViewModel viewModel;
+    private ShopListViewModel viewModelShop;
     private TextView titel, description, shopname, price;
     private ImageView picture;
     private int articleId;
-    private int shopId;
+    private String getNameshop;
     private static final int EDIT_ARTICLE = 1;
     private static final int DELETE_ARTICLE = 2;
     private ArticleRepository repository;
-
-    ListView lst;
-    String[] articlename ={"Apple", "Banana", "Grapes", "Mango", "Watermelon"};
-    String[] desc ={"This is Migros", "This is C&A", "This is H&M", "This is Interdiscount", "This is Interdiscount"};
-    Integer[] articles = {10, 20, 30, 40, 50};
-    Integer[] imgid={R.drawable.apple, R.drawable.banana, R.drawable.grapes, R.drawable.mango, R.drawable.watermelon};
+    private ShopEntity shopEntity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,6 @@ public class CurrentArticle extends BaseActivity {
         getLayoutInflater().inflate(R.layout.activity_current_article, frameLayout);
 
         articleId = getIntent().getIntExtra("articleId",0);
-        shopId = getIntent().getIntExtra("shopId",0);
 
         initiateView();
 
@@ -56,6 +54,7 @@ public class CurrentArticle extends BaseActivity {
         viewModel.getArticle().observe(this, articleEntity -> {
             if (articleEntity != null) {
                 article = articleEntity;
+                getNameshop=article.getToShop();
                 updateContent();
                 setTitle(article.getArticleName());
             }
@@ -80,7 +79,7 @@ public class CurrentArticle extends BaseActivity {
             Toast.makeText(CurrentArticle.this, "EDIT", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(CurrentArticle.this, EditArticle.class);
             intent.putExtra("articleId", articleId);
-            intent.putExtra("shopId", shopId);
+            intent.putExtra("shopId", getNameshop);
             startActivity(intent);
             return true;
         }
@@ -112,7 +111,7 @@ public class CurrentArticle extends BaseActivity {
 
     private void initiateView() {
         titel = findViewById(R.id.txvTitelArticle);
-        shopname = findViewById(R.id.txvShopName);
+        shopname = findViewById(R.id.txvShopNameArticle);
         description = findViewById(R.id.txvArticleDescription);
         picture = findViewById(R.id.imgCurrentArticle);
         price = findViewById(R.id.txvPrice);
@@ -120,11 +119,11 @@ public class CurrentArticle extends BaseActivity {
 
     private void updateContent(){
         if(article != null){
-            titel.setText(article.getArticleName() + " / Shopname");
+            titel.setText(article.getArticleName());
             description.setText(article.getDescription());
-            //picture.setImageBitmap(BitmapFactory.decodeByteArray(article.getPicture(), 0, article.getPicture().length));
-            picture.setImageResource(imgid[0]);
-            //price.setText((int) article.getPrice());
+            shopname.setText(getNameshop);
+            picture.setImageBitmap(BitmapFactory.decodeByteArray(article.getPicture(), 0, article.getPicture().length));
+            price.setText("Price: "+Float.toString(article.getPrice())+" CHF");
         }
     }
 }

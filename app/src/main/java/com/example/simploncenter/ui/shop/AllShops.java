@@ -51,6 +51,7 @@ public class AllShops extends Fragment {
                 public void onItemClick(ShopEntity item) {
                     Intent intent = new Intent(getActivity(), CurrentShop.class);
                     intent.putExtra("shopId", item.getIdShop());
+                    intent.putExtra("shopName", item.getShopName());
                     startActivity(intent);
                 }
             });

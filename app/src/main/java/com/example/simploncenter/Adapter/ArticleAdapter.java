@@ -38,7 +38,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleH
     public void onBindViewHolder(@NonNull ArticleHolder articleHolder, int i) {
             ArticleEntity currentArticle = articleList.get(i);
             articleHolder.textViewArticleName.setText(currentArticle.getArticleName());
-            articleHolder.textViewArticleDescription.setText(currentArticle.getDescription());
+            articleHolder.textViewArticleDescription.setText(currentArticle.getShortDescription());
             articleHolder.ivw.setImageBitmap(BitmapFactory.decodeByteArray(articleList.get(i).getPicture(), 0, articleList.get(i).getPicture().length));
             articleHolder.bind(articleList.get(i), listener);
     }

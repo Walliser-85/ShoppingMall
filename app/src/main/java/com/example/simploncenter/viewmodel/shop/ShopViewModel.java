@@ -13,6 +13,8 @@ import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.db.repository.ShopRepository;
 import com.example.simploncenter.util.OnAsyncEventListener;
 
+import java.util.List;
+
 public class ShopViewModel extends AndroidViewModel {
     private Application application;
     private ShopRepository repository;
