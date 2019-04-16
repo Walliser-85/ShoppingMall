@@ -1,52 +1,29 @@
 package com.example.simploncenter.db.entity;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
+import com.google.firebase.database.Exclude;
 
-@Entity(tableName = "articles")
+import java.util.HashMap;
+import java.util.Map;
+
 public class ArticleEntity {
 
-    @PrimaryKey(autoGenerate = true)
-    private int idArticle;
-
-    @ForeignKey(entity=ShopEntity.class,  parentColumns = "idShop", childColumns = "toShop")
+    private String idArticle;
     private String toShop;
-
-    @ColumnInfo(name="article_name")
     private String articleName;
-
-    @ColumnInfo(name="description")
     private String description;
-
-    @ColumnInfo(name="short_description")
     private String shortDescription;
-
-    @ColumnInfo(name="price")
     private float price;
-
-    @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     private byte[] picture;
 
-    @Ignore
+
     public ArticleEntity(){ }
 
-    public ArticleEntity(String articleName,String toShop, String description, String shortDescription, float price, byte[] picture) {
-        this.articleName = articleName;
-        this.description = description;
-        this.shortDescription = shortDescription;
-        this.picture = picture;
-        this.price=price;
-        this.toShop=toShop;
-    }
-
-    public int getIdArticle() {
+    @Exclude
+    public String getIdArticle() {
         return idArticle;
     }
 
-    public void setIdArticle(int idArticle) {
+    public void setIdArticle(String idArticle) {
         this.idArticle = idArticle;
     }
 
@@ -74,6 +51,7 @@ public class ArticleEntity {
         this.shortDescription = shortDescription;
     }
 
+    @Exclude
     public byte[] getPicture() {
         return picture;
     }
@@ -97,4 +75,17 @@ public class ArticleEntity {
     public void setToShop(String toShop) {
         this.toShop = toShop;
     }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("id shop", toShop);
+        result.put("article name", articleName);
+        result.put("description", description);
+        result.put("short description", shortDescription);
+        result.put("price", price);
+
+        return result;
+    }
+
 }

@@ -19,7 +19,7 @@ public class ArticleViewModel extends AndroidViewModel {
         private final MediatorLiveData<ArticleEntity> observableArticle;
 
         public ArticleViewModel(@NonNull Application application,
-                             final int articleId, ArticleRepository repository) {
+                             final String articleId, ArticleRepository repository) {
             super(application);
 
             this.application = application;
@@ -28,7 +28,7 @@ public class ArticleViewModel extends AndroidViewModel {
             observableArticle = new MediatorLiveData<>();
             observableArticle.setValue(null);
 
-            LiveData<ArticleEntity> article = repository.getArticle(articleId, application);
+            LiveData<ArticleEntity> article = repository.getArticle(articleId);
 
             observableArticle.addSource(article, observableArticle::setValue);
         }
@@ -37,10 +37,10 @@ public class ArticleViewModel extends AndroidViewModel {
 
             @NonNull
             private final Application application;
-            private final int articleID;
+            private final String articleID;
             private final ArticleRepository repository;
 
-            public Factory(@NonNull Application application, int articleID) {
+            public Factory(@NonNull Application application, String articleID) {
                 this.application = application;
                 this.articleID = articleID;
                 repository = ((BaseApp) application).getArticleRepository();
@@ -58,15 +58,18 @@ public class ArticleViewModel extends AndroidViewModel {
         }
 
         public void createArticle(ArticleEntity article, OnAsyncEventListener callback) {
-            repository.insert(article, callback, application);
+            ((BaseApp) getApplication()).getArticleRepository()
+                    .insert(article, callback);
         }
 
         public void updateArticle(ArticleEntity article, OnAsyncEventListener callback) {
-            repository.update(article, callback, application);
+            ((BaseApp) getApplication()).getArticleRepository()
+                    .update(article, callback);
         }
 
         public void deleteArticle(ArticleEntity article, OnAsyncEventListener callback) {
-            repository.delete(article, callback, application);
+            ((BaseApp) getApplication()).getArticleRepository()
+                    .delete(article, callback);
         }
 
 }
