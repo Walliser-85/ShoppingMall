@@ -15,9 +15,8 @@ import com.example.simploncenter.db.repository.ArticleRepository;
 import java.util.List;
 
 public class ListViewAllArticle extends AndroidViewModel {
-    private ArticleRepository repository;
 
-    private Application application;
+    private ArticleRepository repository;
 
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
     private final MediatorLiveData<List<ArticleEntity>> observableArticle;
@@ -28,7 +27,6 @@ public class ListViewAllArticle extends AndroidViewModel {
         super(application);
 
         this.repository = repository;
-        this.application = application;
 
         observableArticle = new MediatorLiveData<>();
         observableArticleByShop = new MediatorLiveData<>();
@@ -36,8 +34,8 @@ public class ListViewAllArticle extends AndroidViewModel {
         observableArticle.setValue(null);
         observableArticleByShop.setValue(null);
 
-        LiveData<List<ArticleEntity>> article = repository.getAllArticle(application);
-        LiveData<List<ArticleEntity>> articleByShop = repository.getByShopName(shopId, application);
+        LiveData<List<ArticleEntity>> article = repository.getAllArticle();
+        LiveData<List<ArticleEntity>> articleByShop = repository.getByShop(shopId);
 
         // observe the changes of the entities from the database and forward them
         observableArticle.addSource(article, observableArticle::setValue);

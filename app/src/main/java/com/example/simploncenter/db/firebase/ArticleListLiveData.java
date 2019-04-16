@@ -17,12 +17,10 @@ public class ArticleListLiveData extends LiveData<List<ArticleEntity>> {
     private static final String TAG = "ArticleListLiveData";
 
     private final DatabaseReference reference;
-    private final String shop;
     private final MyValueEventListener listener = new MyValueEventListener();
 
-    public ArticleListLiveData(DatabaseReference ref, String shop) {
+    public ArticleListLiveData(DatabaseReference ref) {
         reference = ref;
-        this.shop = shop;
     }
 
     @Override
@@ -53,7 +51,6 @@ public class ArticleListLiveData extends LiveData<List<ArticleEntity>> {
         for (DataSnapshot childSnapshot : snapshot.getChildren()) {
             ArticleEntity entity = childSnapshot.getValue(ArticleEntity.class);
             entity.setIdArticle(childSnapshot.getKey());
-            entity.setToShop(shop);
             articles.add(entity);
         }
         return articles;

@@ -51,6 +51,7 @@ public class ArticleEntity {
         this.shortDescription = shortDescription;
     }
 
+    @Exclude
     public byte[] getPicture() {
         return picture;
     }
@@ -78,12 +79,11 @@ public class ArticleEntity {
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("name shop", toShop);
+        result.put("id shop", toShop);
         result.put("article name", articleName);
         result.put("description", description);
         result.put("short description", shortDescription);
         result.put("price", price);
-        result.put("picture", picture);
 
         return result;
     }

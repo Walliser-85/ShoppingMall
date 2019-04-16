@@ -35,12 +35,19 @@ public class ArticleRepository {
         return new ArticleLiveData(reference);
     }
 
-    public LiveData<List<ArticleEntity>> getByShop(final String shop) {
+    public LiveData<List<ArticleEntity>> getAllArticle() {
+        DatabaseReference reference = FirebaseDatabase.getInstance()
+                .getReference("articles")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        return new ArticleListLiveData(reference);
+    }
+
+    public LiveData<List<ArticleEntity>> getByShop(final String idShop) {
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("shops")
-                .child(shop)
+                .child(idShop)
                 .child("articles");
-        return new ArticleListLiveData(reference, shop);
+        return new ArticleListLiveData(reference);
     }
 
     public void insert(final ArticleEntity article, final OnAsyncEventListener callback) {
