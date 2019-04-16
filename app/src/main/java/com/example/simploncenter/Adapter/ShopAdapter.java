@@ -45,23 +45,19 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopHolder> {
         ShopEntity currentShop = shopList.get(i);
         shopHolder.textViewShopName.setText(currentShop.getShopName());
         shopHolder.textViewShopDescription.setText(currentShop.getDescription());
-        //shopHolder.ivw.setImageBitmap(BitmapFactory.decodeByteArray(shopList.get(i).getPicture(), 0, shopList.get(i).getPicture().length));
-        //shopHolder.ivw.setImageBitmap(BitmapFactory.decodeByteArray(shopList.get(i).getPicture(), 0, shopList.get(i).getPicture().length));
-        //shopHolder.ivw.setImageResource(imgid[0]);
         shopHolder.bind(shopList.get(i), listener);
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         // Create a storage reference from our app
         StorageReference storageRef = storage.getReference();
         // Create a reference with an initial file path and name
-        //StorageReference pathReference = storageRef.child("shops/"+shopList.get(i).getShopName()+".png");
-        StorageReference pathReference = storageRef.child("shops/Migros.png");
+        StorageReference pathReference = storageRef.child("shops/"+shopList.get(i).getIdShop()+".png");
 
-        final long ONE_MEGABYTE = 1024 * 1024;
+        final long ONE_MEGABYTE = 300 * 300;
         pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
-                shopHolder.ivw.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 100, bytes.length));
+                shopHolder.ivw.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

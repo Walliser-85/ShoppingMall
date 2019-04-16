@@ -2,15 +2,23 @@ package com.example.simploncenter.db.repository;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
+import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.simploncenter.BaseApp;
 import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.db.firebase.ShopListLiveData;
 import com.example.simploncenter.db.firebase.ShopLiveData;
+import com.example.simploncenter.ui.shop.Shops;
 import com.example.simploncenter.util.OnAsyncEventListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.List;
 
@@ -50,7 +58,7 @@ public class ShopRepository {
         return ((BaseApp) application).getDatabase().shopDao().getId(name);
     }*/
 
-    public void insert(final ShopEntity shop, final OnAsyncEventListener callback) {
+    public void insert(final ShopEntity shop, final OnAsyncEventListener callback, byte[] data) {
         String id = FirebaseDatabase.getInstance().getReference("shops").push().getKey();
         FirebaseDatabase.getInstance()
                 .getReference("shops")
@@ -59,7 +67,22 @@ public class ShopRepository {
                     if (databaseError != null) {
                         callback.onFailure(databaseError.toException());
                     } else {
-                        callback.onSuccess();
+                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                        StorageReference storageRef = storage.getReference();
+                        StorageReference pathReference = storageRef.child("shops/"+id+".png");
+
+                        UploadTask uploadTask = pathReference.putBytes(data);
+                        uploadTask.addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                callback.onFailure(exception);
+                            }
+                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                callback.onSuccess();
+                            }
+                        });
                     }
                 });
     }

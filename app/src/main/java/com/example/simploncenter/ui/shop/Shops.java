@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -110,30 +111,13 @@ public class Shops extends BaseActivity {
             Toast.makeText(Shops.this, "Fill out all the Data!!", Toast.LENGTH_SHORT).show();
         }
         else {
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageRef = storage.getReference();
-            StorageReference mountainImagesRef = storageRef.child("shops/"+shopName+".png");
-
-            UploadTask uploadTask = mountainImagesRef.putBytes(data);
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    Toast toast = Toast.makeText(Shops.this, "Failerue upload Picture", Toast.LENGTH_LONG);
-                    toast.show();
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast toast = Toast.makeText(Shops.this, "Sucess", Toast.LENGTH_LONG);
-                    toast.show();
-                }
-            });
-
+            View b= view.findViewById(R.id.btnCreateShop);
+            b.setVisibility(View.GONE);
             ShopEntity newShop = new ShopEntity(String.valueOf(shopName.getText()), String.valueOf(shopDescription.getText()));
             ShopViewModel.Factory factory = new ShopViewModel.Factory(
                     getApplication(), "0");
             viewModel = ViewModelProviders.of(this, factory).get(ShopViewModel.class);
-            viewModel.createShop(newShop, new OnAsyncEventListener() {
+            viewModel.createShop(newShop, new OnAsyncEventListener(){
                 @Override
                 public void onSuccess() {
                     Log.d(TAG, "createShop: success");
@@ -141,13 +125,15 @@ public class Shops extends BaseActivity {
                     toast.show();
                     Intent h=new Intent (Shops.this, Shops.class);
                     startActivity(h);
+                    b.setVisibility(View.VISIBLE);
                 }
 
                 @Override
                 public void onFailure(Exception e) {
                     Log.d(TAG, "createShop: failure", e);
+                    b.setVisibility(View.VISIBLE);
                 }
-            });
+            },data);
         }
     }
 }
