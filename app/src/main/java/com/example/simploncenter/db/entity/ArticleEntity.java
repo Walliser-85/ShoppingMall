@@ -18,6 +18,14 @@ public class ArticleEntity {
 
     public ArticleEntity(){ }
 
+    public ArticleEntity(String toShop, String articleName, String description, String shortDescription, float price) {
+        this.toShop = toShop;
+        this.articleName = articleName;
+        this.description = description;
+        this.shortDescription = shortDescription;
+        this.price = price;
+    }
+
     @Exclude
     public String getIdArticle() {
         return idArticle;

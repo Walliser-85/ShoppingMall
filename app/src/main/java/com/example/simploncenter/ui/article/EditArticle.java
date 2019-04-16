@@ -49,7 +49,7 @@ public class EditArticle extends BaseActivity {
 
         initiateView();
 
-        ArticleViewModel.Factory factory = new ArticleViewModel.Factory(getApplication(), articleId);
+        ArticleViewModel.Factory factory = new ArticleViewModel.Factory(getApplication(), Integer.toString(articleId));
         viewModel = ViewModelProviders.of(this, factory).get(ArticleViewModel.class);
         viewModel.getArticle().observe(this, articleEntity -> {
             if (articleEntity != null) {

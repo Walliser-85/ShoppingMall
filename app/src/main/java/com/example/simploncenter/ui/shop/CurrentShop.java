@@ -66,7 +66,7 @@ public class CurrentShop extends BaseActivity {
         });
 
         //Article ViewModel for Delete
-        ArticleViewModel.Factory factoryArtDel = new ArticleViewModel.Factory(getApplication(),shopId);
+        ArticleViewModel.Factory factoryArtDel = new ArticleViewModel.Factory(getApplication(),Integer.toString(shopId));
         viewModelArticleDelet = ViewModelProviders.of(this, factoryArtDel).get(ArticleViewModel.class);
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view_article);

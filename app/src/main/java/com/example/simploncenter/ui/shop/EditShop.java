@@ -104,7 +104,7 @@ public class EditShop extends BaseActivity {
         ListViewAllArticle.Factory factoryA = new ListViewAllArticle.Factory(getApplication(),String.valueOf(titel.getText()));
         viewModelArticle = ViewModelProviders.of(this, factoryA).get(ListViewAllArticle.class);
         //Article ViewModel for Update
-        ArticleViewModel.Factory factoryArtDel = new ArticleViewModel.Factory(getApplication(),shopId);
+        ArticleViewModel.Factory factoryArtDel = new ArticleViewModel.Factory(getApplication(),Integer.toString(shopId));
         viewModelArticleEd = ViewModelProviders.of(this, factoryArtDel).get(ArticleViewModel.class);
 
         viewModelArticle.getArticlesByShop().observe(this, articleEntities -> {

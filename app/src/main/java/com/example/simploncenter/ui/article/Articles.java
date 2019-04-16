@@ -24,7 +24,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.simploncenter.db.AppDatabase;
 import com.example.simploncenter.db.entity.ArticleEntity;
 import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.ui.About;

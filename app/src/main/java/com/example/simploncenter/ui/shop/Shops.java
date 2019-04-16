@@ -33,7 +33,11 @@ import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.util.OnAsyncEventListener;
 import com.example.simploncenter.viewmodel.shop.ShopViewModel;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 
@@ -98,7 +102,7 @@ public class Shops extends BaseActivity {
         Bitmap img = ((BitmapDrawable)image.getDrawable()).getBitmap();
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        img.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        img.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] data = stream.toByteArray();
 
         Log.d(TAG, "###IMAGE###" + image.getDrawable());
@@ -106,19 +110,22 @@ public class Shops extends BaseActivity {
             Toast.makeText(Shops.this, "Fill out all the Data!!", Toast.LENGTH_SHORT).show();
         }
         else {
-            StorageReference mountainImagesRef = storageRef.child("shop/"+shopName+"png");
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReference();
+            StorageReference mountainImagesRef = storageRef.child("shops/"+shopName+".png");
 
             UploadTask uploadTask = mountainImagesRef.putBytes(data);
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    // Handle unsuccessful uploads
+                    Toast toast = Toast.makeText(Shops.this, "Failerue upload Picture", Toast.LENGTH_LONG);
+                    toast.show();
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                    // ...
+                    Toast toast = Toast.makeText(Shops.this, "Sucess", Toast.LENGTH_LONG);
+                    toast.show();
                 }
             });
 

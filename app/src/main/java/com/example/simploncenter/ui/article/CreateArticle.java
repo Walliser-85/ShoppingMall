@@ -147,9 +147,9 @@ public class CreateArticle extends Fragment  {
         else {
             String selectShop= (String) spinner.getSelectedItem();
             ArticleEntity newArticle = new ArticleEntity(String.valueOf(articleName.getText()),selectShop, String.valueOf(articleDescription.getText()),
-                    String.valueOf(articleShortDescription.getText()),Float.parseFloat(articlePrice.getText().toString()), byteArray);
+                    String.valueOf(articleShortDescription.getText()),Float.parseFloat(articlePrice.getText().toString()));
 
-            ArticleViewModel.Factory factoryA = new ArticleViewModel.Factory(getActivity().getApplication(), 0);
+            ArticleViewModel.Factory factoryA = new ArticleViewModel.Factory(getActivity().getApplication(), "0");
             articleViewModel = ViewModelProviders.of(this, factoryA).get(ArticleViewModel.class);
             articleViewModel.createArticle(newArticle, new OnAsyncEventListener() {
                 @Override
