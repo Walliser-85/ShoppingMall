@@ -55,7 +55,7 @@ public class CurrentShop extends BaseActivity {
 
         initiateView();
 
-        ShopViewModel.Factory factory = new ShopViewModel.Factory(getApplication(),shopId);
+        ShopViewModel.Factory factory = new ShopViewModel.Factory(getApplication(),Integer.toString(shopId));
         viewModel = ViewModelProviders.of(this, factory).get(ShopViewModel.class);
         viewModel.getShop().observe(this, shopEntity -> {
             if (shopEntity != null) {

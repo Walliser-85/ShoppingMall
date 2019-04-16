@@ -2,13 +2,15 @@ package com.example.simploncenter.db.repository;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
+import android.util.Log;
 
 import com.example.simploncenter.BaseApp;
-import com.example.simploncenter.db.async.shop.CreateShop;
-import com.example.simploncenter.db.async.shop.DeleteShop;
-import com.example.simploncenter.db.async.shop.UpdateShop;
 import com.example.simploncenter.db.entity.ShopEntity;
+import com.example.simploncenter.db.firebase.ShopListLiveData;
+import com.example.simploncenter.db.firebase.ShopLiveData;
 import com.example.simploncenter.util.OnAsyncEventListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -29,38 +31,62 @@ public class ShopRepository {
         return instance;
     }
 
-    public LiveData<ShopEntity> getShop(final int clientId, Application application) {
-        return ((BaseApp) application).getDatabase().shopDao().getById(clientId);
+    public LiveData<ShopEntity> getShop(final String clientId) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("shops").child(clientId);
+        return new ShopLiveData(reference);
     }
 
-    public ShopEntity getShopCurrent(final int clientId, Application application) {
-        return ((BaseApp) application).getDatabase().shopDao().getByIdCurrent(clientId);
+    public LiveData<List<ShopEntity>> getAllShops() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("shops");
+        return new ShopListLiveData(reference);
     }
 
-    public LiveData<List<ShopEntity>> getAllShops(Application application) {
-        return ((BaseApp) application).getDatabase().shopDao().getAllShops();
-    }
-
-    public LiveData<List<String>> getAllShopNames(Application application) {
+    /*
+    public LiveData<List<String>> getAllShopNames() {
         return ((BaseApp) application).getDatabase().shopDao().getAllShopNames();
     }
 
-    public int  getShopId(final String name, Application application) {
+    public int  getShopId(final String name) {
         return ((BaseApp) application).getDatabase().shopDao().getId(name);
+    }*/
+
+    public void insert(final ShopEntity shop, final OnAsyncEventListener callback) {
+        String id = FirebaseDatabase.getInstance().getReference("shops").push().getKey();
+        FirebaseDatabase.getInstance()
+                .getReference("shops")
+                .child(id)
+                .setValue(shop, (databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
     }
 
-    public void insert(final ShopEntity shop, OnAsyncEventListener callback,
-                       Application application) {
-        new CreateShop(application, callback).execute(shop);
+    public void update(final ShopEntity shop, final OnAsyncEventListener callback) {
+        FirebaseDatabase.getInstance()
+                .getReference("shops")
+                .child(shop.getIdShop())
+                .updateChildren(shop.toMap(), (databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
     }
 
-    public void update(final ShopEntity shop, OnAsyncEventListener callback,
-                       Application application) {
-        new UpdateShop(application, callback).execute(shop);
-    }
-
-    public void delete(final ShopEntity shop, OnAsyncEventListener callback,
-                       Application application) {
-        new DeleteShop(application, callback).execute(shop);
+    public void delete(final ShopEntity shop, OnAsyncEventListener callback) {
+        FirebaseDatabase.getInstance()
+                .getReference("shops")
+                .child(shop.getIdShop())
+                .removeValue((databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
     }
 }

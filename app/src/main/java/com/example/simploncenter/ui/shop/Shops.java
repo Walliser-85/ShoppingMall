@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -31,6 +32,8 @@ import com.example.simploncenter.R;
 import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.util.OnAsyncEventListener;
 import com.example.simploncenter.viewmodel.shop.ShopViewModel;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.firebase.database.DatabaseReference;
 
 import java.io.ByteArrayOutputStream;
 
@@ -96,17 +99,32 @@ public class Shops extends BaseActivity {
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         img.compress(Bitmap.CompressFormat.PNG, 0, stream);
-        byte[] byteArray = stream.toByteArray();
+        byte[] data = stream.toByteArray();
 
         Log.d(TAG, "###IMAGE###" + image.getDrawable());
         if(shopName.getText().equals("@string/shop_name") || shopDescription.getText().equals("@string/shop_description")){
             Toast.makeText(Shops.this, "Fill out all the Data!!", Toast.LENGTH_SHORT).show();
         }
         else {
-            ShopEntity newShop = new ShopEntity(String.valueOf(shopName.getText()), String.valueOf(shopDescription.getText()), byteArray);
+            StorageReference mountainImagesRef = storageRef.child("shop/"+shopName+"png");
 
+            UploadTask uploadTask = mountainImagesRef.putBytes(data);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                    // ...
+                }
+            });
+
+            ShopEntity newShop = new ShopEntity(String.valueOf(shopName.getText()), String.valueOf(shopDescription.getText()));
             ShopViewModel.Factory factory = new ShopViewModel.Factory(
-                    getApplication(), 0);
+                    getApplication(), "0");
             viewModel = ViewModelProviders.of(this, factory).get(ShopViewModel.class);
             viewModel.createShop(newShop, new OnAsyncEventListener() {
                 @Override

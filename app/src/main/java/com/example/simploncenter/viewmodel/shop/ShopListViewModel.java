@@ -39,12 +39,12 @@ public class ShopListViewModel extends AndroidViewModel {
         observableShops.setValue(null);
         observableShopNames.setValue(null);
 
-        LiveData<List<ShopEntity>> shops = repository.getAllShops(application);
-        LiveData<List<String>> names = repository.getAllShopNames(application);
+        LiveData<List<ShopEntity>> shops = repository.getAllShops();
+        //LiveData<List<String>> names = repository.getAllShopNames(application);
 
         // observe the changes of the entities from the database and forward them
         observableShops.addSource(shops, observableShops::setValue);
-        observableShopNames.addSource(names,observableShopNames::setValue);
+        //observableShopNames.addSource(names,observableShopNames::setValue);
     }
 
     public ShopListViewModel(@NonNull Application application,
@@ -60,13 +60,13 @@ public class ShopListViewModel extends AndroidViewModel {
         observableShops.setValue(null);
         observableShopNames.setValue(null);
 
-        LiveData<List<ShopEntity>> shops = repository.getAllShops(application);
-        LiveData<List<String>> names = repository.getAllShopNames(application);
-        idShop= repository.getShopId(name,application);
+        LiveData<List<ShopEntity>> shops = repository.getAllShops();
+        //LiveData<List<String>> names = repository.getAllShopNames(application);
+        //idShop= repository.getShopId(name);
 
         // observe the changes of the entities from the database and forward them
         observableShops.addSource(shops, observableShops::setValue);
-        observableShopNames.addSource(names,observableShopNames::setValue);
+        //observableShopNames.addSource(names,observableShopNames::setValue);
     }
     public ShopListViewModel(@NonNull Application application,
                              ShopRepository repository, int id) {
@@ -81,13 +81,13 @@ public class ShopListViewModel extends AndroidViewModel {
         observableShops.setValue(null);
         observableShopNames.setValue(null);
 
-        LiveData<List<ShopEntity>> shops = repository.getAllShops(application);
-        LiveData<List<String>> names = repository.getAllShopNames(application);
-        shop= repository.getShopCurrent(id,application);
+        LiveData<List<ShopEntity>> shops = repository.getAllShops();
+        //LiveData<List<String>> names = repository.getAllShopNames(application);
+        //shop= repository.getShopCurrent(id,application);
 
         // observe the changes of the entities from the database and forward them
         observableShops.addSource(shops, observableShops::setValue);
-        observableShopNames.addSource(names,observableShopNames::setValue);
+        //observableShopNames.addSource(names,observableShopNames::setValue);
 
     }
 

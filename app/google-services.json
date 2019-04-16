@@ -13,7 +13,20 @@
           "package_name": "com.example.simploncenter"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "705814564573-991pcfdna14muq679qtqkk2vpqi6cr16.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.simploncenter",
+            "certificate_hash": "6f214c2bf3ceb11853409db2955c6e111c962465"
+          }
+        },
+        {
+          "client_id": "705814564573-0nqfe4f1hh8nf57ci9ko0qnv78sb4oq9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAh_jmR7QIhpsqYX0Bq7mtNgE0BUTFoff8"

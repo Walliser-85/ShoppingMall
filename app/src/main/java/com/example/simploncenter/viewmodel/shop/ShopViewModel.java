@@ -21,7 +21,7 @@ public class ShopViewModel extends AndroidViewModel {
     private final MediatorLiveData<ShopEntity> observableShop;
 
     public ShopViewModel(@NonNull Application application,
-                         final int shopId, ShopRepository repository) {
+                         final String shopId, ShopRepository repository) {
         super(application);
 
         this.application = application;
@@ -30,7 +30,7 @@ public class ShopViewModel extends AndroidViewModel {
         observableShop = new MediatorLiveData<>();
         observableShop.setValue(null);
 
-        LiveData<ShopEntity> shop = repository.getShop(shopId, application);
+        LiveData<ShopEntity> shop = repository.getShop(shopId);
 
         observableShop.addSource(shop, observableShop::setValue);
     }
@@ -39,10 +39,10 @@ public class ShopViewModel extends AndroidViewModel {
 
         @NonNull
         private final Application application;
-        private final int shopId;
+        private final String shopId;
         private final ShopRepository repository;
 
-        public Factory(@NonNull Application application, int shopId) {
+        public Factory(@NonNull Application application, String shopId) {
             this.application = application;
             this.shopId = shopId;
             repository = ((BaseApp) application).getShopRepository();
@@ -60,14 +60,14 @@ public class ShopViewModel extends AndroidViewModel {
     }
 
     public void createShop(ShopEntity shop, OnAsyncEventListener callback) {
-        repository.insert(shop, callback, application);
+        repository.insert(shop, callback);
     }
 
     public void updateShop(ShopEntity shop, OnAsyncEventListener callback) {
-        repository.update(shop, callback, application);
+        repository.update(shop, callback);
     }
 
     public void deleteClient(ShopEntity shop, OnAsyncEventListener callback){
-        repository.delete(shop,callback,application);
+        repository.delete(shop,callback);
     }
 }
