@@ -87,7 +87,7 @@ public class ShopRepository {
                 });
     }
 
-    public void update(final ShopEntity shop, final OnAsyncEventListener callback) {
+    public void update(final ShopEntity shop, final OnAsyncEventListener callback, byte[] data) {
         FirebaseDatabase.getInstance()
                 .getReference("shops")
                 .child(shop.getIdShop())
@@ -95,7 +95,22 @@ public class ShopRepository {
                     if (databaseError != null) {
                         callback.onFailure(databaseError.toException());
                     } else {
-                        callback.onSuccess();
+                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                        StorageReference storageRef = storage.getReference();
+                        StorageReference pathReference = storageRef.child("shops/"+shop.getIdShop()+".png");
+
+                        UploadTask uploadTask = pathReference.putBytes(data);
+                        uploadTask.addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                callback.onFailure(exception);
+                            }
+                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                callback.onSuccess();
+                            }
+                        });
                     }
                 });
     }

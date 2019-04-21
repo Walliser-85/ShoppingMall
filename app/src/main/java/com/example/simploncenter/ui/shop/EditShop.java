@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,6 +23,10 @@ import com.example.simploncenter.util.OnAsyncEventListener;
 import com.example.simploncenter.viewmodel.article.ArticleViewModel;
 import com.example.simploncenter.viewmodel.article.ListViewAllArticle;
 import com.example.simploncenter.viewmodel.shop.ShopViewModel;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -31,7 +36,7 @@ public class EditShop extends BaseActivity {
     private ShopEntity shop;
     private ShopViewModel viewModel;
     private TextView titel, description;
-    private int shopId;
+    private String shopId;
     private final int SELECT_PHOTO = 1;
     private ImageView imageView;
     private Context context;
@@ -47,9 +52,9 @@ public class EditShop extends BaseActivity {
 
         initiateView();
 
-        shopId = getIntent().getIntExtra("shopId",0);
+        shopId = getIntent().getExtras().getString("shopId","0");
 
-        ShopViewModel.Factory factory = new ShopViewModel.Factory(getApplication(),Integer.toString(shopId));
+        ShopViewModel.Factory factory = new ShopViewModel.Factory(getApplication(),shopId);
         viewModel = ViewModelProviders.of(this, factory).get(ShopViewModel.class);
         viewModel.getShop().observe(this, shopEntity -> {
             if (shopEntity != null) {
@@ -98,13 +103,13 @@ public class EditShop extends BaseActivity {
             public void onFailure(Exception e) {
                 Toast.makeText(EditShop.this, "Cannot save changes", Toast.LENGTH_SHORT).show();
             }
-        });
+        }, byteArray);
 
         //Change Article Shopnames too
-        ListViewAllArticle.Factory factoryA = new ListViewAllArticle.Factory(getApplication(),String.valueOf(titel.getText()));
+        /*ListViewAllArticle.Factory factoryA = new ListViewAllArticle.Factory(getApplication(),String.valueOf(titel.getText()));
         viewModelArticle = ViewModelProviders.of(this, factoryA).get(ListViewAllArticle.class);
         //Article ViewModel for Update
-        ArticleViewModel.Factory factoryArtDel = new ArticleViewModel.Factory(getApplication(),Integer.toString(shopId));
+        ArticleViewModel.Factory factoryArtDel = new ArticleViewModel.Factory(getApplication(),shopId);
         viewModelArticleEd = ViewModelProviders.of(this, factoryArtDel).get(ArticleViewModel.class);
 
         viewModelArticle.getArticlesByShop().observe(this, articleEntities -> {
@@ -122,7 +127,7 @@ public class EditShop extends BaseActivity {
                     });
                 }
             }
-        });
+        });*/
     }
 
     @Override
@@ -155,7 +160,24 @@ public class EditShop extends BaseActivity {
         if(shop != null){
             titel.setText(shop.getShopName());
             description.setText(shop.getDescription());
-            imageView.setImageBitmap(BitmapFactory.decodeByteArray(shop.getPicture(), 0, shop.getPicture().length));
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            // Create a storage reference from our app
+            StorageReference storageRef = storage.getReference();
+            // Create a reference with an initial file path and name
+            StorageReference pathReference = storageRef.child("shops/"+shop.getIdShop()+".png");
+
+            final long ONE_MEGABYTE = 300 * 300;
+            pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    imageView.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+
+                }
+            });
         }
     }
 }

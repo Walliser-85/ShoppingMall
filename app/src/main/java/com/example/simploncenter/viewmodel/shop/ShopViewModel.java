@@ -63,8 +63,8 @@ public class ShopViewModel extends AndroidViewModel {
         repository.insert(shop, callback, data);
     }
 
-    public void updateShop(ShopEntity shop, OnAsyncEventListener callback) {
-        repository.update(shop, callback);
+    public void updateShop(ShopEntity shop, OnAsyncEventListener callback, byte[] data) {
+        repository.update(shop, callback, data);
     }
 
     public void deleteClient(ShopEntity shop, OnAsyncEventListener callback){

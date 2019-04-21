@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +25,10 @@ import com.example.simploncenter.util.OnAsyncEventListener;
 import com.example.simploncenter.viewmodel.article.ArticleViewModel;
 import com.example.simploncenter.viewmodel.article.ListViewAllArticle;
 import com.example.simploncenter.viewmodel.shop.ShopViewModel;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +45,7 @@ public class CurrentShop extends BaseActivity {
     private static final int EDIT_SHOP = 1;
     private static final int DELETE_SHOP = 2;
     private static final int ADD_ARTICLE = 3;
-    private int shopId;
+    private String shopId;
     private String shopName;
     private ArticleRepository repository;
 
@@ -50,12 +55,12 @@ public class CurrentShop extends BaseActivity {
         navigationView.setCheckedItem(R.id.nav_shops);
         getLayoutInflater().inflate(R.layout.activity_current_shop, frameLayout);
 
-        shopId = getIntent().getIntExtra("shopId",0);
+        shopId = getIntent().getExtras().getString("shopId","0");
         shopName= getIntent().getExtras().getString("shopName","defaultKey");
 
         initiateView();
 
-        ShopViewModel.Factory factory = new ShopViewModel.Factory(getApplication(),Integer.toString(shopId));
+        ShopViewModel.Factory factory = new ShopViewModel.Factory(getApplication(),shopId);
         viewModel = ViewModelProviders.of(this, factory).get(ShopViewModel.class);
         viewModel.getShop().observe(this, shopEntity -> {
             if (shopEntity != null) {
@@ -66,7 +71,7 @@ public class CurrentShop extends BaseActivity {
         });
 
         //Article ViewModel for Delete
-        ArticleViewModel.Factory factoryArtDel = new ArticleViewModel.Factory(getApplication(),Integer.toString(shopId));
+        /*ArticleViewModel.Factory factoryArtDel = new ArticleViewModel.Factory(getApplication(),shopId);
         viewModelArticleDelet = ViewModelProviders.of(this, factoryArtDel).get(ArticleViewModel.class);
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view_article);
@@ -93,7 +98,7 @@ public class CurrentShop extends BaseActivity {
             if (articleEntities != null) {
                 adapter.setArticle(articleEntities);
             }
-        });
+        });*/
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -181,7 +186,24 @@ public class CurrentShop extends BaseActivity {
         if(shop != null){
             titel.setText(shop.getShopName());
             description.setText(shop.getDescription());
-            picture.setImageBitmap(BitmapFactory.decodeByteArray(shop.getPicture(), 0, shop.getPicture().length));
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            // Create a storage reference from our app
+            StorageReference storageRef = storage.getReference();
+            // Create a reference with an initial file path and name
+            StorageReference pathReference = storageRef.child("shops/"+shop.getIdShop()+".png");
+
+            final long ONE_MEGABYTE = 300 * 300;
+            pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    picture.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+
+                }
+            });
         }
     }
 }
