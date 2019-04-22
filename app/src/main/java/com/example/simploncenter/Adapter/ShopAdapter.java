@@ -9,9 +9,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.simploncenter.R;
 import com.example.simploncenter.db.entity.ShopEntity;
+import com.example.simploncenter.ui.shop.Shops;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -53,7 +55,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopHolder> {
         // Create a reference with an initial file path and name
         StorageReference pathReference = storageRef.child("shops/"+shopList.get(i).getIdShop()+".png");
 
-        final long ONE_MEGABYTE = 300 * 300;
+        final long ONE_MEGABYTE = 800 * 800;
         pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
@@ -62,7 +64,9 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopHolder> {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-
+                System.out.print("error");
+                String id = shopList.get(i).getIdShop();
+                System.out.print(id);
             }
         });
 
