@@ -51,7 +51,7 @@ public class ArticleRepository {
         FirebaseDatabase.getInstance()
                 .getReference("articles")
                 .child(key)
-                .setValue(article, (databaseError, databaseReference) -> {
+                .setValue(article.toMap(), (databaseError, databaseReference) -> {
                     if (databaseError != null) {
                         callback.onFailure(databaseError.toException());
                     } else {
@@ -83,9 +83,7 @@ public class ArticleRepository {
 
     public void update(final ArticleEntity article, OnAsyncEventListener callback, byte [] data) {
         FirebaseDatabase.getInstance()
-                .getReference("shops")
-                .child(article.getToShop())
-                .child("articles")
+                .getReference("articles")
                 .child(article.getIdArticle())
                 .updateChildren(article.toMap(), (databaseError, databaseReference) -> {
                     if (databaseError != null) {
@@ -113,9 +111,18 @@ public class ArticleRepository {
 
     public void delete(final ArticleEntity article, OnAsyncEventListener callback) {
         FirebaseDatabase.getInstance()
-                .getReference("shops")
-                .child(article.getToShop())
-                .child("articles")
+                .getReference("articles")
+                .child(article.getIdArticle())
+                .removeValue((databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
+        //Delete in Shop
+        FirebaseDatabase.getInstance()
+                .getReference("shops/"+article.getToShop()+"/articles")
                 .child(article.getIdArticle())
                 .removeValue((databaseError, databaseReference) -> {
                     if (databaseError != null) {

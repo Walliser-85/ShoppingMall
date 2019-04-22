@@ -87,10 +87,10 @@ public class ArticleEntity {
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("id shop", toShop);
-        result.put("article name", articleName);
+        result.put("toShop", toShop);
+        result.put("articleName", articleName);
         result.put("description", description);
-        result.put("short description", shortDescription);
+        result.put("shortDescription", shortDescription);
         result.put("price", price);
 
         return result;

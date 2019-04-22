@@ -14,12 +14,10 @@ public class ArticleLiveData extends LiveData<ArticleEntity> {
     private static final String TAG = "ArticleLiveData";
 
     private final DatabaseReference reference;
-    private final String article;
     private final ArticleLiveData.MyValueEventListener listener = new ArticleLiveData.MyValueEventListener();
 
     public ArticleLiveData(DatabaseReference ref) {
         reference = ref;
-        article = ref.getParent().getParent().getKey();
     }
 
     @Override
@@ -38,7 +36,6 @@ public class ArticleLiveData extends LiveData<ArticleEntity> {
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             ArticleEntity entity = dataSnapshot.getValue(ArticleEntity.class);
             entity.setIdArticle(dataSnapshot.getKey());
-            entity.setArticleName(article);
             setValue(entity);
         }
 

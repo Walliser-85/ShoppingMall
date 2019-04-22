@@ -144,7 +144,7 @@ public class CreateArticle extends Fragment {
         Bitmap img = ((BitmapDrawable) image.getDrawable()).getBitmap();
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        img.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        img.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
 
         Log.d(TAG, "###IMAGE###" + image.getDrawable());

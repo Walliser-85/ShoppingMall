@@ -60,8 +60,6 @@ public class CurrentArticle extends BaseActivity {
             }
         });
 
-        //from ShopID to The name
-
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,7 +80,6 @@ public class CurrentArticle extends BaseActivity {
             Toast.makeText(CurrentArticle.this, "EDIT", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(CurrentArticle.this, EditArticle.class);
             intent.putExtra("articleId", articleId);
-            intent.putExtra("shopId", getShopID);
             startActivity(intent);
             return true;
         }
@@ -142,7 +139,7 @@ public class CurrentArticle extends BaseActivity {
             // Create a reference with an initial file path and name
             StorageReference pathReference = storageRef.child("articles/"+article.getIdArticle()+".png");
 
-            final long ONE_MEGABYTE = 300 * 300;
+            final long ONE_MEGABYTE = 1024 * 1024 * 5;
             pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
                 public void onSuccess(byte[] bytes) {

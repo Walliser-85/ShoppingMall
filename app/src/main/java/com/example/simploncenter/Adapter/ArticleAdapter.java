@@ -51,7 +51,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleH
         // Create a reference with an initial file path and name
         StorageReference pathReference = storageRef.child("articles/"+articleList.get(i).getIdArticle()+".png");
 
-        final long ONE_MEGABYTE = 300 * 300;
+        final long ONE_MEGABYTE = 1024 * 1024 *5;
         pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
