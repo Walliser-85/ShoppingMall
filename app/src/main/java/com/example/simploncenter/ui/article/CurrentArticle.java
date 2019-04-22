@@ -54,6 +54,7 @@ public class CurrentArticle extends BaseActivity {
         viewModel.getArticle().observe(this, articleEntity -> {
             if (articleEntity != null) {
                 article = articleEntity;
+                getShopID = article.getToShop();
                 updateContent();
                 setTitle(article.getArticleName());
             }
@@ -122,18 +123,17 @@ public class CurrentArticle extends BaseActivity {
     private void updateContent(){
         if(article != null){
             //ShopName
-            getShopID=article.getToShop();
             ShopViewModel.Factory factoryShop = new ShopViewModel.Factory(getApplication(),getShopID);
             viewModelShopName = ViewModelProviders.of(this, factoryShop).get(ShopViewModel.class);
             viewModelShopName.getShop().observe(this, shopEntity -> {
                 if (shopEntity != null) {
                     shopName=shopEntity.getShopName();
+                    shopname.setText(shopName);
                 }
             });
 
             titel.setText(article.getArticleName());
             description.setText(article.getDescription());
-            shopname.setText(shopName);
             price.setText("Price: "+Float.toString(article.getPrice())+" CHF");
 
             FirebaseStorage storage = FirebaseStorage.getInstance();
