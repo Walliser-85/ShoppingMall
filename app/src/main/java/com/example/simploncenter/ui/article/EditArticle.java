@@ -21,6 +21,7 @@ import com.example.simploncenter.ui.BaseActivity;
 import com.example.simploncenter.ui.shop.CurrentShop;
 import com.example.simploncenter.util.OnAsyncEventListener;
 import com.example.simploncenter.viewmodel.article.ArticleViewModel;
+import com.example.simploncenter.viewmodel.shop.ShopViewModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -33,6 +34,7 @@ import java.io.InputStream;
 public class EditArticle extends BaseActivity {
     private ArticleEntity article;
     private ArticleViewModel viewModel;
+    private ShopViewModel viewModelShopName;
     private TextView articleName, description, shortDescription, price;
     private TextView shopname;
     private String articleId;
@@ -149,11 +151,19 @@ public class EditArticle extends BaseActivity {
 
     private void updateContent() {
         if (article != null) {
+            //ShopName
+            ShopViewModel.Factory factoryShop = new ShopViewModel.Factory(getApplication(),article.getToShop());
+            viewModelShopName = ViewModelProviders.of(this, factoryShop).get(ShopViewModel.class);
+            viewModelShopName.getShop().observe(this, shopEntity -> {
+                if (shopEntity != null) {
+                    shopname.setText("Shop: "+shopEntity.getShopName());
+                }
+            });
             articleName.setText(article.getArticleName());
             description.setText(article.getDescription());
             shortDescription.setText(article.getShortDescription());
             price.setText(String.valueOf(article.getPrice()));
-            shopname.setText("Shop: "+article.getToShop());
+
 
             FirebaseStorage storage = FirebaseStorage.getInstance();
             // Create a storage reference from our app
@@ -161,7 +171,7 @@ public class EditArticle extends BaseActivity {
             // Create a reference with an initial file path and name
             StorageReference pathReference = storageRef.child("articles/"+article.getIdArticle()+".png");
 
-            final long ONE_MEGABYTE = 300 * 300;
+            final long ONE_MEGABYTE = 1024 * 1024 * 5;
             pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
                 public void onSuccess(byte[] bytes) {
