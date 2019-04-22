@@ -12,12 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.simploncenter.Adapter.ArticleAdapter;
-import com.example.simploncenter.Adapter.ShopAdapter;
 import com.example.simploncenter.R;
 import com.example.simploncenter.db.entity.ArticleEntity;
-import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.db.repository.ShopRepository;
-import com.example.simploncenter.ui.shop.CurrentShop;
 import com.example.simploncenter.viewmodel.article.ListViewAllArticle;
 
 import java.util.ArrayList;
@@ -55,7 +52,7 @@ public class AllArticles extends Fragment {
 
         recyclerView.setAdapter(adapter);
 
-        ListViewAllArticle.Factory factory = new ListViewAllArticle.Factory(getActivity().getApplication(),"");
+        ListViewAllArticle.Factory factory = new ListViewAllArticle.Factory(getActivity().getApplication());
         viewModel = ViewModelProviders.of(this, factory).get(ListViewAllArticle.class);
         viewModel.getArticles().observe(this, articleEntities -> {
             if (articleEntities != null) {

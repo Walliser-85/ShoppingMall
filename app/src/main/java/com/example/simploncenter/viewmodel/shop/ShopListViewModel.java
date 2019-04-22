@@ -20,9 +20,8 @@ public class ShopListViewModel extends AndroidViewModel {
 
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
     private final MediatorLiveData<List<ShopEntity>> observableShops;
-    private final MediatorLiveData<List<String>> observableShopNames;
     private ShopEntity shop;
-    int idShop;
+    String idShop;
 
     public ShopListViewModel(@NonNull Application application,
                              ShopRepository repository) {
@@ -32,12 +31,10 @@ public class ShopListViewModel extends AndroidViewModel {
         this.application = application;
 
         observableShops = new MediatorLiveData<>();
-        observableShopNames= new MediatorLiveData<>();
 
 
         // set by default null, until we get data from the database.
         observableShops.setValue(null);
-        observableShopNames.setValue(null);
 
         LiveData<List<ShopEntity>> shops = repository.getAllShops();
         //LiveData<List<String>> names = repository.getAllShopNames(application);
@@ -48,38 +45,16 @@ public class ShopListViewModel extends AndroidViewModel {
     }
 
     public ShopListViewModel(@NonNull Application application,
-                             ShopRepository repository, String name) {
+                             ShopRepository repository, String id) {
         super(application);
 
         this.repository = repository;
         this.application = application;
+        this.idShop=id;
 
         observableShops = new MediatorLiveData<>();
-        observableShopNames= new MediatorLiveData<>();
         // set by default null, until we get data from the database.
         observableShops.setValue(null);
-        observableShopNames.setValue(null);
-
-        LiveData<List<ShopEntity>> shops = repository.getAllShops();
-        //LiveData<List<String>> names = repository.getAllShopNames(application);
-        //idShop= repository.getShopId(name);
-
-        // observe the changes of the entities from the database and forward them
-        observableShops.addSource(shops, observableShops::setValue);
-        //observableShopNames.addSource(names,observableShopNames::setValue);
-    }
-    public ShopListViewModel(@NonNull Application application,
-                             ShopRepository repository, int id) {
-        super(application);
-
-        this.repository = repository;
-        this.application = application;
-
-        observableShops = new MediatorLiveData<>();
-        observableShopNames= new MediatorLiveData<>();
-        // set by default null, until we get data from the database.
-        observableShops.setValue(null);
-        observableShopNames.setValue(null);
 
         LiveData<List<ShopEntity>> shops = repository.getAllShops();
         //LiveData<List<String>> names = repository.getAllShopNames(application);
@@ -101,16 +76,10 @@ public class ShopListViewModel extends AndroidViewModel {
 
         private final ShopRepository repository;
 
-        private String name ="";
+        private String id ="";
 
-        private int id =-1;
 
-        public Factory(@NonNull Application application, String name) {
-            this.application = application;
-            repository = ShopRepository.getInstance();
-            this.name=name;
-        }
-        public Factory(@NonNull Application application, int id) {
+        public Factory(@NonNull Application application, String id) {
             this.application = application;
             repository = ShopRepository.getInstance();
             this.id=id;
@@ -123,12 +92,10 @@ public class ShopListViewModel extends AndroidViewModel {
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
             //noinspection unchecked
-            if (name.equals("")&&id==-1){
+            if (id.equals("")){
                 return (T) new ShopListViewModel(application, repository);
-            } else if (id!=-1){
-                return (T) new ShopListViewModel(application, repository, id);
             } else {
-                return (T) new ShopListViewModel(application, repository, name);
+                return (T) new ShopListViewModel(application, repository, id);
             }
 
         }
@@ -141,11 +108,7 @@ public class ShopListViewModel extends AndroidViewModel {
         return observableShops;
     }
 
-    public LiveData<List<String>> getShopNames() {
-        return observableShopNames;
-    }
-
-    public int getShopId() {
+    public String getShopId() {
         return idShop;
     }
 

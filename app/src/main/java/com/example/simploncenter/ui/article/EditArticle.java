@@ -8,7 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,6 +21,10 @@ import com.example.simploncenter.ui.BaseActivity;
 import com.example.simploncenter.ui.shop.CurrentShop;
 import com.example.simploncenter.util.OnAsyncEventListener;
 import com.example.simploncenter.viewmodel.article.ArticleViewModel;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -31,8 +35,8 @@ public class EditArticle extends BaseActivity {
     private ArticleViewModel viewModel;
     private TextView articleName, description, shortDescription, price;
     private TextView shopname;
-    private int articleId;
-    private int shopId;
+    private String articleId;
+    private String shopId;
     private String shopN;
     private final int SELECT_PHOTO = 1;
     private ImageView imageView;
@@ -44,12 +48,12 @@ public class EditArticle extends BaseActivity {
         navigationView.setCheckedItem(R.id.nav_articles);
         getLayoutInflater().inflate(R.layout.activity_edit_article, frameLayout);
 
-        articleId = getIntent().getIntExtra("articleId", 0);
-        shopId = getIntent().getIntExtra("shopId",0);
+        articleId = getIntent().getExtras().getString("articleId", "0");
+        shopId = getIntent().getExtras().getString("shopId","0");
 
         initiateView();
 
-        ArticleViewModel.Factory factory = new ArticleViewModel.Factory(getApplication(), Integer.toString(articleId));
+        ArticleViewModel.Factory factory = new ArticleViewModel.Factory(getApplication(),articleId);
         viewModel = ViewModelProviders.of(this, factory).get(ArticleViewModel.class);
         viewModel.getArticle().observe(this, articleEntity -> {
             if (articleEntity != null) {
@@ -94,7 +98,7 @@ public class EditArticle extends BaseActivity {
             public void onSuccess() {
                 Toast.makeText(EditArticle.this, "Save changes", Toast.LENGTH_SHORT).show();
                 Intent intent;
-                if(shopId == 0){
+                if(shopId.equals("0")){
                     intent = new Intent(EditArticle.this, CurrentArticle.class);
                     intent.putExtra("articleId", articleId);
                     startActivity(intent);
@@ -111,7 +115,7 @@ public class EditArticle extends BaseActivity {
             public void onFailure(Exception e) {
                 Toast.makeText(EditArticle.this, "Cannot save changes", Toast.LENGTH_SHORT).show();
             }
-        });
+        },byteArray);
     }
 
     @Override
@@ -149,8 +153,26 @@ public class EditArticle extends BaseActivity {
             description.setText(article.getDescription());
             shortDescription.setText(article.getShortDescription());
             price.setText(String.valueOf(article.getPrice()));
-            imageView.setImageBitmap(BitmapFactory.decodeByteArray(article.getPicture(), 0, article.getPicture().length));
             shopname.setText("Shop: "+article.getToShop());
+
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            // Create a storage reference from our app
+            StorageReference storageRef = storage.getReference();
+            // Create a reference with an initial file path and name
+            StorageReference pathReference = storageRef.child("articles/"+article.getIdArticle()+".png");
+
+            final long ONE_MEGABYTE = 300 * 300;
+            pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    imageView.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+
+                }
+            });
         }
     }
 }

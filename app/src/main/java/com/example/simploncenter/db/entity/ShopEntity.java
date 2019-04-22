@@ -1,28 +1,22 @@
 package com.example.simploncenter.db.entity;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
-import android.graphics.Bitmap;
 
 import com.google.firebase.database.Exclude;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Entity(tableName = "shops")
 public class ShopEntity {
-    @PrimaryKey(autoGenerate = true)
+
     private String idShop;
 
-    @ColumnInfo(name="shop_name")
     private String shopName;
 
-    @ColumnInfo(name="description")
     private String description;
 
-    @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
+    //private ArrayList<String> articles;
+
     private byte[] picture;
 
     @Ignore
@@ -31,6 +25,7 @@ public class ShopEntity {
     public ShopEntity(String shopName, String description){
         this.shopName = shopName;
         this.description = description;
+        //this.articles=new ArrayList<>();
     }
 
     public String getIdShop() {
@@ -65,11 +60,20 @@ public class ShopEntity {
         this.picture = picture;
     }
 
+   /* public ArrayList<String> getArticles() {
+        return articles;
+    }
+
+    public void setArticle(String article) {
+        this.articles.add(article);
+    }
+*/
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("shopName", shopName);
         result.put("description", description);
+        //result.put("articles", articles);
         return result;
     }
 }

@@ -1,16 +1,11 @@
 package com.example.simploncenter.db.repository;
 
-import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.example.simploncenter.BaseApp;
 import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.db.firebase.ShopListLiveData;
 import com.example.simploncenter.db.firebase.ShopLiveData;
-import com.example.simploncenter.ui.shop.Shops;
 import com.example.simploncenter.util.OnAsyncEventListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -126,5 +121,31 @@ public class ShopRepository {
                         callback.onSuccess();
                     }
                 });
+
+        //delete Articles too
+/*
+        ArrayList<String> articleIds=new ArrayList<>();
+        articleIds=FirebaseDatabase.getInstance()
+                .getReference("shops")
+                .child(shop.getIdShop())
+                .getReference("articles")
+                .
+
+
+
+        for (String id : articleIds
+             ) {
+            FirebaseDatabase.getInstance()
+                    .getReference("articles")
+                    .child(id)
+                    .removeValue((databaseError, databaseReference) -> {
+                        if (databaseError != null) {
+                            callback.onFailure(databaseError.toException());
+                        } else {
+                            callback.onSuccess();
+                        }
+                    });
+        }
+*/
     }
 }

@@ -11,6 +11,10 @@ import android.widget.TextView;
 
 import com.example.simploncenter.R;
 import com.example.simploncenter.db.entity.ArticleEntity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +43,27 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleH
             ArticleEntity currentArticle = articleList.get(i);
             articleHolder.textViewArticleName.setText(currentArticle.getArticleName());
             articleHolder.textViewArticleDescription.setText(currentArticle.getShortDescription());
-            articleHolder.ivw.setImageBitmap(BitmapFactory.decodeByteArray(articleList.get(i).getPicture(), 0, articleList.get(i).getPicture().length));
             articleHolder.bind(articleList.get(i), listener);
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        // Create a storage reference from our app
+        StorageReference storageRef = storage.getReference();
+        // Create a reference with an initial file path and name
+        StorageReference pathReference = storageRef.child("articles/"+articleList.get(i).getIdArticle()+".png");
+
+        final long ONE_MEGABYTE = 300 * 300;
+        pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                articleHolder.ivw.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+
+            }
+        });
+
     }
 
     @Override

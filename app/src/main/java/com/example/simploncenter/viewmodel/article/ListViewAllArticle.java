@@ -20,26 +20,23 @@ public class ListViewAllArticle extends AndroidViewModel {
 
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
     private final MediatorLiveData<List<ArticleEntity>> observableArticle;
-    private final MediatorLiveData<List<ArticleEntity>> observableArticleByShop;
 
-    public ListViewAllArticle(@NonNull Application application, final String shopId,
-                             ArticleRepository repository) {
+    public ListViewAllArticle(@NonNull Application application, ArticleRepository repository) {
+
         super(application);
 
         this.repository = repository;
 
         observableArticle = new MediatorLiveData<>();
-        observableArticleByShop = new MediatorLiveData<>();
         // set by default null, until we get data from the database.
         observableArticle.setValue(null);
-        observableArticleByShop.setValue(null);
 
         LiveData<List<ArticleEntity>> article = repository.getAllArticle();
-        LiveData<List<ArticleEntity>> articleByShop = repository.getByShop(shopId);
+        //LiveData<List<ArticleEntity>> articleByShop = repository.getByShop(shopId);
 
         // observe the changes of the entities from the database and forward them
         observableArticle.addSource(article, observableArticle::setValue);
-        observableArticleByShop.addSource(articleByShop, observableArticleByShop::setValue);
+        //observableArticleByShop.addSource(articleByShop, observableArticleByShop::setValue);
     }
 
     /**
@@ -50,20 +47,17 @@ public class ListViewAllArticle extends AndroidViewModel {
         @NonNull
         private final Application application;
 
-        private final String shopId;
-
         private final ArticleRepository repository;
 
-        public Factory(@NonNull Application application, String shopId) {
+        public Factory(@NonNull Application application) {
             this.application = application;
-            this.shopId = shopId;
             repository = ArticleRepository.getInstance();
         }
 
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
             //noinspection unchecked
-            return (T) new ListViewAllArticle(application, shopId, repository);
+            return (T) new ListViewAllArticle(application, repository);
         }
     }
 
@@ -72,8 +66,5 @@ public class ListViewAllArticle extends AndroidViewModel {
      */
     public LiveData<List<ArticleEntity>> getArticles() {
         return observableArticle;
-    }
-    public LiveData<List<ArticleEntity>> getArticlesByShop() {
-        return observableArticleByShop;
     }
 }

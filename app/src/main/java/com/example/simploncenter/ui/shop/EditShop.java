@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.simploncenter.R;
-import com.example.simploncenter.db.entity.ArticleEntity;
 import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.ui.BaseActivity;
 import com.example.simploncenter.util.OnAsyncEventListener;
@@ -104,30 +103,6 @@ public class EditShop extends BaseActivity {
                 Toast.makeText(EditShop.this, "Cannot save changes", Toast.LENGTH_SHORT).show();
             }
         }, byteArray);
-
-        //Change Article Shopnames too
-        /*ListViewAllArticle.Factory factoryA = new ListViewAllArticle.Factory(getApplication(),String.valueOf(titel.getText()));
-        viewModelArticle = ViewModelProviders.of(this, factoryA).get(ListViewAllArticle.class);
-        //Article ViewModel for Update
-        ArticleViewModel.Factory factoryArtDel = new ArticleViewModel.Factory(getApplication(),shopId);
-        viewModelArticleEd = ViewModelProviders.of(this, factoryArtDel).get(ArticleViewModel.class);
-
-        viewModelArticle.getArticlesByShop().observe(this, articleEntities -> {
-            if (articleEntities != null) {
-                for (ArticleEntity arEnt:articleEntities
-                ) {
-                    arEnt.setToShop(String.valueOf(titel.getText()));
-                    viewModelArticleEd.updateArticle(arEnt, new OnAsyncEventListener() {
-                        @Override
-                        public void onSuccess() {
-                        }
-
-                        @Override
-                        public void onFailure(Exception e) {}
-                    });
-                }
-            }
-        });*/
     }
 
     @Override

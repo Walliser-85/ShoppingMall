@@ -4,40 +4,40 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.simploncenter.Adapter.CustomListViewArticle;
 import com.example.simploncenter.R;
 import com.example.simploncenter.db.entity.ArticleEntity;
-import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.db.repository.ArticleRepository;
 import com.example.simploncenter.ui.BaseActivity;
 import com.example.simploncenter.util.OnAsyncEventListener;
 import com.example.simploncenter.viewmodel.article.ArticleViewModel;
 import com.example.simploncenter.viewmodel.shop.ShopListViewModel;
 import com.example.simploncenter.viewmodel.shop.ShopViewModel;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class CurrentArticle extends BaseActivity {
     private ArticleEntity article;
     private ArticleViewModel viewModel;
     private ShopListViewModel viewModelShop;
+    private ShopViewModel viewModelShopName;
     private TextView titel, description, shopname, price;
     private ImageView picture;
-    private int articleId;
-    private String getNameshop;
+    private String articleId;
+    private String getShopID;
     private static final int EDIT_ARTICLE = 1;
     private static final int DELETE_ARTICLE = 2;
     private ArticleRepository repository;
-    private ShopEntity shopEntity;
+    private String shopName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,20 +45,22 @@ public class CurrentArticle extends BaseActivity {
         navigationView.setCheckedItem(R.id.nav_articles);
         getLayoutInflater().inflate(R.layout.activity_current_article, frameLayout);
 
-        articleId = getIntent().getIntExtra("articleId",0);
+        articleId = getIntent().getExtras().getString("articleId","0");
 
         initiateView();
 
-        ArticleViewModel.Factory factory = new ArticleViewModel.Factory(getApplication(),Integer.toString(articleId));
+        ArticleViewModel.Factory factory = new ArticleViewModel.Factory(getApplication(),articleId);
         viewModel = ViewModelProviders.of(this, factory).get(ArticleViewModel.class);
         viewModel.getArticle().observe(this, articleEntity -> {
             if (articleEntity != null) {
                 article = articleEntity;
-                getNameshop=article.getToShop();
                 updateContent();
                 setTitle(article.getArticleName());
             }
         });
+
+        //from ShopID to The name
+
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -79,7 +81,7 @@ public class CurrentArticle extends BaseActivity {
             Toast.makeText(CurrentArticle.this, "EDIT", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(CurrentArticle.this, EditArticle.class);
             intent.putExtra("articleId", articleId);
-            intent.putExtra("shopId", getNameshop);
+            intent.putExtra("shopId", getShopID);
             startActivity(intent);
             return true;
         }
@@ -119,11 +121,40 @@ public class CurrentArticle extends BaseActivity {
 
     private void updateContent(){
         if(article != null){
+            //ShopName
+            getShopID=article.getToShop();
+            ShopViewModel.Factory factoryShop = new ShopViewModel.Factory(getApplication(),getShopID);
+            viewModelShopName = ViewModelProviders.of(this, factoryShop).get(ShopViewModel.class);
+            viewModelShopName.getShop().observe(this, shopEntity -> {
+                if (shopEntity != null) {
+                    shopName=shopEntity.getShopName();
+                }
+            });
+
             titel.setText(article.getArticleName());
             description.setText(article.getDescription());
-            shopname.setText(getNameshop);
-            picture.setImageBitmap(BitmapFactory.decodeByteArray(article.getPicture(), 0, article.getPicture().length));
+            shopname.setText(shopName);
             price.setText("Price: "+Float.toString(article.getPrice())+" CHF");
+
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            // Create a storage reference from our app
+            StorageReference storageRef = storage.getReference();
+            // Create a reference with an initial file path and name
+            StorageReference pathReference = storageRef.child("articles/"+article.getIdArticle()+".png");
+
+            final long ONE_MEGABYTE = 300 * 300;
+            pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    picture.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+
+                }
+            });
+
         }
     }
 }

@@ -6,21 +6,17 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.simploncenter.Adapter.ArticleAdapter;
 import com.example.simploncenter.R;
 import com.example.simploncenter.db.entity.ArticleEntity;
 import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.db.repository.ArticleRepository;
 import com.example.simploncenter.ui.BaseActivity;
-import com.example.simploncenter.ui.article.CurrentArticle;
 import com.example.simploncenter.util.OnAsyncEventListener;
 import com.example.simploncenter.viewmodel.article.ArticleViewModel;
 import com.example.simploncenter.viewmodel.article.ListViewAllArticle;
@@ -30,7 +26,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CurrentShop extends BaseActivity {
@@ -99,6 +94,7 @@ public class CurrentShop extends BaseActivity {
                 adapter.setArticle(articleEntities);
             }
         });*/
+
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -142,6 +138,7 @@ public class CurrentShop extends BaseActivity {
                     @Override
                     public void onFailure(Exception e) {}
                 });
+                /*
                 //Delete the Articles too
                 viewModelArticle.getArticlesByShop().observe(this, articleEntities -> {
                     if (articleEntities != null) {
@@ -158,7 +155,7 @@ public class CurrentShop extends BaseActivity {
                         }
                     }
                 });
-
+*/
             });
 
 
