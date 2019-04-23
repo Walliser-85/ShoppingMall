@@ -41,7 +41,7 @@ public class CurrentShop extends BaseActivity {
     private ListViewAllArticle viewModelArticle;
     private TextView titel, description;
     private ImageView picture;
-
+    private ArrayList<ArticleEntity> articles;
     private static final int EDIT_SHOP = 1;
     private static final int DELETE_SHOP = 2;
     private static final int ADD_ARTICLE = 3;
@@ -97,15 +97,15 @@ public class CurrentShop extends BaseActivity {
                 {
                     arrayIds.add(key);
                 }
-                ArrayList<ArticleEntity> articles=new ArrayList<>();
+                this.articles=new ArrayList<>();
                 ListViewAllArticle.Factory factoryA = new ListViewAllArticle.Factory(getApplication(), shopId);
                 viewModelArticle = ViewModelProviders.of(this, factoryA).get(ListViewAllArticle.class);
                 for (String id: arrayIds) {
                     viewModelArticle.getArticle(id).observe(this, articleEntities -> {
                         System.out.print(articleEntities);
                         if (articleEntities != null) {
-                            articles.add(articleEntities);
-                            adapter.setArticle(articles);
+                            this.articles.add(articleEntities);
+                            adapter.setArticle(this.articles);
                         }
                     });
                 }
@@ -154,24 +154,20 @@ public class CurrentShop extends BaseActivity {
                     @Override
                     public void onFailure(Exception e) {}
                 });
-                /*
-                //Delete the Articles too
-                viewModelArticle.getArticlesByShop().observe(this, articleEntities -> {
-                    if (articleEntities != null) {
-                        for (ArticleEntity arEnt:articleEntities
-                        ) {
-                            viewModelArticleDelet.deleteArticle(arEnt, new OnAsyncEventListener() {
-                                @Override
-                                public void onSuccess() {
-                                }
 
-                                @Override
-                                public void onFailure(Exception e) {}
-                            });
+                for (ArticleEntity a: this.articles
+                     ) {
+                    viewModelArticleDelet.deleteArticle(a, new OnAsyncEventListener() {
+                        @Override
+                        public void onSuccess() {
                         }
-                    }
-                });
-*/
+
+                        @Override
+                        public void onFailure(Exception e) {}
+                    });
+                }
+
+
             });
 
 
@@ -205,7 +201,7 @@ public class CurrentShop extends BaseActivity {
             // Create a reference with an initial file path and name
             StorageReference pathReference = storageRef.child("shops/"+shop.getIdShop()+".png");
 
-            final long ONE_MEGABYTE = 300 * 300;
+            final long ONE_MEGABYTE = 1024 * 1024 * 5;
             pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
                 public void onSuccess(byte[] bytes) {
