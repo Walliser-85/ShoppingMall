@@ -81,10 +81,10 @@ public class CurrentShop extends BaseActivity {
                 startActivity(intent);
             }
         });
-        //Get articles for the view
+        //Get articles for the views
 
         ArrayList<String> arrayIds=new ArrayList<>();
-
+        recyclerView.setAdapter(adapter);
         ShopViewModel.Factory factory = new ShopViewModel.Factory(getApplication(),shopId);
         viewModel = ViewModelProviders.of(this, factory).get(ShopViewModel.class);
         viewModel.getShop().observe(this, shopEntity -> {
@@ -105,11 +105,10 @@ public class CurrentShop extends BaseActivity {
                         System.out.print(articleEntities);
                         if (articleEntities != null) {
                             articles.add(articleEntities);
+                            adapter.setArticle(articles);
                         }
                     });
                 }
-                adapter.setArticle(articles);
-                recyclerView.setAdapter(adapter);
             }
         });
     }
