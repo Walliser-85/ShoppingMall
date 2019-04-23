@@ -47,7 +47,11 @@ public class ArticleRepository {
     }
 
     public LiveData<List<ArticleEntity>> getByShop(final String shopId){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("articles/toShop");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("shops").child(shopId+"/articles");
+        ShopLiveData shop = new ShopLiveData(reference);
+        ShopEntity test = shop.getValue();
+
+        reference = FirebaseDatabase.getInstance().getReference("articles");
         return new ArticleListLiveData(reference);
     }
 
