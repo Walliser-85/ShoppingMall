@@ -82,7 +82,7 @@ public class CurrentShop extends BaseActivity {
             }
         });
         //Get articles for the view
-        recyclerView.setAdapter(adapter);
+
         ArrayList<String> arrayIds=new ArrayList<>();
 
         ShopViewModel.Factory factory = new ShopViewModel.Factory(getApplication(),shopId);
@@ -97,23 +97,21 @@ public class CurrentShop extends BaseActivity {
                 {
                     arrayIds.add(key);
                 }
+                ArrayList<ArticleEntity> articles=new ArrayList<>();
+                ListViewAllArticle.Factory factoryA = new ListViewAllArticle.Factory(getApplication(), shopId);
+                viewModelArticle = ViewModelProviders.of(this, factoryA).get(ListViewAllArticle.class);
+                for (String id: arrayIds) {
+                    viewModelArticle.getArticle(id).observe(this, articleEntities -> {
+                        System.out.print(articleEntities);
+                        if (articleEntities != null) {
+                            articles.add(articleEntities);
+                        }
+                    });
+                }
+                adapter.setArticle(articles);
+                recyclerView.setAdapter(adapter);
             }
         });
-
-        ArrayList<ArticleEntity> articles=new ArrayList<>();
-        ListViewAllArticle.Factory factoryA = new ListViewAllArticle.Factory(getApplication(), shopId);
-        viewModelArticle = ViewModelProviders.of(this, factoryA).get(ListViewAllArticle.class);
-        for (String id: arrayIds
-             ) {
-            viewModelArticle.getArticle(id).observe(this, articleEntities -> {
-                if (articleEntities != null) {
-                    articles.add(articleEntities);
-                }
-            });
-        }
-
-        adapter.setArticle(articles);
-
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
