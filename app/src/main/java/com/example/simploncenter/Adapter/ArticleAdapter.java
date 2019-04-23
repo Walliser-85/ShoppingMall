@@ -71,8 +71,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleH
             return articleList.size();
             }
 
-    public void setArticle(List<ArticleEntity> shop) {
-            this.articleList = shop;
+    public void setArticle(List<ArticleEntity> article) {
+            this.articleList = article;
             notifyDataSetChanged();
     }
 

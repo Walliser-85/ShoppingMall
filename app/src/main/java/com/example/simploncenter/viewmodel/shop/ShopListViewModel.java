@@ -108,11 +108,8 @@ public class ShopListViewModel extends AndroidViewModel {
         return observableShops;
     }
 
-    public String getShopId() {
-        return idShop;
-    }
-
     public ShopEntity getShop(){
         return shop;
     }
+
 }

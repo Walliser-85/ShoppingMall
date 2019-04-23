@@ -60,15 +60,7 @@ public class CurrentShop extends BaseActivity {
 
         initiateView();
 
-        ShopViewModel.Factory factory = new ShopViewModel.Factory(getApplication(),shopId);
-        viewModel = ViewModelProviders.of(this, factory).get(ShopViewModel.class);
-        viewModel.getShop().observe(this, shopEntity -> {
-            if (shopEntity != null) {
-                shop = shopEntity;
-                updateContent();
-                setTitle(shop.getShopName());
-            }
-        });
+
 
         //Article ViewModel for Delete
         ArticleViewModel.Factory factoryArtDel = new ArticleViewModel.Factory(getApplication(),shopId);
@@ -89,16 +81,38 @@ public class CurrentShop extends BaseActivity {
                 startActivity(intent);
             }
         });
-
+        //Get articles for the view
         recyclerView.setAdapter(adapter);
+        ArrayList<String> arrayIds=new ArrayList<>();
 
-        ListViewAllArticle.Factory factoryA = new ListViewAllArticle.Factory(getApplication(), shopId);
-        viewModelArticle = ViewModelProviders.of(this, factoryA).get(ListViewAllArticle.class);
-        viewModelArticle.getArticlesByShop().observe(this, articleEntities -> {
-            if (articleEntities != null) {
-                adapter.setArticle(articleEntities);
+        ShopViewModel.Factory factory = new ShopViewModel.Factory(getApplication(),shopId);
+        viewModel = ViewModelProviders.of(this, factory).get(ShopViewModel.class);
+        viewModel.getShop().observe(this, shopEntity -> {
+            if (shopEntity != null) {
+                shop = shopEntity;
+                updateContent();
+                setTitle(shop.getShopName());
+                //Artikel Ids
+                for(String key : shop.getArticles().keySet())
+                {
+                    arrayIds.add(key);
+                }
             }
         });
+
+        ArrayList<ArticleEntity> articles=new ArrayList<>();
+        ListViewAllArticle.Factory factoryA = new ListViewAllArticle.Factory(getApplication(), shopId);
+        viewModelArticle = ViewModelProviders.of(this, factoryA).get(ListViewAllArticle.class);
+        for (String id: arrayIds
+             ) {
+            viewModelArticle.getArticle(id).observe(this, articleEntities -> {
+                if (articleEntities != null) {
+                    articles.add(articleEntities);
+                }
+            });
+        }
+
+        adapter.setArticle(articles);
 
     }
 
