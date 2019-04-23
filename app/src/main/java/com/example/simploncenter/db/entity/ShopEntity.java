@@ -4,7 +4,6 @@ import android.arch.persistence.room.Ignore;
 
 import com.google.firebase.database.Exclude;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +15,7 @@ public class ShopEntity {
 
     private String description;
 
-    //private ArrayList<String> articles;
+    private Map<String, Boolean> articles = new HashMap<>();
 
     private byte[] picture;
 
@@ -26,7 +25,6 @@ public class ShopEntity {
     public ShopEntity(String shopName, String description){
         this.shopName = shopName;
         this.description = description;
-        //this.articles=new ArrayList<>();
     }
 
     public String getIdShop() {
@@ -61,19 +59,20 @@ public class ShopEntity {
         this.picture = picture;
     }
 
-    /*public ArrayList<String> getArticles() {
+    public Map<String, Boolean> getArticles() {
         return articles;
     }
 
-    public void setArticle(String article) {
-        this.articles.add(article);
-    }*/
+    public void setArticles(Map<String, Boolean> articles) {
+        this.articles = articles;
+    }
 
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("shopName", shopName);
         result.put("description", description);
+        result.put("articles", articles);
         return result;
     }
 }

@@ -122,30 +122,5 @@ public class ShopRepository {
                     }
                 });
 
-        //delete Articles too
-/*
-        ArrayList<String> articleIds=new ArrayList<>();
-        articleIds=FirebaseDatabase.getInstance()
-                .getReference("shops")
-                .child(shop.getIdShop())
-                .getReference("articles")
-                .
-
-
-
-        for (String id : articleIds
-             ) {
-            FirebaseDatabase.getInstance()
-                    .getReference("articles")
-                    .child(id)
-                    .removeValue((databaseError, databaseReference) -> {
-                        if (databaseError != null) {
-                            callback.onFailure(databaseError.toException());
-                        } else {
-                            callback.onSuccess();
-                        }
-                    });
-        }
-*/
     }
 }

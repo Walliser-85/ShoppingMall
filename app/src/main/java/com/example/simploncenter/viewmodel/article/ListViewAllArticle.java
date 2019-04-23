@@ -72,5 +72,9 @@ public class ListViewAllArticle extends AndroidViewModel {
     public LiveData<List<ArticleEntity>> getArticles() {
         return observableArticle;
     }
+    //einen Artikel
+    public LiveData<ArticleEntity> getArticle(String ID) {
+        return repository.getArticle(ID);
+    }
     public LiveData<List<ArticleEntity>> getArticlesByShop() { return observableArticleByShop; }
 }
