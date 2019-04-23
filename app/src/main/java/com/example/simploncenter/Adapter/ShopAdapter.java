@@ -55,7 +55,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopHolder> {
         // Create a reference with an initial file path and name
         StorageReference pathReference = storageRef.child("shops/"+shopList.get(i).getIdShop()+".png");
 
-        final long ONE_MEGABYTE = 800 * 800;
+        final long ONE_MEGABYTE = 1024 * 1024 *5;
         pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {

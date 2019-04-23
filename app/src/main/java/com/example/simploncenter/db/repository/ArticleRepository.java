@@ -4,8 +4,10 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import com.example.simploncenter.db.entity.ArticleEntity;
+import com.example.simploncenter.db.entity.ShopEntity;
 import com.example.simploncenter.db.firebase.ArticleListLiveData;
 import com.example.simploncenter.db.firebase.ArticleLiveData;
+import com.example.simploncenter.db.firebase.ShopLiveData;
 import com.example.simploncenter.util.OnAsyncEventListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -41,6 +43,11 @@ public class ArticleRepository {
 
     public LiveData<List<ArticleEntity>> getAllArticle() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("articles");
+        return new ArticleListLiveData(reference);
+    }
+
+    public LiveData<List<ArticleEntity>> getByShop(final String shopId){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("articles/toShop");
         return new ArticleListLiveData(reference);
     }
 
