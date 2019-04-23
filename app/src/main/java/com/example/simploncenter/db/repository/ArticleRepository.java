@@ -128,7 +128,22 @@ public class ArticleRepository {
                     if (databaseError != null) {
                         callback.onFailure(databaseError.toException());
                     } else {
-                        callback.onSuccess();
+                        //Delete picture
+                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                        StorageReference storageRef = storage.getReference();
+                        StorageReference pathReference = storageRef.child("articles/"+article.getIdArticle()+".png");
+
+                        pathReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                callback.onSuccess();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                callback.onFailure(exception);
+                            }
+                        });
                     }
                 });
         //Delete in Shop

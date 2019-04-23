@@ -44,15 +44,6 @@ public class ShopRepository {
         return new ShopListLiveData(reference);
     }
 
-    /*
-    public LiveData<List<String>> getAllShopNames() {
-        return ((BaseApp) application).getDatabase().shopDao().getAllShopNames();
-    }
-
-    public int  getShopId(final String name) {
-        return ((BaseApp) application).getDatabase().shopDao().getId(name);
-    }*/
-
     public void insert(final ShopEntity shop, final OnAsyncEventListener callback, byte[] data) {
         String id = FirebaseDatabase.getInstance().getReference("shops").push().getKey();
         FirebaseDatabase.getInstance()
@@ -118,7 +109,21 @@ public class ShopRepository {
                     if (databaseError != null) {
                         callback.onFailure(databaseError.toException());
                     } else {
-                        callback.onSuccess();
+                        //delete picture
+                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                        StorageReference storageRef = storage.getReference();
+                        StorageReference pathReference = storageRef.child("shops/"+shop.getIdShop()+".png");
+                        pathReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                callback.onSuccess();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                callback.onFailure(exception);
+                            }
+                        });
                     }
                 });
 
