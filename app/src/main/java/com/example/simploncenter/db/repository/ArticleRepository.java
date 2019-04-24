@@ -128,22 +128,7 @@ public class ArticleRepository {
                     if (databaseError != null) {
                         callback.onFailure(databaseError.toException());
                     } else {
-                        //Delete picture
-                        FirebaseStorage storage = FirebaseStorage.getInstance();
-                        StorageReference storageRef = storage.getReference();
-                        StorageReference pathReference = storageRef.child("articles/"+article.getIdArticle()+".png");
-
-                        pathReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                callback.onSuccess();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception exception) {
-                                callback.onFailure(exception);
-                            }
-                        });
+                        callback.onSuccess();
                     }
                 });
         //Delete in Shop
@@ -157,38 +142,22 @@ public class ArticleRepository {
                         callback.onSuccess();
                     }
                 });
+        //Delete picture
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        StorageReference pathReference = storageRef.child("articles/"+article.getIdArticle()+".png");
+
+        pathReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                callback.onSuccess();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                callback.onFailure(exception);
+            }
+        });
     }
 
 }
-
-
-
-
-
-
-    /*
-    public LiveData<List<ArticleEntity>> getAllArticle(Application application) {
-        return ((BaseApp) application).getDatabase().articleDao().getAllArticles();
-    }
-
-    public LiveData<List<ArticleEntity>> getByShopName(final String shopId, Application application){
-        return ((BaseApp) application).getDatabase().articleDao().getByShopId(shopId);
-    }
-
-    public void insert(final ArticleEntity article, OnAsyncEventListener callback,
-                       Application application) {
-        new CreateArticle(application, callback).execute(article);
-    }
-
-    public void update(final ArticleEntity article, OnAsyncEventListener callback,
-                       Application application) {
-        new UpdateArticle(application, callback).execute(article);
-    }
-
-    public void delete(final ArticleEntity article, OnAsyncEventListener callback,
-                       Application application) {
-        new DeleteArticle(application, callback).execute(article);
-    }
-
-
-}*/

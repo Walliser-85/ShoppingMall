@@ -22,7 +22,6 @@ import java.util.List;
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleHolder> {
 
     private List<ArticleEntity> articleList = new ArrayList<>();
-            Integer[] imgid={R.drawable.migros, R.drawable.ca, R.drawable.hm, R.drawable.interdiscount};
     private final OnItemClickListener listener;
 
     public ArticleAdapter(List<ArticleEntity> articleList,OnItemClickListener listener) {
